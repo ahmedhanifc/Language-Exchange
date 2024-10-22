@@ -14,3 +14,10 @@ async function connectDatabase() {
         await client.connect()
     }
 }
+
+
+
+
+module.exports={
+    
+}
