@@ -1,0 +1,19 @@
+{
+  "name": "language-exchange",
+  "version": "1.0.0",
+  "description": "Language Exchange Application",
+  "main": "web.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ahmed Hanif, Hafsa Farhan",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cookie-parser": "^1.4.7",
+    "crypto": "^1.0.1",
+    "express": "^4.21.1",
+    "express-handlebars": "^8.0.1",
+    "mongodb": "^6.10.0"
+  }
+}
