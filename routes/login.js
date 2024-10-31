@@ -13,4 +13,19 @@ router.post("/", (req,res) => {
     res.send("Hello World")
 })
 
+router.get("/sign-up", (req,res) => {
+    res.render("register")
+})
+
+router.post("/sign-up", (req,res) => {
+    const {username, email, password, repeatedPassword} = req.body
+    //username validation
+    //email validation
+    //password validation
+    //checking both passwords are the same
+
+    //updating in the database
+    res.send("Hello World")
+})
+
 module.exports = router;
