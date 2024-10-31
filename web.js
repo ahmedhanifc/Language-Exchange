@@ -4,29 +4,27 @@ const path = require("path")
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const handlebars = require('express-handlebars')
+const urlencodedParser = bodyParser.urlencoded({extended: false})
 let app = express()
 
-app.set('views', __dirname+"/templates")
-app.set('view engine', 'handlebars')
-app.engine('handlebars', handlebars.engine())
-
-app.use('/static', express.static(__dirname+"/static"))
-app.use(bodyParser.urlencoded())
-app.use(cookieParser())
+//All the Routers of Our Application
+const loginRouter = require("./routes/login.js")
 
 
-// "/" path will render the home page.
-app.get("/", (req, res) => {
-    res.render("login", {
-        layout:undefined
-    })
-});
 
-app.post("/", (req,res) => {
-    res.send("Hello")
-})
+app.set('views', __dirname + '/templates');
+app.set('view engine', 'handlebars');
+app.engine('handlebars', handlebars.engine());
+
+app.use('/static', express.static(__dirname + '/static'));
+app.use(express.urlencoded({ extended: true })); // Use Express's built-in parser for form data
+app.use(express.json()); // Allows parsing of JSON
+app.use(cookieParser());
+
+app.use("/", loginRouter);
 
 
-app.listen(8001, () => {
-    console.log("App is running on port:", 8001)
+
+app.listen(8000, () => {
+    console.log("App is running on port:", 8000)
 })
