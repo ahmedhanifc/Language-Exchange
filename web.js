@@ -1,10 +1,7 @@
 const express=require('express')
-const business = require('./business.js')
-const path = require("path")
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const handlebars = require('express-handlebars')
-const urlencodedParser = bodyParser.urlencoded({extended: false})
 let app = express()
 
 //All the Routers of Our Application

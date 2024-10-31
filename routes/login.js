@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const business = require("../business")
+
 
 // "/" path will render the home page.
 router.get("/", (req, res) => {
@@ -23,8 +25,16 @@ router.post("/sign-up", (req,res) => {
     //email validation
     //password validation
     //checking both passwords are the same
+    //ensure username doesn't already exist in the database
+        // if(username in database) return true
+        // else return false
+    //ensure email doesn't already exist in the database
+        // if(username in database) return true
+        // else return false
+    // need to check both, cuz the username could be unique, but the user can pass in a non-unique email address
 
-    //updating in the database
+    //if all of those validations are valid, i want to create a user in the database, specifically, UserAccounts Collection
+    business.createUser(username,email,password)
     res.send("Hello World")
 })
 

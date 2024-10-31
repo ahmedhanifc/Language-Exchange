@@ -3,8 +3,9 @@ const persistence = require("./persistence.js")
 const crypto = require("crypto")
 
 
-
-
+async function createUser(username,email,password){
+    return await persistence.createUser(username,email,password)
+}
 
 
 
@@ -26,5 +27,5 @@ const crypto = require("crypto")
 
 
 module.exports={
-    
+    createUser,
 }
