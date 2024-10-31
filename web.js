@@ -22,6 +22,10 @@ app.get("/", (req, res) => {
     })
 });
 
+app.post("/", (req,res) => {
+    res.send("Hello")
+})
+
 
 app.listen(8001, () => {
     console.log("App is running on port:", 8001)
