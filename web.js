@@ -1,5 +1,6 @@
 const express=require('express')
 const business = require('./business.js')
+const path = require("path")
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const handlebars = require('express-handlebars')
@@ -15,12 +16,13 @@ app.use(cookieParser())
 
 
 // "/" path will render the home page.
-app.get("/", (req,res) => {
-    res.send("Hello World")
-})
+app.get("/", (req, res) => {
+    res.render("login", {
+        layout:undefined
+    })
+});
 
 
-
-app.listen(8000, () => {
-    console.log("App is running on port:", 8000)
+app.listen(8001, () => {
+    console.log("App is running on port:", 8001)
 })
