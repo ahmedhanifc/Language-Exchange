@@ -5,6 +5,10 @@ const business = require("../business")
 
 // "/" path will render the home page.
 router.get("/", (req, res) => {
+    // also in the lecture18 code, they authenticate directly in the / page. 
+
+    //What is the information we need to know for the login page of the user? 
+    //1) Check if the cookie is present in the browser. if a cookie is present and is valid, then automatically log user in
     res.render("login")
 });
 
@@ -12,6 +16,8 @@ router.post("/", (req,res) => {
     const {username , password} = req.body
     // need to perform checks on whether the user actually exists or not. and display
     //the relevant error messages. As of now. it only gets the username and password 
+
+    // after validation, we need to create session and cookies
     res.send("Hello World")
 })
 
