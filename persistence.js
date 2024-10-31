@@ -1,9 +1,10 @@
 const { MongoClient } = require('mongodb')
 const mongodb = require('mongodb')
 
-const databaseName = "Language-Exchange";
-const userAccountsCollectionName = "UserAccounts"
-const userSessionCollectionName = "UserSessions"
+const database = "Language-Exchange";
+
+ //These are the four collections we have in our database. We can access them via indexing as needed, reducing variable names
+const collections = ["UserAccounts","UserSessions","UserContacts","UserBlocked"]
 
 let userAccounts = undefined; //This variable will contain the data defined in the collection userAccountCollectionName
 let userSessions = undefined; //This variable will contain the data defined in the collection userSessionCollectionName

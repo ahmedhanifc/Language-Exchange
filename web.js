@@ -14,6 +14,13 @@ app.use(bodyParser.urlencoded())
 app.use(cookieParser())
 
 
+// "/" path will render the home page.
+app.get("/", (req,res) => {
+    res.send("Hello World")
+})
+
+
+
 app.listen(8000, () => {
     console.log("App is running on port:", 8000)
 })
