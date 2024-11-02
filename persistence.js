@@ -36,11 +36,9 @@ async function connectDatabase() {
     }
 }
 
-async function isUserPresent(username, email){ 
+async function findUser(username){
     await connectDatabase()
-    let users = await userAccounts.find().toArray()
-    // if username === users.username || email === users.email return true
-    // else return false
+    return await userAccounts.findOne({username})
 }
 
 async function createUser(username,email,password){
@@ -49,11 +47,21 @@ async function createUser(username,email,password){
 
 }
 
+async function saveSession(sessionData) {
+    await connectDatabase()
+    return await userSessions.insertOne(sessionData)
+}
 
+async function getSessionData(sessionKey) {
+    await connectDatabase()
+    return await userSessions.findOne({sessionKey})
+}
 
 
 module.exports={
-    isUserPresent,
-    createUser
+    createUser,
+    findUser,
+    getSessionData,
+    saveSession
     
 }
