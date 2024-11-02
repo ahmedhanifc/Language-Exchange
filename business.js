@@ -28,10 +28,10 @@ async function validateCredentials(username, password){
 
 async function startSession(data) {
     let sessionKey = crypto.randomUUID()
-    let expiryTime = Date.now() + 1000 * 60 * 5;
+    let expiryTime = Date.now() + 1000 * 60 * 1; //5 minutes
     let sessionData = {
         sessionKey,
-        expiry: new Date(expiryTime),
+        expiry: new Date(expiryTime), 
         data
     }
     await persistence.saveSession(sessionData)

@@ -14,3 +14,5 @@ The account is linked to the university email id through GitHub Education.
    This is for getting the UUID
 ## Note
 Make sure to npm install once you pull the program
+
+CSRF tokens need to be added whereever there is a text box and <script> tag can be passed through

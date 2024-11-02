@@ -2,18 +2,8 @@ const express = require('express');
 const router = express.Router();
 const business = require("../business")
 
-function errorHandler(req,res,next){
-    let {errorCode} = req.query;
-    errorCode = parseInt(errorCode)
-    let message = ""
-    if(errorCode === -1){
-        message = "Invalid Username and Password"
-    }
 
-    next();
-}
 
-router.use(errorHandler);
 // "/" path will render the home page.
 router.get("/", (req, res) => {
     // also in the lecture18 code, they authenticate directly in the / page. 
@@ -65,7 +55,7 @@ router.post("/sign-up", (req,res) => {
 
     //if all of those validations are valid, i want to create a user in the database, specifically, UserAccounts Collection
     business.createUser(username,email,password)
-    res.send("Hello World")
+    res.redirect("/home/bio")
 })
 
 module.exports = router;
