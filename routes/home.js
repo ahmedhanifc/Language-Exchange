@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const business = require("../business")
-const flash=
 
 router.get("/",  async (req,res) => {
     //here, / is basically /home, because we're asking in the web.js that homeRouter take all the routes

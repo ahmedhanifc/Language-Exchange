@@ -3,28 +3,6 @@ const router = express.Router();
 const business = require("../business")
 /*where are we gonna check for sessions then? for now im adding the module for sessions here,also we are going to need to figure out how to 
 access session across different files as flash msgs require the deletion of a pseudo-session storage */
-const session = require('express-session');
-const flash = require('connect-flash');
-
-// Set up session middleware
-router.use(
-    session({
-      secret: 'your_secret_key',
-      resave: false,
-      saveUninitialized: true,
-    })
-  );
-                                                               //for now this is one possible trial where i store the flash msgs in the route file itself
-                                                               //will do another commit to my trial branch to see if decalring flash middelware and msgs in the web.js is enough 
-  // Set up connect-flash middleware
-  router.use(flash());
-  
-  // Middleware to pass flash messages to views
-  router.use((req, res, next) => {
-    res.locals.success_msg = req.flash('success');
-    res.locals.error_msg = req.flash('error');
-    next();
-  });
 
 
 // "/" path will render the home page.
