@@ -5,8 +5,11 @@ const crypto = require("crypto")
 
 async function createUser(username,email,password){
 
-    // need to hash password
-    return await persistence.createUser(username,email,password)
+    // need to hash password,links to 
+    //await persistence.storeHashedPassword(userPassword)
+    //create separate function here for generating and concantenating salt
+
+    return await persistence.createUser(username,email,HashedPassword)
 }
 
 async function validateCredentials(username, password){
@@ -44,6 +47,12 @@ async function getSessionData(key) {
     return sessionData
 }
 
+async function checkUsernameExistence(signupUsername){
+    //code for the sign up page acc to business rule 'Only unique usernames',can enable this in the db too
+    //for (let username of user db)
+    //if signupUsername===username {dont add} else{add this user to users db}
+    //use of flash msg in presentation to showcase success or failure
+}
 
 module.exports={
     createUser,

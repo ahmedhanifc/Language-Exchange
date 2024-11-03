@@ -13,6 +13,7 @@ router.get("/", (req, res) => {
     return;
 });
 
+//need to implement csrf token here
 router.post("/", async (req,res) => {
     const {username , password} = req.body
     let userCredentials = await business.validateCredentials(username, password);
@@ -38,6 +39,9 @@ router.get("/sign-up", (req,res) => {
     res.render("register")
 })
 
+
+//need to implement csrf token here most importantly, will see where to put it tomorrow,will also add the functionality for flash msgs
+
 router.post("/sign-up", (req,res) => {
     const {username, email, password, repeatedPassword} = req.body
     //username validation
@@ -45,9 +49,9 @@ router.post("/sign-up", (req,res) => {
     //password validation
     //checking both passwords are the same
     //ensure username doesn't already exist in the database
-        // if(username in database) return true
+        // if(username in database) return true , --> hafsa saying that this will be checked through business function 
         // else return false
-    //ensure email doesn't already exist in the database
+    //ensure email doesn't already exist in the database --> in business layer ,here flash msg at the end will be displayed
         // if(username in database) return true
         // else return false
     // need to check both, cuz the username could be unique, but the user can pass in a non-unique email address

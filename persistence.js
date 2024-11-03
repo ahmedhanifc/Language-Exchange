@@ -22,7 +22,7 @@ async function connectDatabase() {
     if(!userSessions) {
         client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
         await client.connect()
-        userSessions = client.db(database).collection(collections[1]) // loads userAccounts collection data into the variable userAccounts
+        userSessions = client.db(database).collection(collections[1]) // loads userSessions collection data into the variable userAccounts
     }
     if(!userContacts) {
         client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
@@ -57,11 +57,17 @@ async function getSessionData(sessionKey) {
     return await userSessions.findOne({sessionKey})
 }
 
+async function storeHashedPassword(userPassword){
+    //need to store the salt alongwith the hashed password
+    //the salt will be concantenated to the hash to check for validity wihtin the business layer
+    //prolly will integrate this function into the createUSer but for now it gets coded separately to test
+}
 
 module.exports={
     createUser,
     findUser,
     getSessionData,
-    saveSession
+    saveSession,
+    storeHashedPassword
     
 }
