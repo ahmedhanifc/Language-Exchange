@@ -10,10 +10,12 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.3",
+    "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.7",
     "crypto": "^1.0.1",
     "express": "^4.21.1",
     "express-handlebars": "^8.0.1",
+    "express-session": "^1.18.1",
     "mongodb": "^6.10.0",
     "path": "^0.12.7"
   }

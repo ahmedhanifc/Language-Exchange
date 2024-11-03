@@ -41,6 +41,15 @@ async function findUser(username){
     return await userAccounts.findOne({username})
 }
 
+//function to get users to check for existing users
+async function getUsers(){
+    await connectDatabase()
+    return await userAccounts.find().toArray()
+
+}
+
+
+
 async function createUser(username,email,password){
     await connectDatabase()
     return await userAccounts.insertOne({username, email, password})
@@ -68,6 +77,7 @@ module.exports={
     findUser,
     getSessionData,
     saveSession,
-    storeHashedPassword
+    storeHashedPassword,
+    getUsers
     
 }

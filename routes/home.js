@@ -13,5 +13,8 @@ router.get("/bio", async(req,res) => {
     res.send("Tell us more about yourself")
 })
 
+//console.log(req.cookies.session)
+//we will need to define separate cookies here as well,it cant access the cookie created in login.js
+
 module.exports = router;
 

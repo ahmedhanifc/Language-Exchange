@@ -15,6 +15,7 @@ router.get("/", (req, res) => {
     return;
 });
 
+//BUSINESS RULE: We intitiate a session only after login not during sign-up
 //need to implement csrf token here
 router.post("/", async (req,res) => {
     const {username , password} = req.body
@@ -44,22 +45,19 @@ router.get("/sign-up", (req,res) => {
 
 //need to implement csrf token here most importantly, will see where to put it tomorrow,will also add the functionality for flash msgs
 
-router.post("/sign-up", (req,res) => {
+router.post("/sign-up", async(req,res) => {
     const {username, email, password, repeatedPassword} = req.body
-    //username validation
+    let validRegisterName,validRegisterEmail=await business.checkUsernameExistence(username,email)
+    //this function returns the username if it doesnt exist already in the db and heck for email in next commit
+
     //email validation
     //password validation
     //checking both passwords are the same
-    //ensure username doesn't already exist in the database
-        // if(username in database) return true , --> hafsa saying that this will be checked through business function 
-        // else return false
-    //ensure email doesn't already exist in the database --> in business layer ,here flash msg at the end will be displayed
-        // if(username in database) return true
-        // else return false
-    // need to check both, cuz the username could be unique, but the user can pass in a non-unique email address
+
+    // need to check both(email and username), cuz the username could be unique, but the user can pass in a non-unique email address
 
     //if all of those validations are valid, i want to create a user in the database, specifically, UserAccounts Collection
-    business.createUser(username,email,password)
+    await business.createUser(username,email,password)
     res.redirect("/home/bio")
 })
 

@@ -7,7 +7,6 @@ let app = express()
 //will add for testing through the main web.js if we can implement flash messages and its category wise template functions,which approach works?
 const session = require('express-session');
 const flash = require('connect-flash');
-const router = require('./routes/myRouter'); // Import your router
 
 // Set up session middleware
 app.use(
@@ -16,6 +15,7 @@ app.use(
       resave: false,
       saveUninitialized: true,
     })
+    
   );
   
   // Set up connect-flash middleware
@@ -29,7 +29,6 @@ app.use(
   });
   
   // Use your router
-  app.use('/', router);
 //this will be tested in the router layers and seen if it works or not ,again this is for developing an initial understanding
 
 
@@ -49,8 +48,8 @@ app.use(express.json()); // Allows parsing of JSON
 app.use(cookieParser());
 
 app.use("/", loginRouter);
-app.use("/home", homeRouter) //the home.js Router will take all routers that begin from /home
-
+app.use("/", homeRouter) //the home.js Router will take all routers that begin from /home
+//only a / here not /home
 
 
 app.listen(8000, () => {
