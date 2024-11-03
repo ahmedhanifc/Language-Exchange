@@ -6,7 +6,6 @@ const business = require("../business")
 
 // "/" path will render the home page.
 router.get("/", (req, res) => {
-    // also in the lecture18 code, they authenticate directly in the / page. 
 
     //What is the information we need to know for the login page of the user? 
     //1) Check if the cookie is present in the browser. if a cookie is present and is valid, then automatically log user in

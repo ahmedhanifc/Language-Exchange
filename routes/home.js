@@ -5,7 +5,7 @@ const business = require("../business")
 
 router.get("/",  async (req,res) => {
     //here, / is basically /home, because we're asking in the web.js that homeRouter take all the routes
-    // the begin with /home
+    // that begin with /home
     console.log("heyy")
     res.send("Home Page")
 })
