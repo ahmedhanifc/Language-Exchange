@@ -50,9 +50,10 @@ async function getUsers(){
 
 
 
-async function createUser(username,email,password){
+async function createUser(username,email,password,resetKey){
     await connectDatabase()
-    return await userAccounts.insertOne({username, email, password})
+    return await userAccounts.insertOne({username, email, password,resetKey})
+    //resetKey is always set to null after a password has been reset
 
 }
 

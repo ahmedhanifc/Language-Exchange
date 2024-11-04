@@ -34,12 +34,24 @@ router.get("/", async (req, res) => {
 //need to implement csrf token here
 router.post("/", async (req,res) => {
     const {username , password} = req.body
+    if(!username ||! password){
+        //for now if user isnt succesful we redirect to same page with a flash msg
+        res.redirect('/?errorCode=field(s) are empty')
+        return
+     }
+    
     let userCredentials = await business.validateCredentials(username, password);
     if(!userCredentials){
         // How to implement flash messages here?
-        res.redirect("/?errorCode=-1")
+        res.redirect("/?errorCode=username wrong or does not exist")
         return
     }
+    if(userCredentials===-1){
+        // How to implement flash messages here?
+        res.redirect("/?errorCode=invalid/wrong password")
+        return
+    }
+
     // check if session of that user already exists
     let sessionKey = req.cookies[COOKIE_NAME]
     let sessionData = await business.getSessionData(sessionKey)
@@ -63,18 +75,46 @@ router.get("/sign-up", (req,res) => {
 
 router.post("/sign-up", async(req,res) => {
     const {username, email, password, repeatedPassword} = req.body
-    let validRegisterName,validRegisterEmail=await business.checkUsernameExistence(username,email)
-    //this function returns the username if it doesnt exist already in the db and heck for email in next commit
+    
+    if(!username || !email ||! password || ! repeatedPassword){
+        //for now if user isnt succesful we redirect to same page with a flash msg
+        res.redirect('/sign-up?error=field(s) are empty')
+        return
+     }
 
-    //email validation
-    //password validation
-    //checking both passwords are the same
+     if (password !== repeatedPassword) {
+        res.redirect('/sign-up?error=passwords do not match');
+        return;
+    }
 
-    // need to check both(email and username), cuz the username could be unique, but the user can pass in a non-unique email address
+    let [formatEmail, formatPassword ] = business.validateRegistrationCredentials(email, password);
+        /*this double assignment works as array or object,also the format password returns a hashed password if it is valid and
+        that is what is stored in the db*/
 
-    //if all of those validations are valid, i want to create a user in the database, specifically, UserAccounts Collection
-    await business.createUser(username,email,password)
+    console.log(formatEmail,'space',formatPassword)
+    if(formatEmail===-1 && formatPassword===-1){
+        res.redirect('/sign-up?error=password & email invalid form');
+        return;    }
+    if(formatEmail===-1){
+        res.redirect('/sign-up?error= email invalid form');
+        return; 
+    }
+    if(formatPassword===-1){
+        res.redirect('/sign-up?error= password invalid form');
+        return; 
+    }
+    let [validRegisterName,validRegisterEmail]=await business.checkUsernameExistence(username,formatEmail)
+    //this function returns the username if it doesnt exist already in the db and heck for email in next commit  
+console.log(validRegisterEmail,' register in db ',validRegisterName)
+
+    if(validRegisterEmail&&validRegisterName){
+    await business.createUser(validRegisterName,validRegisterEmail,formatPassword,null)
+    //the null is for the resettoken attribute by default
     res.redirect("/home/bio")
-})
-
+    return
+}   
+    res.redirect('/sign-up?error= user could not be created as user already exists');
+    return; 
+    
+    })
 module.exports = router;
