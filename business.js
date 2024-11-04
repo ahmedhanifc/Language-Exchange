@@ -8,8 +8,8 @@ async function createUser(username,email,password){
     // need to hash password,links to 
     //await persistence.storeHashedPassword(userPassword)
     //create separate function here for generating and concantenating salt
-
-    return await persistence.createUser(username,email,HashedPassword)
+//hashPassword
+    return await persistence.createUser(username,email,password)
 }
 
 async function validateCredentials(username, password){
@@ -47,16 +47,27 @@ async function getSessionData(key) {
     return sessionData
 }
 
-async function checkUsernameExistence(signupUsername){
-    //code for the sign up page acc to business rule 'Only unique usernames',can enable this in the db too
-    //for (let username of user db)
-    //if signupUsername===username {dont add} else{add this user to users db}
+//BUSINESS RULE: 'Only unique usernames',can enable this in the db too
+async function checkUsernameExistence(signupUsername,signupEmail){
+    let existingUsers=await persistence.getUsers()
+    for(let user of existingUsers){
+        if(signupUsername===user.username || signupEmail===user.email){
+            return null
+            //if username exists it returns null and in presentation it'll show a coresponding error
+        }
+
+    }
+
+    return signupUsername
+    //on the presentation if we get a valid unique username then we do password validation
     //use of flash msg in presentation to showcase success or failure
+
 }
 
 module.exports={
     createUser,
     validateCredentials,
     startSession,
-    getSessionData
+    getSessionData,
+    checkUsernameExistence
 }
