@@ -42,8 +42,8 @@ async function startSession(data) {
 
 }
 
-async function getSessionData(key) {
-    let sessionData = await persistence.getSessionData(key)
+async function getSessionData(sessionKey) {
+    let sessionData = await persistence.getSessionData(sessionKey)
     return sessionData
 }
 

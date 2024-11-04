@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const business = require("../business")
+const COOKIE_NAME = "session"
+
 
 router.get("/",  async (req,res) => {
     //here, / is basically /home, because we're asking in the web.js that homeRouter take all the routes
     // that begin with /home
+    let sessionKey = req.cookies[COOKIE_NAME];
+    console.log(sessionKey)
     console.log("heyy")
     res.send("Home Page")
 })

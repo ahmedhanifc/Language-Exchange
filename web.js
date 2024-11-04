@@ -48,8 +48,7 @@ app.use(express.json()); // Allows parsing of JSON
 app.use(cookieParser());
 
 app.use("/", loginRouter);
-app.use("/", homeRouter) //the home.js Router will take all routers that begin from /home
-//only a / here not /home
+app.use("/home", homeRouter) //the home.js Router will take all routers that begin from /home
 
 
 app.listen(8000, () => {

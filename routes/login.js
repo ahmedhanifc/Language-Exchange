@@ -1,12 +1,28 @@
 const express = require('express');
 const router = express.Router();
 const business = require("../business")
+const COOKIE_NAME = "session"
+
 /*where are we gonna check for sessions then? for now im adding the module for sessions here,also we are going to need to figure out how to 
 access session across different files as flash msgs require the deletion of a pseudo-session storage */
 
-
 // "/" path will render the home page.
-router.get("/", (req, res) => {
+router.get("/", async (req, res) => {
+    let sessionKey = req.cookies[COOKIE_NAME];
+    let sessionData = await business.getSessionData(sessionKey)
+    if(!sessionData){
+        let userCredentials = {
+            username:null,
+            email:null,
+            password:null
+        }
+        sessionData = await business.startSession(userCredentials);
+        res.cookie(
+            "session",
+            sessionData.sessionKey,
+            {maxAge:sessionData.expiry}
+        )
+    }
 
     //What is the information we need to know for the login page of the user? 
     //1) Check if the cookie is present in the browser. if a cookie is present and is valid, then automatically log user in
@@ -25,7 +41,8 @@ router.post("/", async (req,res) => {
         return
     }
     // check if session of that user already exists
-    let sessionData = await business.getSessionData(req.cookies.session)
+    let sessionKey = req.cookies[COOKIE_NAME]
+    let sessionData = await business.getSessionData(sessionKey)
     if(!sessionData){
         sessionData = await business.startSession(userCredentials);
         res.cookie(
