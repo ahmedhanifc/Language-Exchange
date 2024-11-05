@@ -16,6 +16,7 @@ router.get("/", async (req, res) => {
             languageLearn:null,
             languageFluent:null,
             csrfToken:null,
+            flashMessage:null
         }
         sessionData = await business.startSession(data);
         res.cookie(

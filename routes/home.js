@@ -8,13 +8,20 @@ router.get("/",  async (req,res) => {
     //here, / is basically /home, because we're asking in the web.js that homeRouter take all the routes
     // that begin with /home
     let sessionKey = req.cookies[COOKIE_NAME];
-    // declared it as a const abover cookie_name="session"
-    console.log(sessionKey)
-    res.render("home")
+    let sessionData = await business.getSessionData(sessionKey)
+    if(!sessionData){
+        //flash message here
+        res.redirect("/")
+        return
+    }
+    res.render("home", {
+        username:
+    })
 })
 
 router.get("/welcome", async(req,res) => {
-    //ensure user has a valid session
+    //ensure user has a valid session otherwise redirect
+
 
     res.render("welcome")
 })
