@@ -10,8 +10,7 @@ router.get("/",  async (req,res) => {
     let sessionKey = req.cookies[COOKIE_NAME];
     //declared it as a const abover cookie_name="session"
     console.log(sessionKey)
-    console.log("heyy")
-    res.send("Home Page")
+    res.render("home")
 })
 
 router.get("/bio", async(req,res) => {

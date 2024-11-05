@@ -26,7 +26,9 @@ router.get("/", async (req, res) => {
 
     //What is the information we need to know for the login page of the user? 
     //1) Check if the cookie is present in the browser. if a cookie is present and is valid, then automatically log user in
-    res.render("login")
+    res.render("login",{
+        layout:undefined
+    })
     return;
 });
 
@@ -67,7 +69,9 @@ router.post("/", async (req,res) => {
 })
 
 router.get("/sign-up", (req,res) => {
-    res.render("register")
+    res.render("register",{
+        layout:undefined
+    })
 })
 
 
