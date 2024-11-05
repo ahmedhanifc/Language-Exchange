@@ -62,6 +62,18 @@ async function saveSession(sessionData) {
     return await userSessions.insertOne(sessionData)
 }
 
+async function updateSession(sessionKey, data){
+    await connectDatabase()
+    let sessionData = userSessions.updateOne({sessionKey}, {
+        $set:{
+            username: data.username,
+            languageLearn:data.languageLearn,
+            languageFluent:data.languageFluent,
+            csrfToken:data.csrfToken
+        }
+    })
+}
+
 async function getSessionData(sessionKey) {
     await connectDatabase()
     return await userSessions.findOne({sessionKey})
@@ -73,5 +85,6 @@ module.exports={
     findUser,
     getSessionData,
     saveSession,
+    updateSession
    
 }

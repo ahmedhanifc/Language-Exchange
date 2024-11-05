@@ -17,7 +17,9 @@ async function validateCredentials(username, password){
     {
         // first checking to see if userCredentials exist. If we don't do this, app will crash
         return {
-            username:userCredentials.username
+            username:userCredentials.username,
+            languageFluent:userCredentials.languageFluent,
+            languageLearn:userCredentials.languageLearn
         } // no need to return password. We can add more fields as needed
     }
     else if(!userCredentials)
@@ -38,6 +40,10 @@ async function startSession(data) {
     await persistence.saveSession(sessionData)
     return await sessionData
 
+}
+
+async function updateSession(sessionKey,data){
+    return await persistence.updateSession(sessionKey,data)
 }
 
 async function getSessionData(sessionKey) {
@@ -99,5 +105,6 @@ module.exports={
     startSession,
     getSessionData,
     checkUsernameExistence,
-    validateRegistrationCredentials
+    validateRegistrationCredentials,
+    updateSession
 }

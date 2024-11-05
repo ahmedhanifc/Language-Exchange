@@ -11,12 +11,13 @@ router.get("/", async (req, res) => {
     let sessionKey = req.cookies[COOKIE_NAME];
     let sessionData = await business.getSessionData(sessionKey)
     if(!sessionData){
-        let userCredentials = {
+        let data = {
             username:null,
-            email:null,
-            password:null
+            languageLearn:null,
+            languageFluent:null,
+            csrfToken:null,
         }
-        sessionData = await business.startSession(userCredentials);
+        sessionData = await business.startSession(data);
         res.cookie(
             "session",
             sessionData.sessionKey,
@@ -58,13 +59,11 @@ router.post("/", async (req,res) => {
     let sessionKey = req.cookies[COOKIE_NAME]
     let sessionData = await business.getSessionData(sessionKey)
     if(!sessionData){
-        sessionData = await business.startSession(userCredentials);
-        res.cookie(
-            "session",
-            sessionData.sessionKey,
-            {maxAge:sessionData.expiry}
-        )
+        //flash message here saying u dont have a valid session something
+        res.redirect("/")
+        return;
     }
+    await business.updateSession(sessionKey,userCredentials);
     res.redirect("/home")
 })
 
@@ -114,7 +113,7 @@ console.log(validRegisterEmail,' register in db ',validRegisterName)
     if(validRegisterEmail&&validRegisterName){
     await business.createUser(validRegisterName,validRegisterEmail,formatPassword,null)
     //the null is for the resettoken attribute by default
-    res.redirect("/home/bio")
+    res.redirect("/home/welcome")
     return
 }   
     res.redirect('/sign-up?error= user could not be created as user already exists');
