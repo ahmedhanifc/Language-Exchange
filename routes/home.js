@@ -14,7 +14,6 @@ router.get("/",  async (req,res) => {
         res.redirect("/")
         return
     }
-    console.log(sessionData)
     res.render("home", {
         username:sessionData.data.username,
         languageLearn:sessionData.data.languageLearn,
