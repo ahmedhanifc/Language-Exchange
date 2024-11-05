@@ -7888,6 +7888,12 @@ html:not([dir=rtl]) .header-brand {
   color: var(--cui-header-brand-hover-color);
 }
 
+.header{
+  padding:25px;
+  font-size: 1.3rem;
+}
+
+
 .header-nav {
   display: flex;
   flex-direction: row;

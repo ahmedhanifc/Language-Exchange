@@ -132,4 +132,11 @@ router.post("/sign-up", async(req,res) => {
     return; 
     
     })
+
+
+    router.get("/forget-password", async (req,res) => {
+        res.render("forgetPassword", {
+            layout:undefined
+        })
+    })
 module.exports = router;
