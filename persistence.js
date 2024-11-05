@@ -72,6 +72,8 @@ async function updateSession(sessionKey, data){
             csrfToken:data.csrfToken
         }
     })
+
+    return sessionData
 }
 
 async function getSessionData(sessionKey) {

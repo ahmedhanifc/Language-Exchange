@@ -64,7 +64,18 @@ router.post("/", async (req,res) => {
         return;
     }
     await business.updateSession(sessionKey,userCredentials);
-    res.redirect("/home")
+
+    if(!userCredentials.languageFluent || !userCredentials.languageLearn){
+        res.redirect("/home/welcome")
+        return
+    }
+    else if(userCredentials.languageFluent.length === 0 || userCredentials.languageFluent.length===0){
+        res.redirect("/home/welcome")
+        return
+    }
+    else{
+        res.redirect("/home")
+    }
 })
 
 router.get("/sign-up", (req,res) => {
@@ -108,14 +119,14 @@ router.post("/sign-up", async(req,res) => {
     }
     let [validRegisterName,validRegisterEmail]=await business.checkUsernameExistence(username,formatEmail)
     //this function returns the username if it doesnt exist already in the db and heck for email in next commit  
-console.log(validRegisterEmail,' register in db ',validRegisterName)
+    console.log(validRegisterEmail,' register in db ',validRegisterName)
 
     if(validRegisterEmail&&validRegisterName){
-    await business.createUser(validRegisterName,validRegisterEmail,formatPassword,null)
-    //the null is for the resettoken attribute by default
-    res.redirect("/home/welcome")
-    return
-}   
+        await business.createUser(validRegisterName,validRegisterEmail,formatPassword,null)
+        //the null is for the resettoken attribute by default
+        res.redirect("/home/welcome")
+        return
+    }   
     res.redirect('/sign-up?error= user could not be created as user already exists');
     return; 
     
