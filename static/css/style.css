@@ -670,7 +670,19 @@ html:not([dir=rtl]) .list-inline-item:not(:last-child) {
   padding-left: calc(var(--cui-gutter-x) * 0.5);
   margin-right: auto;
   margin-left: auto;
+  box-shadow: 0px 20px 25px -5px rgba(0,0,0,0.1),
 }
+
+.body{
+  width:80%;
+  margin:0 auto;
+  background: white; 
+}
+
+.header,.body{
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.15);
+}
+
 
 @media (min-width: 576px) {
   .container-sm, .container {
@@ -7737,6 +7749,7 @@ html:not([dir=rtl]) .callout {
 }
 
 .footer {
+  margin-top: 20px;
   --cui-footer-min-height: 3rem;
   --cui-footer-padding-x: 1rem;
   --cui-footer-padding-y: 0.5rem;
@@ -7752,7 +7765,7 @@ html:not([dir=rtl]) .callout {
   padding: var(--cui-footer-padding-y) var(--cui-footer-padding-x);
   color: var(--cui-footer-color);
   background: var(--cui-footer-bg);
-  border-top: var(--cui-footer-border);
+  justify-content: center;
 }
 
 .footer-fixed {
@@ -7880,6 +7893,7 @@ html:not([dir=rtl]) .header-brand {
   flex-direction: row;
   margin-bottom: 0;
   list-style: none;
+  color:black;
 }
 html:not([dir=rtl]) .header-nav {
   padding-left: 0;
@@ -7889,7 +7903,6 @@ html:not([dir=rtl]) .header-nav {
 }
 .header-nav .nav-link {
   padding: var(--cui-header-nav-link-padding-y) var(--cui-header-nav-link-padding-x);
-  color: var(--cui-header-color);
 }
 .header-nav .nav-link:hover, .header-nav .nav-link:focus {
   color: var(--cui-header-hover-color);

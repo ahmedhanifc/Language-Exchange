@@ -42,30 +42,27 @@
     <link rel="icon" href="../../static/logo/owl.svg" type="image/icon type">
   </head>
   <body>
-    <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar">
+    {{!-- <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar"> idk if we even need sidebar tbh
       <div class="sidebar-brand d-none d-md-flex">
-        <img src="" alt="Logo ">
-        <div class="logo"> NotOwl</div>
       </div>
       <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
-        <li class="nav-item"><a class="nav-link" href="index.html">
+        <li class="nav-item"><a class="nav-link" href="/home">
             <svg class="nav-icon">
-              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
-            </svg> Home<span class="badge badge-sm bg-info ms-auto">NEW</span></a></li>
-        <li class="nav-title">Theme</li>
+              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-home"></use>
+            </svg> Home</a></li>
         <li class="nav-item"><a class="nav-link" href="colors.html">
             <svg class="nav-icon">
-              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-drop"></use>
-            </svg> Colors</a></li>
+              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-globe-alt"></use>
+            </svg>Community</a></li>
         <li class="nav-item"><a class="nav-link" href="../../static/typography.html">
             <svg class="nav-icon">
-              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
-            </svg> Typography</a></li>
+              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-chat-bubble"></use>
+            </svg>Chats</a></li>
         </li>
         <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
             <svg class="nav-icon">
-              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-cursor"></use>
-            </svg> Buttons</a>
+              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-happy"></use>
+            </svg>Profile</a>
           <ul class="nav-group-items">
             <li class="nav-item"><a class="nav-link" href="../../static/buttons/buttons.html"><span class="nav-icon"></span> Buttons</a></li>
             <li class="nav-item"><a class="nav-link" href="../../static/buttons/button-group.html"><span class="nav-icon"></span> Buttons Group</a></li>
@@ -74,36 +71,43 @@
         </li>
       </ul>
       <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
-    </div>
+    </div> --}}
     <div class="wrapper d-flex flex-column min-vh-100 bg-light">
       <header class="header header-sticky mb-4">
         <div class="container-fluid">
-          <button class="header-toggler px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
+          {{!-- <button class="header-toggler px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
             <svg class="icon icon-lg">
               <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
             </svg>
-          </button><a class="header-brand d-md-none" href="#">
+          </button> --}}
+          <a class="header-brand d-md-none" href="#">
             <svg width="118" height="46" alt="CoreUI Logo">
               <use xlink:href="../../static/assets/brand/coreui.svg#full"></use>
             </svg></a>
-          <ul class="header-nav d-none d-md-flex">
-            <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="/contacts">Contacts</a></li>
-            <li class="nav-item"><a class="nav-link" href="/home/profile">Profile</a></li>
+          <!-- Navbar that remains visible on all screen sizes -->
+          <ul class="header-nav d-flex flex-wrap">
+              <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
+              <li class="nav-item"><a class="nav-link" href="/contacts">Contacts</a></li>
+              <li class="nav-item"><a class="nav-link" href="/home/profile">Profile</a></li>
           </ul>
-          <ul class="header-nav ms-auto">
-            <li class="nav-item"><a class="nav-link" href="#">
-                <svg class="icon icon-lg">
-                  <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-bell"></use>
-                </svg></a></li>
-            <li class="nav-item"><a class="nav-link" href="#">
-                <svg class="icon icon-lg">
-                  <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-list-rich"></use>
-                </svg></a></li>
-            <li class="nav-item"><a class="nav-link" href="#">
-                <svg class="icon icon-lg">
-                  <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-envelope-open"></use>
-                </svg></a></li>
+
+          <!-- Notification and other icons -->
+          <ul class="header-nav ms-auto d-flex">
+              <li class="nav-item"><a class="nav-link" href="#">
+                  <svg class="icon icon-lg">
+                    <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-bell"></use>
+                  </svg></a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="#">
+                  <svg class="icon icon-lg">
+                    <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-list-rich"></use>
+                  </svg></a>
+              </li>
+              <li class="nav-item"><a class="nav-link" href="#">
+                  <svg class="icon icon-lg">
+                    <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-envelope-open"></use>
+                  </svg></a>
+              </li>
           </ul>
           <ul class="header-nav ms-3">
             <li class="nav-item dropdown"><a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
@@ -150,17 +154,6 @@
               </div>
             </li>
           </ul>
-        </div>
-        <div class="header-divider"></div>
-        <div class="container-fluid">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb my-0 ms-2">
-              <li class="breadcrumb-item">
-                <!-- if breadcrumb is single--><span>Home</span>
-              </li>
-              {{!-- <li class="breadcrumb-item active"><span>Blank</span></li> --}}
-            </ol>
-          </nav>
         </div>
       </header>
       <div class="body flex-grow-1 px-3">
