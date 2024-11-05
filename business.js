@@ -47,15 +47,14 @@ async function getSessionData(sessionKey) {
 
 //BUSINESS RULE: 'Only unique usernames',can enable this in the db too
 async function checkUsernameExistence(signupUsername,signupEmail){
-    let existingUsers=await persistence.getUsers()
-    for(let user of existingUsers){
-        if(signupUsername===user.username || signupEmail===user.email){
+    let existingUser=await persistence.findUser(signupUsername,signupEmail)
+        if(existingUser){
             return [null,null]
             //if username exists it returns null and in presentation it'll show a coresponding error
             //in js we can return it as array or object,i chose array
         }
 
-    }
+    
 
     return [signupUsername,signupEmail]
     //on the presentation if we get a valid unique username then we do password validation
