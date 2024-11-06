@@ -9,8 +9,12 @@ async function createUser(username,email,password){
     return await persistence.createUser(username,email,password)
 }
 
-async function updateUser(email,resetKey) {
-    return await persistence.updateUser(email,resetKey)
+async function findUserReset(resetKey){
+    return await persistence.findUserReset(resetKey)
+}
+
+async function updateUserReset(email,resetKey) {
+    return await persistence.updateUserReset(email,resetKey)
     
 }
 
@@ -20,7 +24,7 @@ async function updatePassword(resetKey,newPassword) {
 }
 
 async function checkValidResetLink(formResetKey) {
-    let user=await persistence.findUser(null,null,formResetKey)
+    let user=await persistence.findUserReset(formResetKey)
     if(user){
         return user
     } 
@@ -139,7 +143,8 @@ function validatePassword(newPassword,confirm) {
 
 module.exports={
     createUser,
-    updateUser,
+    updateUserReset,
+    findUserReset,
     updatePassword,
     checkValidResetLink,
     validateCredentials,

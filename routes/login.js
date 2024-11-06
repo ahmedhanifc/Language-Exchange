@@ -176,7 +176,7 @@ router.post("/sign-up", async(req,res) => {
         let email= await business.validateEmail(req.body.email)
         if(email){
             let token=crypto.randomUUID()
-            await business.updateUser(email,token)
+            await business.updateUserReset(email,token)
             
             console.log(`from:hafsa@lab.com,
                 to:${email},
@@ -217,7 +217,7 @@ router.post("/sign-up", async(req,res) => {
 
          user.password=validatedPassword
          await business.updatePassword(resetKey,user.password)
-         await business.updateUser(user.email,null)
+         await business.updateUserReset(user.email,null)
          res.redirect('/?message=succesful login')
          return
        
@@ -233,7 +233,7 @@ router.post("/sign-up", async(req,res) => {
             res.send('not same ps')
             return
         }
-        await business.updateUser(user.email,null)
+        await business.updateUserReset(user.email,null)
         console.log('check db')
         res.redirect('/?message=not valid password') 
         return
