@@ -23,6 +23,7 @@ router.get("/", sessionValidityChecker ,async (req,res) => {
         username:req.sessionData.data.username,
         languageLearn:req.sessionData.data.languageLearn,
         languageFluent:req.sessionData.data.languageFluent,
+        flashData:req.sessionData.data.flashData
     })
 })
 

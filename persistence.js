@@ -36,12 +36,13 @@ async function connectDatabase() {
     }
 }
 
-async function findUser(username,email){
+async function findUser(username,email,resetKey){
     await connectDatabase()
     return await userAccounts.findOne(({ 
         $or: [
           { username},
-          { email}
+          { email},
+          {resetKey}
         ]
       }))
       //will reutrn a document that matches either and this function can be reused
@@ -57,6 +58,25 @@ async function createUser(username,email,password,resetKey){
 
 }
 
+async function updateUser(email,resetKey){
+    await connectDatabase()
+    return await userAccounts.updateOne({email},{ $set:{
+        "resetKey": resetKey,
+    }
+})
+    //resetKey is always set to null after a password has been reset
+}
+
+
+async function updatePassword(resetKey,newPassword){
+    await connectDatabase()
+    return await userAccounts.updateOne({resetKey},{ $set:{
+        "password": newPassword,
+    }
+})
+    //resetKey is always set to null after a password has been reset
+}
+
 async function saveSession(sessionData) {
     await connectDatabase()
     return await userSessions.insertOne(sessionData)
@@ -69,7 +89,8 @@ async function updateSession(sessionKey, data){
             "data.username": data.username,
             "data.languageLearn":data.languageLearn,
             "data.languageFluent":data.languageFluent,
-            "data.csrfToken":data.csrfToken
+            "data.csrfToken":data.csrfToken,
+            "data.flashData":data.flashData
         }
     })
 
@@ -85,8 +106,11 @@ async function getSessionData(sessionKey) {
 module.exports={
     createUser,
     findUser,
+    updateUser,
+    updatePassword,
     getSessionData,
     saveSession,
     updateSession
+
    
 }

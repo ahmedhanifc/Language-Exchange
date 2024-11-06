@@ -9,6 +9,25 @@ async function createUser(username,email,password){
     return await persistence.createUser(username,email,password)
 }
 
+async function updateUser(email,resetKey) {
+    return await persistence.updateUser(email,resetKey)
+    
+}
+
+async function updatePassword(resetKey,newPassword) {
+    return await persistence.updatePassword(resetKey,newPassword)
+    
+}
+
+async function checkValidResetLink(formResetKey) {
+    let user=await persistence.findUser(null,null,formResetKey)
+    if(user){
+        return user
+    } 
+    return  
+}
+
+
 async function validateCredentials(username, password){
 
     let userCredentials = await persistence.findUser(username);
@@ -98,13 +117,37 @@ function validateRegistrationCredentials(email, password) {
   }
 
 
+//will make these functions perfect later and integrate into one,for now im trying to do the functionality
+function validatePassword(newPassword,confirm) {
+    // Minimum 8 characters, at least one letter and one number
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    if(regex.test(newPassword) &&newPassword===confirm){
+        return crypto.createHash('sha256').update(confirm).digest('hex')
+    }
+    return null
+  }
+
+  function validateEmail(email) {
+    // Simple email regex pattern
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if(regex.test(email)){
+        return email
+    }
+    return null  }
+
+  
 
 module.exports={
     createUser,
+    updateUser,
+    updatePassword,
+    checkValidResetLink,
     validateCredentials,
     startSession,
     getSessionData,
     checkUsernameExistence,
     validateRegistrationCredentials,
-    updateSession
+    updateSession,
+    validateEmail,
+    validatePassword
 }
