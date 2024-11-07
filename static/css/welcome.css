@@ -1,35 +1,49 @@
-.container{
+a{
+    text-decoration: none;
+    color: black;
+}
+
+a:hover{
+    border: 2px solid rgb(32, 119, 233);
+    color:rgb(5, 94, 212);
+
+}
+
+.container {
     display: grid;
-    grid-template-columns: repeat(4,1fr);
-    gap:20px;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
 }
 
-.item{
-    border:2px solid rgb(218, 225, 234);
+.item {
+    border: 2px solid rgb(218, 225, 234);
     border-radius: 1.5rem;
-    flex:1;
-}
-
-.language-information{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding:10px 0 0 0;
-    gap:10px;
+    padding: 20px; /* Added padding for inner spacing */
 }
 
-.language-information .image{
-    width: 30%;
+.language-information {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 }
-.language-information .image img{
+
+.language-information .image {
+    width: 60%;
+}
+
+.language-information .name{
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.language-information .image img {
     width: 100%;
 }
 
-.language-tidbit{
-    background:rgb(218, 225, 234);
-    padding:20px;
-}
-.language-tidbit p{
-    margin: 0;
-    width: 100%;
+.flag-tidbit{
+
 }
