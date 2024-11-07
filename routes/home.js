@@ -29,7 +29,9 @@ router.get("/", sessionValidityChecker ,async (req,res) => {
 
 router.get("/welcome", sessionValidityChecker,async(req,res) => {
     //ensure user has a valid session otherwise redirect
-    res.render("welcome")
+    res.render("welcome", {
+        username:req.sessionData.data.username
+    })
 })
 
 module.exports = router;
