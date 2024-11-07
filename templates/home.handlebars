@@ -1,17 +1,20 @@
+<div class="heading">
+    <h1>Welcome {{username}}</h1>
+</div>
 
+<div class="language-selection">
+    <p>Language(s) you are fluent in:</p>
+    <ul>
+        {{#each languageFluent}}
+        <li>{{titleCase this}}</li>
+        {{/each}}
+    </ul>
+    <p>Language(s) you have selected to learn:</p>
+    <ul>
+        {{#each languageLearn}}
+        <li>{{titleCase this}}</li>
+        {{/each}}
+    </ul>
+</div>
 
-<p>Welcome {{username}}</p>
-
-language Learning
-<ul>
-    {{#each languageLearn}}
-    <li>{{this}}</li>
-    {{/each}}
-</ul>
-language Fluent
-<ul>
-    {{#each languageFluent}}
-    <li>{{this}}</li>
-    {{/each}}
-</ul>
 <a class = "link-btn" href="/home/languageLearn">Change Preferences:</a>

@@ -4,6 +4,23 @@ const business = require("../business")
 const COOKIE_NAME = "session"
 const flash = require("../flash_msgs")
 
+const LANGUAGES_IN_OUR_SYSTEM = [
+    { name: 'urdu', flag: '../static/flags/pakistan.png' },
+    { name: 'punjabi', flag: '../static/flags/punjab.png' },
+    { name: 'english', flag: '../static/flags/united-kingdom.png' },
+    { name: 'arabic', flag: '../static/flags/arabic.png' },
+    { name: 'german', flag: '../static/flags/germany.png' },
+    { name: 'italian', flag: '../static/flags/italy.png' },
+    { name: 'japanese', flag: '../static/flags/japan.png' },
+    { name: 'turkish', flag: '../static/flags/turkey.png' },
+    { name: 'spanish', flag: '../static/flags/spain.png' }  
+];
+
+function titleCase(string){
+    formattedString = string.slice(0,1).toUpperCase() + string.slice(1,);
+    return formattedString
+}
+
 
 //trying to use a middleware here
 // https://www.youtube.com/watch?v=nzSAf5cVyWY&list=PL_cUvD4qzbkwjmjy-KjbieZ8J9cGwxZpC&index=9 very good video for middlewares fr
@@ -36,7 +53,10 @@ router.get("/", sessionValidityChecker ,async (req,res) => {
         username:req.sessionData.data.username,
         languageLearn:req.sessionData.data.languageLearn,
         languageFluent:req.sessionData.data.languageFluent,
-        flashData:req.sessionData.data.flashData
+        flashData:req.sessionData.data.flashData,
+        helpers:{
+            titleCase
+        }
     })
 })
 
@@ -51,6 +71,10 @@ router.get("/languageLearn", sessionValidityChecker, async(req,res)=> {
         flash:fMessage,
         style:flashStyle,
         languageLearn:req.sessionData.data.languageLearn,
+        languages:LANGUAGES_IN_OUR_SYSTEM,
+        helpers: {
+            titleCase
+        }
     })
 })
 
@@ -73,7 +97,11 @@ router.get("/languageFluent", sessionValidityChecker, async(req,res) => {
         username:req.sessionData.data.username,
         flash:fMessage,
         style:flashStyle,
-        languageFluent:req.sessionData.data.languageFluent
+        languageFluent:req.sessionData.data.languageFluent,
+        languages:LANGUAGES_IN_OUR_SYSTEM,
+        helpers: {
+            titleCase
+        }
     })
 })
 

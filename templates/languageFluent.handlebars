@@ -5,94 +5,23 @@
 
 <p class = "flag-language-question"> What Languages are you fluent in?</p>
 <div class="container">
-    <a class="item" href = "/home/languageFluent/urdu">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/pakistan.png" alt="">
+    {{#each languages}}
+        <a class="item" href = "/home/languageFluent/{{this.name}}">
+            <div class="language-information ">
+                <div class="image">
+                    <img src="{{this.flag}}" alt="">
+                </div>
+                <div class="name">{{titleCase this.name}}</div>
             </div>
-            <div class="name">Urdu</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageFluent/punjabi">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/punjab.png" alt="">
-            </div>
-            <div class="name">Punjabi</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageFluent/english">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/united-kingdom.png" alt="">
-            </div>
-            <div class="name">English</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageFluent/arabic">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/arabic.png" alt="">
-            </div>
-            <div class="name">Arabic</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageFluent/japanese">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/japan.png" alt="">
-            </div>
-            <div class="name">Japanese</div>
-        </div>
-    </a>
-     <a class="item" href = "/home/languageFluent/turkish">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/turkey.png" alt="">
-            </div>
-            <div class="name">Turkish</div>
-        </div>
-    </a>
-     <a class="item" href = "/home/languageFluent/german">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/germany.png" alt="">
-            </div>
-            <div class="name">German</div>
-        </div>
-    </a>
-     <a class="item" href = "/home/languageFluent/italy">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/italy.png" alt="">
-            </div>
-            <div class="name">Italy</div>
-        </div>
-    </a>
-     <a class="item" href = "/home/languageFluent/spanish">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/spain.png" alt="">
-            </div>
-            <div class="name">Spanish</div>
-        </div>
-    </a>
-    {{!-- Can add more languages below --}}
-    {{!-- <a class="item" href = "/home/languageFluent/">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/" alt="">
-            </div>
-            <div class="name"></div>
-        </div>
-    </a> --}}
+        </a>
+    {{/each}}
 </div>
 
 <div class="language-selection">
     <p>Language(s) you are fluent in:</p>
     <ul>
         {{#each languageFluent}}
-        <li>{{this}}</li>
+        <li>{{titleCase this}}</li>
         {{/each}}
     </ul>
 </div>

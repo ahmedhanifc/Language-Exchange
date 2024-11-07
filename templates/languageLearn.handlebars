@@ -6,88 +6,16 @@
 <p class = "flag-language-question"> What Languages Would you like to learn?</p>
 
 <div class="container">
-    <a class="item" href = "/home/languageLearn/urdu">
+    {{#each languages}}
+    <a class="item" href = "/home/languageLearn/{{this.name}}">
         <div class="language-information ">
             <div class="image">
-                <img src="../static/flags/pakistan.png" alt="">
+                <img src="{{this.flag}}" alt="">
             </div>
-            <div class="name">Urdu</div>
+            <div class="name">{{titleCase this.name}}</div>
         </div>
     </a>
-    <a class="item" href = "/home/languageLearn/punjabi">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/punjab.png" alt="">
-            </div>
-            <div class="name">Punjabi</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageLearn/english">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/united-kingdom.png" alt="">
-            </div>
-            <div class="name">English</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageLearn/arabic">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/arabic.png" alt="">
-            </div>
-            <div class="name">Arabic</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageLearn/japanese">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/japan.png" alt="">
-            </div>
-            <div class="name">Japanese</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageLearn/turkish">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/turkey.png" alt="">
-            </div>
-            <div class="name">Turkish</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageLearn/german">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/germany.png" alt="">
-            </div>
-            <div class="name">German</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageLearn/italy">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/italy.png" alt="">
-            </div>
-            <div class="name">Italy</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageLearn/spanish">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/spain.png" alt="">
-            </div>
-            <div class="name">Spanish</div>
-        </div>
-    </a>
-    {{!-- Can add more languages below --}}
-    {{!-- <a class="item" href = "/home/languageLearn/">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/" alt="">
-            </div>
-            <div class="name"></div>
-        </div>
-    </a> --}}
-
+    {{/each}}
 </div>
 <br>
 
@@ -96,7 +24,7 @@
     <p>Language(s) you have selected to learn:</p>
     <ul>
         {{#each languageLearn}}
-        <li>{{this}}</li>
+        <li>{{titleCase this}}</li>
         {{/each}}
     </ul>
 </div>
