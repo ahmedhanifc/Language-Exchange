@@ -1,22 +1,33 @@
 
-<h1>Welcome {{username}}</h1>
+<div class="heading">
+    <h1>Welcome {{username}}</h1>
+</div>
 
-    <p> What Languages Would you like to learn?</p>
+<p class = "flag-language-question"> What Languages Would you like to learn?</p>
+
 <div class="container">
+    <a class="item" href = "/home/languageLearn/urdu">
+        <div class="language-information ">
+            <div class="image">
+                <img src="../static/flags/pakistan.png" alt="">
+            </div>
+            <div class="name">Urdu</div>
+        </div>
+    </a>
+    <a class="item" href = "/home/languageLearn/punjabi">
+        <div class="language-information">
+            <div class="image">
+                <img src="../static/flags/punjab.png" alt="">
+            </div>
+            <div class="name">Punjabi</div>
+        </div>
+    </a>
     <a class="item" href = "/home/languageLearn/english">
         <div class="language-information">
             <div class="image">
                 <img src="../static/flags/united-kingdom.png" alt="">
             </div>
             <div class="name">English</div>
-        </div>
-    </a>
-    <a class="item" href = "/home/languageLearn/urdu">
-        <div class="language-information">
-            <div class="image">
-                <img src="../static/flags/pakistan.png" alt="">
-            </div>
-            <div class="name">Urdu</div>
         </div>
     </a>
     <a class="item" href = "/home/languageLearn/arabic">
@@ -27,18 +38,71 @@
             <div class="name">Arabic</div>
         </div>
     </a>
+    <a class="item" href = "/home/languageLearn/japanese">
+        <div class="language-information">
+            <div class="image">
+                <img src="../static/flags/japan.png" alt="">
+            </div>
+            <div class="name">Japanese</div>
+        </div>
+    </a>
+    <a class="item" href = "/home/languageLearn/turkish">
+        <div class="language-information">
+            <div class="image">
+                <img src="../static/flags/turkey.png" alt="">
+            </div>
+            <div class="name">Turkish</div>
+        </div>
+    </a>
+    <a class="item" href = "/home/languageLearn/german">
+        <div class="language-information">
+            <div class="image">
+                <img src="../static/flags/germany.png" alt="">
+            </div>
+            <div class="name">German</div>
+        </div>
+    </a>
+    <a class="item" href = "/home/languageLearn/italy">
+        <div class="language-information">
+            <div class="image">
+                <img src="../static/flags/italy.png" alt="">
+            </div>
+            <div class="name">Italy</div>
+        </div>
+    </a>
+    <a class="item" href = "/home/languageLearn/spanish">
+        <div class="language-information">
+            <div class="image">
+                <img src="../static/flags/spain.png" alt="">
+            </div>
+            <div class="name">Spanish</div>
+        </div>
+    </a>
+    {{!-- Can add more languages below --}}
+    {{!-- <a class="item" href = "/home/languageLearn/">
+        <div class="language-information">
+            <div class="image">
+                <img src="../static/flags/" alt="">
+            </div>
+            <div class="name"></div>
+        </div>
+    </a> --}}
+
 </div>
 <br>
 
 
-<b>Language(s) you have selected to learn:</b>
-<ul>
-    {{#each languageLearn}}
-    <li>{{this}}</li>
-    {{/each}}
-</ul>
+<div class="language-selection">
+    <p>Language(s) you have selected to learn:</p>
+    <ul>
+        {{#each languageLearn}}
+        <li>{{this}}</li>
+        {{/each}}
+    </ul>
+</div>
 
 
 <div  class = "link-btns">
+    <a href=""></a>  {{!--For flexbox so next button is aligned to the end--}}
     <a  class = "link-btn" href="/home/languageFluent">Next</a>
 </div>

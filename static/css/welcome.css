@@ -1,9 +1,21 @@
+.container-lg{
+    padding:40px;
+}
+
+.heading{
+    text-align: center;
+}
+
+.flag-language-question{
+    margin:30px;
+    font-size: 1.2rem;
+}
 a{
     text-decoration: none;
     color: black;
 }
 
-a:hover{
+a.item:hover{
     border: 2px solid rgb(32, 119, 233);
     color:rgb(5, 94, 212);
 
@@ -46,17 +58,22 @@ a:hover{
 
 
 .link-btn{
-    border:1px solid black;
-    border-radius: 1.rem;
-    padding:10px;
-    background-color: rgb(218, 225, 234);;
-    color:black;
+    padding: 10px 60px;
+    background-color: #0d6efd;
+    color:white;
 }
 
 .link-btns{
+    display: flex;
     margin:20px 0;
+    justify-content: space-between;
 }
 
 a{
     text-decoration: none;
+}
+
+.language-selection p{
+    font-size: 1.3rem;
+    font-weight: 600;
 }

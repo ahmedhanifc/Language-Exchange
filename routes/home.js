@@ -85,10 +85,10 @@ router.get("/languageLearn/:languageLearn", sessionValidityChecker, async(req,re
         }
 
         else if(req.sessionData.data.languageLearn.includes(languageLearn)){
-            fMessage = { "errorCode": "yay", "content": "Langauge Successfully Removed" }
             req.sessionData.data.languageLearn.pop(languageLearn)
             await business.updateSession(req.sessionData.sessionKey, req.sessionData)
             await business.updateUserAccountLanguageLearn(req.sessionData.data.username,req.sessionData.data.languageLearn);
+            fMessage = { "errorCode": "yay", "content": "Langauge Successfully Removed" }
 
         }
         else if(!req.sessionData.data.languageFluent.includes(languageLearn)&&!req.sessionData.data.languageLearn.includes(languageLearn)){
@@ -112,7 +112,6 @@ router.get("/languageFluent/:languageFluent", sessionValidityChecker, async(req,
         req.sessionData.data.languageFluent.pop(languageFluent)
         await business.updateSession(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageFluent(req.sessionData.data.username,req.sessionData.data.languageFluent);
-        await business.updateUserAccountLanguageFluent(req.sessionData.data.username,req.sessionData.data.languageFluent)
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Removed" }
 
 
@@ -121,7 +120,6 @@ router.get("/languageFluent/:languageFluent", sessionValidityChecker, async(req,
         req.sessionData.data.languageFluent.push(languageFluent)
         await business.updateSession(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageFluent(req.sessionData.data.username,req.sessionData.data.languageFluent);
-        await business.updateUserAccountLanguageFluent(req.sessionData.data.username,req.sessionData.data.languageFluent)
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Added" }
 
     }

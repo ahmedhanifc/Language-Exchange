@@ -8152,6 +8152,8 @@ html:not([dir=rtl]) .sidebar.sidebar-end {
 .sidebar.sidebar-lg {
   --cui-sidebar-width: 20rem;
 }
+
+
 @media (min-width: 768px) {
   .sidebar.sidebar-lg:not(.sidebar-end):not(.hide) ~ * {
     --cui-sidebar-occupy-start: 20rem;
