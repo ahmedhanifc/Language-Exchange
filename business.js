@@ -35,6 +35,7 @@ async function checkValidResetLink(formResetKey) {
 async function validateCredentials(username, password){
 
     let userCredentials = await persistence.findUser(username);
+
     if(userCredentials && userCredentials.username === username && userCredentials.password === crypto.createHash('sha256').update(password).digest('hex'))
         // directly check the hash of user entered password against hash stored in db
     {

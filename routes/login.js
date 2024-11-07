@@ -7,6 +7,7 @@ const flash = require("../flash_msgs")
 /*where are we gonna check for sessions then? for now im adding the module for sessions here,also we are going to need to figure out how to 
 access session across different files as flash messages require the deletion of a pseudo-session storage */
 
+
 // "/" path will render the home page.
 router.get("/", async (req, res) => {
     let sessionKey = req.cookies[COOKIE_NAME];
@@ -14,8 +15,8 @@ router.get("/", async (req, res) => {
     if (!sessionData) {
         let data = {
             username: null,
-            languageLearn: null,
-            languageFluent: null,
+            languageLearn: [],
+            languageFluent: [],
             csrfToken: null,
             flashData: 0
         }
@@ -85,7 +86,13 @@ router.post("/", async (req, res) => {
         }
 
         //we updated it session here as the user has correct credentials,now the attributes will not be null anymore
-        await business.updateSession(sessionKey, userCredentials);
+        sessionData.data.username = userCredentials.username
+
+        if(userCredentials.languageFluent && userCredentials.languageLearn){
+            sessionData.data.languageFluent = userCredentials.languageFluent
+            sessionData.data.languageLearn = userCredentials.languageLearn
+        }
+        await business.updateSession(sessionKey, sessionData);
 
         if (userCredentials.username) {
             //this whole chunk of code only executes if a username exists/for valid users else the login page gets rendered again

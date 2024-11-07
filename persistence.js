@@ -90,11 +90,11 @@ async function updateSession(sessionKey, data){
     await connectDatabase()
     let sessionData = userSessions.updateOne({sessionKey}, {
         $set:{
-            "data.username": data.username,
-            "data.languageLearn":data.languageLearn,
-            "data.languageFluent":data.languageFluent,
-            "data.csrfToken":data.csrfToken,
-            "data.flashData":data.flashData
+            "data.username": data.data.username,
+            "data.languageLearn":data.data.languageLearn,
+            "data.languageFluent":data.data.languageFluent,
+            "data.csrfToken":data.data.csrfToken,
+            "data.flashData":data.data.flashData
         }
     })
 
