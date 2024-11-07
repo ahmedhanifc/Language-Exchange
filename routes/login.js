@@ -26,14 +26,24 @@ router.get("/", async (req, res) => {
             {maxAge:sessionData.expiry}
         )
     }
+/*the flash gets deleted here and set in the post becaye even if its empty flash,wont display till it has a value
+same mechanism for the rest,we always redirect to the route that renders and put the getFlash before rendering, setFlash on the post routes.
+If i render in post,the refresh will just directly go to the post cuz whenevr we refresh it submits form again so we never render in post,only redirect*/
+let fMessage=await flash.getFlash(sessionKey)
+let flashStyle='flash-message-yay'
+if(fMessage && fMessage.errorCode==='fail'){
+     flashStyle='flash-message-fail'
+}
+res.render("login",{
+    layout:undefined,
+    flash:fMessage,
+    style:flashStyle
+}) })
+
 
     //What is the information we need to know for the login page of the user? 
     //1) Check if the cookie is present in the browser. if a cookie is present and is valid, then automatically log user in
-    res.render("login",{
-        layout:undefined
-    })
-    return;
-});
+    
 
 //BUSINESS RULE: We intitiate a session only after login not during sign-up
 //need to implement csrf token here
@@ -93,16 +103,8 @@ router.post("/", async (req,res) => {
 }}
 /*we getflash right before rendering because by this point we will have hit one of the conditions if credentials wrong,so it will show the condition that is the most recent
 and then delete it */
-let fMessage=await flash.getFlash(sessionKey)
-let flashStyle='flash-message-yay'
-if(fMessage && fMessage.errorCode==='fail'){
-     flashStyle='flash-message-fail'
-}
-res.render("login",{
-    layout:undefined,
-    flash:fMessage,
-    style:flashStyle
-}) })
+res.redirect("/")
+return; })
 
 
 
