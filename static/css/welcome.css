@@ -43,3 +43,20 @@ a:hover{
 .language-information .image img {
     width: 100%;
 }
+
+
+.link-btn{
+    border:1px solid black;
+    border-radius: 1.rem;
+    padding:10px;
+    background-color: rgb(218, 225, 234);;
+    color:black;
+}
+
+.link-btns{
+    margin:20px 0;
+}
+
+a{
+    text-decoration: none;
+}

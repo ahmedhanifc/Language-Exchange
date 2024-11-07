@@ -88,7 +88,7 @@ async function saveSession(sessionData) {
 
 async function updateSession(sessionKey, data){
     await connectDatabase()
-    let sessionData = userSessions.updateOne({sessionKey}, {
+    let sessionData = await userSessions.updateOne({sessionKey}, {
         $set:{
             "data.username": data.data.username,
             "data.languageLearn":data.data.languageLearn,
@@ -99,6 +99,16 @@ async function updateSession(sessionKey, data){
     })
 
     return sessionData
+}
+
+async function updateUserAccountLanguageLearn(username, languageLearn){
+    await connectDatabase()
+    return await userAccounts.updateOne({username:username}, {$set:{languageLearn:languageLearn}})
+}
+
+async function updateUserAccountLanguageFluent(username, languageFluent){
+    await connectDatabase()
+    return await userAccounts.updateOne({username:username}, {$set:{languageFluent:languageFluent}})
 }
 
 async function getSessionData(sessionKey) {
@@ -115,7 +125,8 @@ module.exports={
     updatePassword,
     getSessionData,
     saveSession,
-    updateSession
-
+    updateSession,
+    updateUserAccountLanguageLearn,
+    updateUserAccountLanguageFluent
    
 }

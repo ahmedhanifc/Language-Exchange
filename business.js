@@ -70,6 +70,14 @@ async function updateSession(sessionKey,data){
     return await persistence.updateSession(sessionKey,data)
 }
 
+async function updateUserAccountLanguageLearn(username, languageLearn){
+    return persistence.updateUserAccountLanguageLearn(username, languageLearn)
+}
+
+async function updateUserAccountLanguageFluent(username, languageFluent){
+    return persistence.updateUserAccountLanguageFluent(username, languageFluent)
+}
+
 async function getSessionData(sessionKey) {
     let sessionData = await persistence.getSessionData(sessionKey)
     return sessionData
@@ -155,5 +163,7 @@ module.exports={
     validateRegistrationCredentials,
     updateSession,
     validateEmail,
-    validatePassword
+    validatePassword,
+    updateUserAccountLanguageLearn,
+    updateUserAccountLanguageFluent
 }

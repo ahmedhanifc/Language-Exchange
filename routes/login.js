@@ -98,11 +98,11 @@ router.post("/", async (req, res) => {
             //this whole chunk of code only executes if a username exists/for valid users else the login page gets rendered again
 
             if (!userCredentials.languageFluent || !userCredentials.languageLearn) {
-                res.redirect("/home/welcome")
+                res.redirect("/home/languageLearn")
                 return
             }
-            else if (userCredentials.languageFluent.length === 0 || userCredentials.languageFluent.length === 0) {
-                res.redirect("/home/welcome")
+            else if (userCredentials.languageLearn.length === 0 || userCredentials.languageFluent.length === 0) {
+                res.redirect("/home/languageLearn")
                 return
             }
             else {
@@ -121,7 +121,13 @@ router.post("/", async (req, res) => {
 
 
 
-router.get("/sign-up", (req, res) => {
+router.get("/sign-up", async (req, res) => {
+    let sessionKey = req.cookies[COOKIE_NAME]
+    let sessionData = await business.getSessionData(sessionKey)
+    if(!sessionData){
+        //user first needs to have a session, which they receive in the /route
+        res.redirect("/")
+    }
     res.render("register", {
         layout: undefined,
 
@@ -132,6 +138,13 @@ router.get("/sign-up", (req, res) => {
 //need to implement csrf token here most importantly, will see where to put it tomorrow,will also add the functionality for flash messages
 
 router.post("/sign-up", async (req, res) => {
+    let sessionKey = req.cookies[COOKIE_NAME]
+    let sessionData = await business.getSessionData(sessionKey)
+    // can use this to add flash messages also
+    if(!sessionData){
+        //user first needs to have a session, which they receive in the /route
+        res.redirect("/")
+    }
     const { username, email, password, repeatedPassword } = req.body
 
     if (!username || !email || !password || !repeatedPassword) {
@@ -167,9 +180,13 @@ router.post("/sign-up", async (req, res) => {
     console.log(validRegisterEmail, ' register in db ', validRegisterName)
 
     if (validRegisterEmail && validRegisterName) {
-        await business.createUser(validRegisterName, validRegisterEmail, formatPassword, null)
         //the null is for the resettoken attribute by default
-        res.redirect("/home/welcome")
+
+        await business.createUser(validRegisterName, validRegisterEmail, formatPassword, null)
+        sessionData.data.username = validRegisterName
+        await business.updateSession(sessionData.sessionKey,sessionData)
+        // added this here because i need username in the languageLearn. This i can only do via sessions.
+        res.redirect("/home/languageLearn")
         return
     }
     res.redirect('/sign-up?error= user could not be created as user already exists');

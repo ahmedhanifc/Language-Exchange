@@ -1,9 +1,9 @@
 
 <h1>Welcome {{username}}</h1>
 
-    <p> What Languages Would you like to learn?</p>
+    <p>What Languages are you fluent in?</p>
 <div class="container">
-    <a class="item" href = "/home/languageLearn/english">
+    <a class="item" href = "/home/languageFluent/english">
         <div class="language-information">
             <div class="image">
                 <img src="../static/flags/united-kingdom.png" alt="">
@@ -11,7 +11,7 @@
             <div class="name">English</div>
         </div>
     </a>
-    <a class="item" href = "/home/languageLearn/urdu">
+    <a class="item" href = "/home/languageFluent/urdu">
         <div class="language-information">
             <div class="image">
                 <img src="../static/flags/pakistan.png" alt="">
@@ -19,7 +19,7 @@
             <div class="name">Urdu</div>
         </div>
     </a>
-    <a class="item" href = "/home/languageLearn/arabic">
+    <a class="item" href = "/home/languageFluent/arabic">
         <div class="language-information">
             <div class="image">
                 <img src="../static/flags/arabic.png" alt="">
@@ -30,14 +30,15 @@
 </div>
 
 
-language Learning
+language Fluent
 <ul>
-    {{#each languageLearn}}
+    {{#each languageFluent}}
     <li>{{this}}</li>
     {{/each}}
 </ul>
 
 
-<div  class = "link-btns">
-    <a  class = "link-btn" href="/home/languageFluent">Next</a>
+<div class = "link-btns">
+    <a class = "link-btn"href="/home/languageLearn">Previous</a>
+    <a class = "link-btn" href="/home/">Done</a>
 </div>

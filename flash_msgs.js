@@ -4,7 +4,8 @@ async function setFlash(sessionKey,message){
     let sessionData=await business.getSessionData(sessionKey)
     sessionData.data.flashData=message
     //this adds a message to the attribute flashData within the data object and we will be passing in flash.code & flash.content as attributes of object called message 
-    await business.updateSession(sessionKey,sessionData.data)
+    await business.updateSession(sessionKey,sessionData) //You were passing sessionData.data before. I had to change it to sessionData because of the change
+    //i made in persistence to the updateSession. I hope thats okay
 }
 
 async function getFlash(sessionKey) {

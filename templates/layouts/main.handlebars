@@ -6,6 +6,22 @@
 * Licensed under MIT (https://github.com/coreui/coreui-free-bootstrap-admin-template/blob/main/LICENSE)
 --><!-- Breadcrumb-->
 <html lang="en">
+<style>
+    .flash-message-yay{
+      background-color:green;
+      color:white;
+      font: size 45px;
+    }
+
+    .flash-message-fail{
+      background-color: red;
+      font: size 45px;
+    }
+</style>
+
+{{#if flash}}
+<div class="{{style}}">{{flash.content}}</div>
+{{/if}}
   <head>
     <base href="./">
     <meta charset="utf-8">
@@ -40,46 +56,12 @@
     <!-- We use those styles to show code examples, you should remove them in your application.-->
     <link href="../../static/css/examples.css" rel="stylesheet">
     <link rel="icon" href="../../static/logo/owl.svg" type="image/icon type">
+    <link rel="stylesheet" href="../../static/css/welcome.css">
   </head>
   <body>
-    {{!-- <div class="sidebar sidebar-dark sidebar-fixed" id="sidebar"> idk if we even need sidebar tbh
-      <div class="sidebar-brand d-none d-md-flex">
-      </div>
-      <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
-        <li class="nav-item"><a class="nav-link" href="/home">
-            <svg class="nav-icon">
-              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-home"></use>
-            </svg> Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="colors.html">
-            <svg class="nav-icon">
-              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-globe-alt"></use>
-            </svg>Community</a></li>
-        <li class="nav-item"><a class="nav-link" href="../../static/typography.html">
-            <svg class="nav-icon">
-              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-chat-bubble"></use>
-            </svg>Chats</a></li>
-        </li>
-        <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
-            <svg class="nav-icon">
-              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-happy"></use>
-            </svg>Profile</a>
-          <ul class="nav-group-items">
-            <li class="nav-item"><a class="nav-link" href="../../static/buttons/buttons.html"><span class="nav-icon"></span> Buttons</a></li>
-            <li class="nav-item"><a class="nav-link" href="../../static/buttons/button-group.html"><span class="nav-icon"></span> Buttons Group</a></li>
-            <li class="nav-item"><a class="nav-link" href="../../static/buttons/dropdowns.html"><span class="nav-icon"></span> Dropdowns</a></li>
-          </ul>
-        </li>
-      </ul>
-      <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
-    </div> --}}
-    <div class="wrapper d-flex flex-column min-vh-100 bg-light">
+     <div class="wrapper d-flex flex-column min-vh-100 bg-light">
       <header class="header header-sticky mb-4">
         <div class="container-fluid">
-          {{!-- <button class="header-toggler px-md-0 me-md-3" type="button" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()">
-            <svg class="icon icon-lg">
-              <use xlink:href="../../static/vendors/@coreui/icons/svg/free.svg#cil-menu"></use>
-            </svg>
-          </button> --}}
           <a class="header-brand d-md-none" href="#">
             <svg width="118" height="46" alt="CoreUI Logo">
               <use xlink:href="../../static/assets/brand/coreui.svg#full"></use>
