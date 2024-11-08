@@ -113,7 +113,6 @@ router.post("/", async (req, res) => {
                 languageFluent: [],
                 csrfToken: null,
                 flashData: 0,
-                isVerified:false
 
             }
             sessionData = await business.startSession(data);
