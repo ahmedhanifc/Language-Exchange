@@ -33,10 +33,11 @@ async function sessionValidityChecker(req,res,next){
         return
     }
     req.sessionData = sessionData
-    next()}
+    }
     else{
         res.redirect('/logout')
     }
+    next()
 }
 
 router.get("/", sessionValidityChecker ,async (req,res) => {
