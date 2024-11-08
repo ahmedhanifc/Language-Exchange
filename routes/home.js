@@ -25,6 +25,7 @@ function titleCase(string){
 //trying to use a middleware here
 // https://www.youtube.com/watch?v=nzSAf5cVyWY&list=PL_cUvD4qzbkwjmjy-KjbieZ8J9cGwxZpC&index=9 very good video for middlewares fr
 async function sessionValidityChecker(req,res,next){
+    if(req.cookies[COOKIE_NAME]){
     let sessionKey = req.cookies[COOKIE_NAME];
     let sessionData = await business.getSessionData(sessionKey)
     if(!sessionData){
@@ -32,7 +33,10 @@ async function sessionValidityChecker(req,res,next){
         return
     }
     req.sessionData = sessionData
-    next()
+    next()}
+    else{
+        res.redirect('/logout')
+    }
 }
 
 router.get("/", sessionValidityChecker ,async (req,res) => {

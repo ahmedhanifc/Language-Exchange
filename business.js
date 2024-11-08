@@ -45,11 +45,14 @@ async function validateCredentials(username, password){
     if(userCredentials && userCredentials.username === username && userCredentials.password === crypto.createHash('sha256').update(password).digest('hex'))
         // directly check the hash of user entered password against hash stored in db
     {
+        console.log("isVerified:", userCredentials.isVerified);
+
         // first checking to see if userCredentials exist. If we don't do this, app will crash
         return {
             username:userCredentials.username,
             languageFluent:userCredentials.languageFluent,
-            languageLearn:userCredentials.languageLearn
+            languageLearn:userCredentials.languageLearn,
+            isVerified:userCredentials.isVerified
         } // no need to return password. We can add more fields as needed
     }
     else if(!userCredentials)
@@ -68,7 +71,7 @@ async function startSession(data) {
         data
     }
     await persistence.saveSession(sessionData)
-    return await sessionData
+    return  sessionData
 
 }
 

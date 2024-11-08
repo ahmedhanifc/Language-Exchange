@@ -398,5 +398,14 @@ router.post('/resetPassword/:token', async (req, res) => {
     }
 })
 
+router.get('/logout', async (req, res) => {
+    delete res.cookie.COOKIE_NAME
+    let message = { "errorCode": "fail", "content": "You logged out!" }
+    res.cookie('flashData', message);
+    res.redirect('/')
+    return
+    
+})
+
 
 module.exports = router;
