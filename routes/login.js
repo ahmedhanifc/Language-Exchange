@@ -205,10 +205,11 @@ router.post("/sign-up", async (req, res) => {
     }
     const { username, email, password, repeatedPassword, csrf} = req.body
 
-    if(csrf !== sessionData.data.csrf){
+    if(csrf !== sessionData.data.csrfToken){
         let message = { "errorCode": "fail", "content": "I don't think you're allowed to do that big man" }
         await flash.setFlash(sessionKey, message)
         res.redirect("/")
+        return;
     }
 
     if (!username || !email || !password || !repeatedPassword) {
@@ -411,7 +412,7 @@ router.post('/resetPassword/:token', async (req, res) => {
 router.get('/logout', async (req, res) => {
     console.log(req.cookies[COOKIE_NAME])
     let sessionKey = req.cookies[COOKIE_NAME]
-    await business.deleteSession()
+    await business.deleteSession(sessionKey)
     delete res.cookie.COOKIE_NAME
     let message = { "errorCode": "fail", "content": "You logged out!" }
     res.cookie('flashData', message);
