@@ -37,7 +37,7 @@ router.get("/", async (req, res) => {
         res.clearCookie('flashData')
         let flashStyle = 'flash-message-yay'
         res.render("login", {
-            layout: undefined,
+            layout: "loginMain",
             flash: fMessage,
             style: flashStyle
         })
@@ -54,7 +54,7 @@ router.get("/", async (req, res) => {
         flashStyle = 'flash-message-fail'
     }
     res.render("login", {
-        layout: undefined,
+        layout: "loginMain",
         flash: fMessage,
         style: flashStyle
     })
@@ -183,7 +183,7 @@ router.get("/sign-up", async (req, res) => {
 
     res.render("register", {
     //by not specifying a layout,its getting a layout from the main for the flash msgs but that doesnt work for this special page
-        layout:undefined,
+        layout:"loginMain",
         flash: fMessage,
         style: flashStyle,
         csrf:csrf
@@ -305,8 +305,8 @@ router.get("/forgetPassword", async (req, res) => {
         flashStyle = 'flash-message-fail'
     }
 
-    res.render("forgetPassword", {
-        layout: undefined,
+    res.render("resetPasswordRequest", {
+        layout: "loginMain",
         flash: fMessage,
         style: flashStyle
 
@@ -357,7 +357,7 @@ router.get('/resetPassword/:token', async (req, res) => {
                 resetKey: formResetKey , 
                 flash: fMessage,
                 style: flashStyle,
-                layout:undefined
+                layout:"loginMain"
             })
         return
     }

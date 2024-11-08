@@ -71,7 +71,8 @@ router.get("/", sessionValidityChecker, async (req, res) => {
         flashData: req.sessionData.data.flashData,
         helpers: {
             titleCase
-        }
+        },
+        layout:"main"
     })
 })
 
@@ -89,7 +90,8 @@ router.get("/languageLearn", sessionValidityChecker, async (req, res) => {
         languages: LANGUAGES_IN_OUR_SYSTEM,
         helpers: {
             titleCase
-        }
+        },
+        layout:"main"
     })
 })
 
@@ -116,7 +118,8 @@ router.get("/languageFluent", sessionValidityChecker, async (req, res) => {
         languages: LANGUAGES_IN_OUR_SYSTEM,
         helpers: {
             titleCase
-        }
+        },
+        layout:"main"
     })
 })
 
@@ -156,15 +159,12 @@ router.get("/languageFluent/:languageFluent", sessionValidityChecker, async (req
         await business.updateSession(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageFluent(req.sessionData.data.username, req.sessionData.data.languageFluent);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Removed" }
-
-
     }
     else if (!req.sessionData.data.languageFluent.includes(languageFluent) && !req.sessionData.data.languageLearn.includes(languageFluent)) {
         req.sessionData.data.languageFluent.push(languageFluent)
         await business.updateSession(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageFluent(req.sessionData.data.username, req.sessionData.data.languageFluent);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Added" }
-
     }
     flash.setFlash(req.sessionData.sessionKey, fMessage)
     res.redirect("/home/languageFluent")
