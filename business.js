@@ -23,6 +23,12 @@ async function updatePassword(resetKey,newPassword) {
     
 }
 
+async function updateUserVerification(email,verificationStatus) {
+    return await persistence.updateUserVerification(email,verificationStatus)
+    
+}
+
+
 async function checkValidResetLink(formResetKey) {
     let user=await persistence.findUserReset(formResetKey)
     if(user){
@@ -153,6 +159,7 @@ function validatePassword(newPassword,confirm) {
 module.exports={
     createUser,
     updateUserReset,
+    updateUserVerification,
     findUserReset,
     updatePassword,
     checkValidResetLink,

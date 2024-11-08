@@ -81,6 +81,15 @@ async function updatePassword(resetKey,newPassword){
     //resetKey is always set to null after a password has been reset
 }
 
+async function updateUserVerification(email,verificationStatus){
+    await connectDatabase()
+    return await userAccounts.updateOne({email},{ $set:{
+        "isVerified": verificationStatus,
+    }
+})
+    //resetKey is always set to null after a password has been reset
+}
+
 async function saveSession(sessionData) {
     await connectDatabase()
     return await userSessions.insertOne(sessionData)
@@ -123,6 +132,7 @@ module.exports={
     findUserReset,
     updateUserReset,
     updatePassword,
+    updateUserVerification,
     getSessionData,
     saveSession,
     updateSession,

@@ -133,7 +133,7 @@ router.post("/", async (req, res) => {
         }
         await business.updateSession(sessionKey, sessionData);
 
-        if (userCredentials.username) {
+        if (userCredentials.username && userCredentials.isVerified) {
             //this whole chunk of code only executes if a username exists/for valid users else the login page gets rendered again
 
             if (!userCredentials.languageFluent || !userCredentials.languageLearn) {
@@ -148,6 +148,12 @@ router.post("/", async (req, res) => {
                 res.redirect("/home")
                 return;
             }
+        }
+        if(!userCredentials.isVerified){
+            let message = { "errorCode": "fail", "content": "You need to verify your email,check your email box." }
+            await flash.setFlash(sessionKey, message)
+            res.redirect("/")
+            return
         }
     }
     /*we getflash right before rendering because by this point we will have hit one of the conditions if credentials wrong,so it will show the condition that is the most recent
@@ -245,9 +251,20 @@ router.post("/sign-up", async (req, res) => {
         await business.createUser(validRegisterName, validRegisterEmail, formatPassword, null)
         sessionData.data.username = validRegisterName
         await business.updateSession(sessionData.sessionKey,sessionData)
-        // added this here because i need username in the languageLearn. This i can only do via sessions.
-        res.redirect("/home/languageLearn")
-        return
+        //here if registration succeessful we send an email with the verification link  and display flash
+            let verificationToken=crypto.randomUUID()
+            //the path parameter makes the cookie accesible through allpaths in the same domain
+              console.log(`from:hafsa@lab.com,
+                to:${email},
+                subject:Your verification link,
+                html:this is the link http://127.0.0.1:8000/signup-verification/${verificationToken}?email=${validRegisterEmail}`)
+
+
+                let message = { "errorCode": "yay", "content": "Your account has been created!Verify your account through the link in your email." }
+                await flash.setFlash(sessionKey, message)
+                res.redirect("/sign-up")
+                return; 
+    
     }
     let message = { "errorCode": "fail", "content": "User already exists! Use another username and make sure you are not reusing email addresses." }
         await flash.setFlash(sessionKey, message)
@@ -256,6 +273,20 @@ router.post("/sign-up", async (req, res) => {
 
 })
 
+router.get("/signup-verification/:verificationToken",async(req,res)=>{
+    let email=req.query.email
+    let verification=req.params.verificationToken
+    console.log(verification)
+    if(verification){
+        delete req.params.verificationToken
+        await business.updateUserVerification(email,true)
+        let message = { "errorCode": "yay", "content": "You have now been verified!!Proceed to login with your created credentials :)" }
+        res.cookie('flashData', message);
+        res.redirect('/')
+        return
+    }
+
+})
 
 router.get("/forgetPassword", async (req, res) => {
     let sessionKey = req.cookies[COOKIE_NAME]
