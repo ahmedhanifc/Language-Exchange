@@ -6,17 +6,17 @@
 * Licensed under MIT (https://github.com/coreui/coreui-free-bootstrap-admin-template/blob/main/LICENSE)
 -->
 <html lang="en">
-  <style>
-    .flash-msg-yay{
-      background-color: :red;
+<style>
+    .flash-message-yay{
+      background-color:green;
       font: size 45px;
     }
 
-    .flash-msg-fail{
-      background-color: blue;
+    .flash-message-fail{
+      background-color: red;
       font: size 45px;
     }
-  </style>
+</style>
 
 {{#if flash}}
 <div class="{{style}}">{{flash.content}}</div>
@@ -84,7 +84,7 @@
                     <svg class="icon">
                       <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
                     </svg></span>
-                  <input class="form-control" type="password" name = "password" placeholder="Password">
+                  <input class="form-control" type="password" name = "password" placeholder="Password must be at least 8 characters long and alphanumeric.">
                 </div>
                 <div class="input-group mb-4"><span class="input-group-text">
                     <svg class="icon">

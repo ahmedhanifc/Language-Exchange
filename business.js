@@ -134,8 +134,8 @@ function validateRegistrationCredentials(email, password) {
 function validatePassword(newPassword,confirm) {
     // Minimum 8 characters, at least one letter and one number
     const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    if(regex.test(newPassword) &&newPassword===confirm){
-        return crypto.createHash('sha256').update(confirm).digest('hex')
+    if(regex.test(newPassword)){
+        return newPassword
     }
     return null
   }

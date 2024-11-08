@@ -25,6 +25,23 @@ async function getFlash(sessionKey) {
     
 }
 
+async function setFlashResetPassword(message){
+    let flashData=message
+    return flashData
+    
+
+}
+
+async function getFlashResetPassword(flashData) {
+    
+    let message=flashData.message
+    //stores the error code on the basis of which we will display the message
+    delete flashData
+    return message
+    //so that we can use it to check what to display
+
+    
+}
 module.exports={
-    setFlash,getFlash
+    setFlash,getFlash,setFlashResetPassword,getFlashResetPassword
 }

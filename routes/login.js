@@ -3,13 +3,29 @@ const router = express.Router();
 const business = require("../business")
 const COOKIE_NAME = "session"
 const flash = require("../flash_msgs")
+const crypto = require("crypto")
 
-/*where are we gonna check for sessions then? for now im adding the module for sessions here,also we are going to need to figure out how to 
-access session across different files as flash messages require the deletion of a pseudo-session storage */
 
+//the verified attr added to db,will be used to verify user signup,will be additional check in login only
+//BUSINESS RULE:user cant even login wihtiut verification and once they have been verified,the rest of the site does not need to check for it.
 
 // "/" path will render the home page.
 router.get("/", async (req, res) => {
+    //chunk of code for register
+     //from the register page
+     if(req.cookies.flashData){
+        let fMessage=req.cookies.flashData
+        res.clearCookie('flashData')
+        let flashStyle = 'flash-message-yay'
+        res.render("login", {
+            layout: undefined,
+            flash: fMessage,
+            style: flashStyle
+        })
+
+        return
+     }
+
     let sessionKey = req.cookies[COOKIE_NAME];
     let sessionData = await business.getSessionData(sessionKey)
     if (!sessionData) {
@@ -18,7 +34,8 @@ router.get("/", async (req, res) => {
             languageLearn: [],
             languageFluent: [],
             csrfToken: null,
-            flashData: 0
+            flashData: 0,
+            isVerified:false
         }
         sessionData = await business.startSession(data);
         res.cookie(
@@ -27,6 +44,7 @@ router.get("/", async (req, res) => {
             { maxAge: sessionData.expiry }
         )
     }
+
     /*the flash gets deleted here and set in the post becaye even if its empty flash,wont display till it has a value
     same mechanism for the rest,we always redirect to the route that renders and put the getFlash before rendering, setFlash on the post routes.
     If i render in post,the refresh will just directly go to the post cuz whenevr we refresh it submits form again so we never render in post,only redirect*/
@@ -58,6 +76,9 @@ router.post("/", async (req, res) => {
     if (!username || !password) {
         let message = { "errorCode": "fail", "content": "You cant leave the fields empty" }
         await flash.setFlash(sessionKey, message)
+        res.redirect("/")
+        return
+
         //for now if user isnt succesful we redirect to same page with a flash message
         //res.redirect('/?errorCode=field(s) are empty')
         //return
@@ -70,19 +91,37 @@ router.post("/", async (req, res) => {
         let userCredentials = await business.validateCredentials(username, password);
         if (!userCredentials) {
             // How to implement flash messages here?
-            res.redirect("/?errorCode=username wrong or does not exist")
+            let message = { "errorCode": "fail", "content": "Wrong Username or User does not exist" }
+            await flash.setFlash(sessionKey, message)
+            res.redirect("/")
             return
         }
         if (userCredentials === -1) {
             // How to implement flash messages here?
-            res.redirect("/?errorCode=invalid/wrong password")
+            let message = { "errorCode": "fail", "content": "Invalid/Wrong password!!" }
+            await flash.setFlash(sessionKey, message)
+            res.redirect("/")
             return
         }
 
         if (!sessionData) {
-            //flash message here saying u dont have a valid session something
-            res.redirect("/")
-            return;
+            /*here i added because they will never have a sesson before login,plus if they login after resetting password,it should work now
+            same with verification*/
+            let data = {
+                username: null,
+                languageLearn: [],
+                languageFluent: [],
+                csrfToken: null,
+                flashData: 0,
+                isVerified:false
+
+            }
+            sessionData = await business.startSession(data);
+            res.cookie(
+                "session",
+                sessionData.sessionKey,
+                { maxAge: sessionData.expiry }
+            )
         }
 
         //we updated it session here as the user has correct credentials,now the attributes will not be null anymore
@@ -128,10 +167,20 @@ router.get("/sign-up", async (req, res) => {
         //user first needs to have a session, which they receive in the /route
         res.redirect("/")
     }
-    res.render("register", {
-        layout: undefined,
 
+    let fMessage = await flash.getFlash(sessionKey)
+    let flashStyle = 'flash-message-yay'
+    if (fMessage && fMessage.errorCode === 'fail') {
+        flashStyle = 'flash-message-fail'
+    }
+
+    res.render("register", {
+    //by not specifying a layout,its getting a layout from the main for the flash msgs but that doesnt work for this special page
+        layout:undefined,
+        flash: fMessage,
+        style: flashStyle
     })
+    return
 })
 
 
@@ -144,18 +193,23 @@ router.post("/sign-up", async (req, res) => {
     if(!sessionData){
         //user first needs to have a session, which they receive in the /route
         res.redirect("/")
+        return
     }
     const { username, email, password, repeatedPassword } = req.body
 
     if (!username || !email || !password || !repeatedPassword) {
-        //for now if user isnt succesful we redirect to same page with a flash message
-        res.redirect('/sign-up?error=field(s) are empty')
-        return
+        
+        let message = { "errorCode": "fail", "content": "Field(s) are empty" }
+        await flash.setFlash(sessionKey, message)
+        res.redirect("/sign-up")
+        return;       
     }
 
     if (password !== repeatedPassword) {
-        res.redirect('/sign-up?error=passwords do not match');
-        return;
+        let message = { "errorCode": "fail", "content": "Your entries in the password fields need to be the same!" }
+        await flash.setFlash(sessionKey, message)
+        res.redirect("/sign-up")
+        return;  
     }
 
     let [formatEmail, formatPassword] = business.validateRegistrationCredentials(email, password);
@@ -164,16 +218,22 @@ router.post("/sign-up", async (req, res) => {
 
     console.log(formatEmail, 'space', formatPassword)
     if (formatEmail === -1 && formatPassword === -1) {
-        res.redirect('/sign-up?error=password & email invalid form');
-        return;
+        let message = { "errorCode": "fail", "content": "Your email and password entries both are not of a valid form!" }
+        await flash.setFlash(sessionKey, message)
+        res.redirect("/sign-up")
+        return;  
     }
     if (formatEmail === -1) {
-        res.redirect('/sign-up?error= email invalid form');
-        return;
+        let message = { "errorCode": "fail", "content": "You entered an invalid email." }
+        await flash.setFlash(sessionKey, message)
+        res.redirect("/sign-up")
+        return;  
     }
     if (formatPassword === -1) {
-        res.redirect('/sign-up?error= password invalid form');
-        return;
+        let message = { "errorCode": "fail", "content": "You entered an invalid password format." }
+        await flash.setFlash(sessionKey, message)
+        res.redirect("/sign-up")
+        return;  
     }
     let [validRegisterName, validRegisterEmail] = await business.checkUsernameExistence(username, formatEmail)
     //this function returns the username if it doesnt exist already in the db and heck for email in next commit  
@@ -189,21 +249,33 @@ router.post("/sign-up", async (req, res) => {
         res.redirect("/home/languageLearn")
         return
     }
-    res.redirect('/sign-up?error= user could not be created as user already exists');
-    return;
+    let message = { "errorCode": "fail", "content": "User already exists! Use another username and make sure you are not reusing email addresses." }
+        await flash.setFlash(sessionKey, message)
+        res.redirect("/sign-up")
+        return;  
 
 })
 
 
 router.get("/forgetPassword", async (req, res) => {
+    let sessionKey = req.cookies[COOKIE_NAME]
+    let fMessage = await flash.getFlash(sessionKey)
+    let flashStyle = 'flash-message-yay'
+    if (fMessage && fMessage.errorCode === 'fail') {
+        flashStyle = 'flash-message-fail'
+    }
+
     res.render("forgetPassword", {
-        layout: undefined
+        layout: undefined,
+        flash: fMessage,
+        style: flashStyle
+
     })
 })
 
 
 router.post("/forgetPassword", async (req, res) => {
-
+    let sessionKey = req.cookies[COOKIE_NAME]
     let email = await business.validateEmail(req.body.email)
     if (email) {
         let token = crypto.randomUUID()
@@ -215,26 +287,41 @@ router.post("/forgetPassword", async (req, res) => {
                 html:this is the link http://127.0.0.1:8000/resetPassword/${token}`)
 
 
-        res.redirect("/forgetPassword?msg=check ur mail")
-        return
+                let message = { "errorCode": "yay", "content": "Please check your mail for the link to reset your password." }
+                await flash.setFlash(sessionKey, message)
+                res.redirect("/forgetPassword")
+                return; 
     }
     //flash msg
-    res.redirect("/forgetPassword?msg=cwrite a proper email")
-
+    let message = { "errorCode": "fail", "content": "Invalid email." }
+    await flash.setFlash(sessionKey, message)
+    res.redirect("/forgetPassword")
+    return; 
 
 })
 
+//for reset we have no session,to avoid using session and db for a minute message,cookies will be used to store
 router.get('/resetPassword/:token', async (req, res) => {
     let formResetKey = req.params.token
     let user = await business.checkValidResetLink(formResetKey)
+    let sessionKey = req.cookies[COOKIE_NAME]
+
+    let fMessage=req.cookies.flashData
+    res.clearCookie('flashData')
+    let flashStyle = 'flash-message-yay'
+    if (fMessage && fMessage.errorCode === 'fail') {
+        flashStyle = 'flash-message-fail'
+    }
     if (user) {
         res.render('resetPassword',
-            { resetKey: formResetKey })
+            { resetKey: formResetKey , 
+                flash: fMessage,
+                style: flashStyle})
         return
     }
 
-    res.redirect('/?message=Your token is wrong or no such user exists')
-    return
+    res.status(404).send("You were not sent a password link");
+    return;  
     //always put this in an else block or put return after rendering
 })
 
@@ -242,31 +329,40 @@ router.get('/resetPassword/:token', async (req, res) => {
 router.post('/resetPassword/:token', async (req, res) => {
     const { newPassword, confirm, resetKey } = req.body
     let user = await business.checkValidResetLink(resetKey)
-    let validatedPassword = await business.validatePassword(newPassword, confirm)
+    let validatedPassword = await business.validatePassword(newPassword)
     //i just check for one password cuz if one of them the correct format the other needs to be too else they wont match
-    if (validatedPassword) {
+    if (validatedPassword && validatedPassword===confirm) {
 
-        user.password = validatedPassword
+        user.password =crypto.createHash('sha256').update(validatedPassword).digest('hex')
+
         await business.updatePassword(resetKey, user.password)
         await business.updateUserReset(user.email, null)
-        res.redirect('/?message=succesful login')
-        return
+        let message = { "errorCode": "yay", "content": "Hurrah! Your password got reset." }
+        res.cookie('flashData', message);
+        res.redirect(`/`)
+        return; 
 
     }
     else {
-        if (user.resetKey !== resetKey) {
-            //flash for someone else trying to attack
-            res.send('attack')
+        if(!validatedPassword){
+            let message = { "errorCode": "fail", "content": "Please enter a valid password format of min. 8 characters and make it alphanumeric." }
+            res.cookie('flashData', message);
+            res.redirect(`/resetPassword/${resetKey}`)
             return
+
+        }
+        if (user.resetKey !== resetKey) {
+            res.status(404).send("Page not found");
+            return;  
         }
         if (newPassword !== confirm) {
-            //flash for not same passwords
-            res.send('not same ps')
-            return
+            let message = { "errorCode": "fail", "content": "Please enter the same passwords in both fields!" }
+            res.cookie('flashData', message);
+            console.log(req.params.token)
+            res.redirect(`/resetPassword/${resetKey}`)
+            //using resetKey instead of token because idk why it was being weird and giving me a string literal
+            return;  
         }
-        await business.updateUserReset(user.email, null)
-        console.log('check db')
-        res.redirect('/?message=not valid password')
         return
     }
 })
