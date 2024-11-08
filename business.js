@@ -79,6 +79,14 @@ async function updateSession(sessionKey,data){
     return await persistence.updateSession(sessionKey,data)
 }
 
+async function generateFormToken(sessionKey) {
+    let token = crypto.randomUUID()
+    let sessionData = await persistence.getSessionData(sessionKey)
+    sessionData.data.csrfToken = token
+    await persistence.updateSession(sessionKey,sessionData)
+    return token
+}
+
 async function updateUserAccountLanguageLearn(username, languageLearn){
     return persistence.updateUserAccountLanguageLearn(username, languageLearn)
 }
@@ -157,6 +165,11 @@ function validatePassword(newPassword,confirm) {
     }
     return null  }
 
+
+async function deleteSession(sessionKey){
+    return await persistence.deleteSession(sessionKey);
+}
+
   
 
 module.exports={
@@ -175,5 +188,7 @@ module.exports={
     validateEmail,
     validatePassword,
     updateUserAccountLanguageLearn,
-    updateUserAccountLanguageFluent
+    updateUserAccountLanguageFluent,
+    deleteSession,
+    generateFormToken
 }

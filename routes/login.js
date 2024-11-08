@@ -11,6 +11,25 @@ const crypto = require("crypto")
 
 // "/" path will render the home page.
 router.get("/", async (req, res) => {
+    
+    let sessionKey = req.cookies[COOKIE_NAME];
+    let sessionData = await business.getSessionData(sessionKey)
+    if (!sessionData) {
+        let data = {
+            username: null,
+            languageLearn: [],
+            languageFluent: [],
+            csrfToken: null,
+            flashData: 0,
+        }
+        sessionData = await business.startSession(data);
+        res.cookie(
+            "session",
+            sessionData.sessionKey,
+            { maxAge: sessionData.expiry }
+        )
+    }
+
     //chunk of code for register
      //from the register page
      if(req.cookies.flashData){
@@ -25,25 +44,6 @@ router.get("/", async (req, res) => {
 
         return
      }
-
-    let sessionKey = req.cookies[COOKIE_NAME];
-    let sessionData = await business.getSessionData(sessionKey)
-    if (!sessionData) {
-        let data = {
-            username: null,
-            languageLearn: [],
-            languageFluent: [],
-            csrfToken: null,
-            flashData: 0,
-            isVerified:false
-        }
-        sessionData = await business.startSession(data);
-        res.cookie(
-            "session",
-            sessionData.sessionKey,
-            { maxAge: sessionData.expiry }
-        )
-    }
 
     /*the flash gets deleted here and set in the post becaye even if its empty flash,wont display till it has a value
     same mechanism for the rest,we always redirect to the route that renders and put the getFlash before rendering, setFlash on the post routes.
@@ -113,8 +113,6 @@ router.post("/", async (req, res) => {
                 languageFluent: [],
                 csrfToken: null,
                 flashData: 0,
-                isVerified:false
-
             }
             sessionData = await business.startSession(data);
             res.cookie(
@@ -172,6 +170,7 @@ router.get("/sign-up", async (req, res) => {
     if(!sessionData){
         //user first needs to have a session, which they receive in the /route
         res.redirect("/")
+        return;
     }
 
     let fMessage = await flash.getFlash(sessionKey)
@@ -180,11 +179,14 @@ router.get("/sign-up", async (req, res) => {
         flashStyle = 'flash-message-fail'
     }
 
+    let csrf = await business.generateFormToken(sessionKey)
+
     res.render("register", {
     //by not specifying a layout,its getting a layout from the main for the flash msgs but that doesnt work for this special page
         layout:undefined,
         flash: fMessage,
-        style: flashStyle
+        style: flashStyle,
+        csrf:csrf
     })
     return
 })
@@ -201,7 +203,13 @@ router.post("/sign-up", async (req, res) => {
         res.redirect("/")
         return
     }
-    const { username, email, password, repeatedPassword } = req.body
+    const { username, email, password, repeatedPassword, csrf} = req.body
+
+    if(csrf !== sessionData.data.csrf){
+        let message = { "errorCode": "fail", "content": "I don't think you're allowed to do that big man" }
+        await flash.setFlash(sessionKey, message)
+        res.redirect("/")
+    }
 
     if (!username || !email || !password || !repeatedPassword) {
         
@@ -344,10 +352,12 @@ router.get('/resetPassword/:token', async (req, res) => {
         flashStyle = 'flash-message-fail'
     }
     if (user) {
-        res.render('resetPassword',
-            { resetKey: formResetKey , 
+        res.render('resetPassword', {
+                resetKey: formResetKey , 
                 flash: fMessage,
-                style: flashStyle})
+                style: flashStyle,
+                layout:undefined
+            })
         return
     }
 
@@ -399,12 +409,14 @@ router.post('/resetPassword/:token', async (req, res) => {
 })
 
 router.get('/logout', async (req, res) => {
+    console.log(req.cookies[COOKIE_NAME])
+    let sessionKey = req.cookies[COOKIE_NAME]
+    await business.deleteSession()
     delete res.cookie.COOKIE_NAME
     let message = { "errorCode": "fail", "content": "You logged out!" }
     res.cookie('flashData', message);
     res.redirect('/')
     return
-    
 })
 
 

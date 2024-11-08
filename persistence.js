@@ -125,6 +125,11 @@ async function getSessionData(sessionKey) {
     return await userSessions.findOne({sessionKey})
 }
 
+async function deleteSession(sessionKey){
+    await connectDatabase()
+    return await userSessions.deleteOne({sessionKey})
+}
+
 
 module.exports={
     createUser,
@@ -137,6 +142,7 @@ module.exports={
     saveSession,
     updateSession,
     updateUserAccountLanguageLearn,
-    updateUserAccountLanguageFluent
+    updateUserAccountLanguageFluent,
+    deleteSession
    
 }
