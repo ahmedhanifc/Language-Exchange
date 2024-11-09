@@ -204,6 +204,8 @@ router.post("/sign-up", async (req, res) => {
         return
     }
     const { username, email, password, repeatedPassword, csrf} = req.body
+    let validatedUsername=business.validateUsername(username)
+
 
     if(csrf !== sessionData.data.csrfToken){
         let message = { "errorCode": "fail", "content": "I don't think you're allowed to do that big man" }
@@ -212,7 +214,13 @@ router.post("/sign-up", async (req, res) => {
         return;
     }
 
-    if (!username || !email || !password || !repeatedPassword) {
+    if(!validatedUsername){
+        let message = { "errorCode": "fail", "content": "Username cannot be greater than 8 characters.Only _ and - allowed as symbols." }
+        await flash.setFlash(sessionKey, message)
+        res.redirect("/sign-up")
+        return;  
+    }
+    if (usernamesername || !email || !password || !repeatedPassword) {
         
         let message = { "errorCode": "fail", "content": "Field(s) are empty" }
         await flash.setFlash(sessionKey, message)
@@ -250,7 +258,7 @@ router.post("/sign-up", async (req, res) => {
         res.redirect("/sign-up")
         return;  
     }
-    let [validRegisterName, validRegisterEmail] = await business.checkUsernameExistence(username, formatEmail)
+    let [validRegisterName, validRegisterEmail] = await business.checkUsernameExistence(validatedUsername, formatEmail)
     //this function returns the username if it doesnt exist already in the db and heck for email in next commit  
     console.log(validRegisterEmail, ' register in db ', validRegisterName)
 

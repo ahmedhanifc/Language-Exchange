@@ -236,6 +236,15 @@ function validatePassword(newPassword,confirm) {
     }
     return null  }
 
+    function validateUsername(username) {
+        // Regular expression to allow only alphanumeric characters, hyphens, and underscores, with a max length of 8
+        const regex = /^[a-zA-Z0-9_-]{1,8}$/;
+        if(regex.test(username)){
+            return username
+        }
+        return null  }
+    
+
 
 async function deleteSession(sessionKey){
     return await persistence.deleteSession(sessionKey);
@@ -258,6 +267,7 @@ module.exports={
     updateSession,
     validateEmail,
     validatePassword,
+    validateUsername,
     updateUserAccountLanguageLearn,
     updateUserAccountLanguageFluent,
     deleteSession,
