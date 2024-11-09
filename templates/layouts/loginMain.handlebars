@@ -7,24 +7,6 @@
 -->
 <html lang="en">
 
-<style>
-    .flash-message-yay {
-        background-color: green;
-        color: white;
-        font: size 45px;
-    }
-
-    .flash-message-fail {
-        background-color: red;
-        font: size 45px;
-    }
-</style>
-
-{{#if flash}}
-<div class="{{style}}">{{flash.content}}</div>
-{{/if}}
-
-
 <head>
     <base href="./">
     <meta charset="utf-8">
@@ -33,24 +15,9 @@
     <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
     <meta name="author" content="Łukasz Holeczek">
     <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,jQuery,CSS,HTML,RWD,Dashboard">
-    <title>CoreUI Free Bootstrap Admin Template</title>
-    <link rel="apple-touch-icon" sizes="57x57" href="/static/assets/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/static/assets/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/static/assets/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/static/assets/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/static/assets/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/static/assets/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/static/assets/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/static/assets/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/static/assets/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192" href="/static/assets/favicon/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/static/assets/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/static/assets/favicon/manifest.json">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="/static/assets/favicon/ms-icon-144x144.png">
-    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="../../static/logo/not owl.png" type="image/icon type">
+
+    <title>Not Owl</title>
     <!-- Vendors styles-->
     <link rel="stylesheet" href="/static/vendors/simplebar/css/simplebar.css">
     <link rel="stylesheet" href="/static/css/vendors/simplebar.css">
@@ -60,8 +27,33 @@
     <link href="/static/css/examples.css" rel="stylesheet">
 </head>
 
+
+<style>
+    .flash-message-yay {
+        background-color: #a47148;
+        color: white;
+        padding: 10px;
+    }
+
+    .flash-message-fail {
+        background-color: #f96f5d;
+        color:white;
+        padding: 10px;
+    }
+</style>
+
+{{#if flash}}
+<div class="{{style}}">{{flash.content}}</div>
+{{/if}}
+
+
+
 <body>
-    <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+
+    <div class="bg-light min-vh-100 d-flex flex-column justify-content-center align-items-center">
+        <div class="logo-container login">
+            <img src="../../static/logo/not owl.png" alt="">
+        </div>
         {{{body}}}
     </div>
     <!-- CoreUI and necessary plugins-->

@@ -16,8 +16,8 @@ a{
 }
 
 a.item:hover{
-    border: 2px solid rgb(32, 119, 233);
-    color:rgb(5, 94, 212);
+    border: 2px solid #a08166;
+    color:#a47148;
 
 }
 
@@ -59,8 +59,12 @@ a.item:hover{
 
 .link-btn{
     padding: 10px 60px;
-    background-color: #0d6efd;
+    background-color: #a47148;
     color:white;
+}
+
+.link-btn:hover{
+    background: #d4a276;
 }
 
 .link-btns{
