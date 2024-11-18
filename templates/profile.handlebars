@@ -71,3 +71,22 @@
     </div>
 
 </div>
+
+<div class="container-profile badges">
+    <h1>Badges</h1>
+    <div class="badges-container">
+        {{#each badges}}
+        <div class="badges-item">
+            <div class="badge-img">
+                <img src="../static/images/badge-icons/{{this.activePath}}" alt="">
+            </div>
+            <div class="badge-info">
+                <p class="badge-name">{{this.name}}</p>
+                <p class="badge-description">{{this.description}}</p>
+            </div>
+        <div class="empty"></div>
+
+        </div>
+        {{/each}}
+    </div>
+</div>

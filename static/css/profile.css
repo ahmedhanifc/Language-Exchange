@@ -110,7 +110,7 @@
 
 .container-profile.languageContainer.heading{
     text-align: center;
-    padding:20px 0
+    padding:20px 0;
 }
 
 .languageItemsContainer .language-information .image,
@@ -119,3 +119,39 @@
 }
 /* add mobile styles */
 
+.badge-img{
+    width: 80%;
+}
+
+.badge-img img{
+    width: 100%;
+}
+
+.badges-container{
+    padding:20px 0 0 20px;
+}
+
+.badges-item{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+}
+
+.badge-name{
+    font-weight: 600;
+    font-size: 2rem;
+}
+
+.badge-description{
+    font-size: 1.4rem;
+}
+
+.container-profile.badges h1{
+    text-align: center;
+    padding:20px 0 0 0;
+}
+
+.badge-image,
+.badge-info{
+    margin-bottom: 10px;
+}

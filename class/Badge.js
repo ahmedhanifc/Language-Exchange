@@ -1,9 +1,24 @@
 class Badge{
-    constructor(id, name, description, icon, level){
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.icon = icon;
-        this.level = level;
+    activePath = ""
+    completed = false;
+    constructor(name, description,target,completedImageName,incompletedImageName){
+        this.name = name
+        this.description = description
+        this.target = target
+        this.completedImageName = completedImageName
+        this.incompletedImageName = incompletedImageName
+        this.activePath = incompletedImageName //by default,setting activePath to the incompletedPath. Will be checked in
+        //requirementsMet attribute
+    }
+
+    requirementsMet(feature){
+        if(feature >= this.target){
+            this.activePath = this.completedImageName;
+            this.completed = true;
+            return true
+        }
+        return false;
     }
 }
+
+module.exports = Badge

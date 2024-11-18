@@ -4,6 +4,8 @@ const business = require("../business")
 const COOKIE_NAME = "session"
 const flash = require("../flash_msgs")
 
+const BadgeManagement = require("../class/BadgeManagement")
+
 
 async function sessionValidityChecker(req, res, next) {
     let fMessage
@@ -36,10 +38,17 @@ function toTitleCase(word){
 }
 
 router.get("/", sessionValidityChecker,async(req,res) => {
-    console.log("hey")
-    console.log(req.sessionData.data)
     const languageLearn = business.getLangaugesInSystem().filter(language => req.sessionData.data.languageLearn.includes(language.name))
     const languageFluent =  business.getLangaugesInSystem().filter(language => req.sessionData.data.languageFluent.includes(language.name))
+
+    BadgeManagement.createBadge(
+        name = "Bilingual", description = "Learn Two Langauges",target = 2,completedImageName = "3.svg",incompletedImageName = "4.svg"
+    )
+
+    console.log(BadgeManagement.getBadges()["Bilingual"]["target"]) // accessing badge properties
+    BadgeManagement.getBadges()["Bilingual"].requirementsMet(target = languageLearn.length);
+
+
 
     res.render("profile", {
         layout:"main",
@@ -49,13 +58,14 @@ router.get("/", sessionValidityChecker,async(req,res) => {
         nationality: req.sessionData.data.userInfo.nationality,
         numlanguageLearn: req.sessionData.data.languageLearn.length,
         numLanguageFluent:req.sessionData.data.languageFluent.length,
-        visitingAnotherUser:false, // this is to check if the user thats viewing the profile is current user or not,
-        // so when viewing the profile of others, we can add different features.
         languageLearn,
         languageFluent,
         helpers:{
             toTitleCase,
-        }
+        },
+        badges: BadgeManagement.getBadges()
+
+
 
     })
 })
