@@ -34,35 +34,3 @@
     </div>
 
 </div>
-<div class="heading">
-    <h1>Welcome {{username}}</h1>
-</div>
-
-<p class="flag-language-question"> What Languages are you fluent in?</p>
-<div class="container">
-    {{#each languages}}
-    <a class="item" href="/home/languageFluent/{{this.name}}">
-        <div class="language-information ">
-            <div class="image">
-                <img src="{{this.flag}}" alt="">
-            </div>
-            <div class="name">{{titleCase this.name}}</div>
-        </div>
-    </a>
-    {{/each}}
-</div>
-
-<div class="language-selection">
-    <p>Language(s) you are fluent in:</p>
-    <ul>
-        {{#each languageFluent}}
-        <li>{{titleCase this}}</li>
-        {{/each}}
-    </ul>
-</div>
-
-
-<div class="link-btns">
-    <a class="link-btn" href="/home/languageLearn">Previous</a>
-    <a class="link-btn" href="/home/">Done</a>
-</div>

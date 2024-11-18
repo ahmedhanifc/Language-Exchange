@@ -1,39 +1,39 @@
 <div class="container-home">
-<div class="heading">
-    <h1>Welcome {{username}}</h1>
-</div>
+    <div class="heading">
+        <h1>Welcome {{username}}</h1>
+    </div>
 
-<p class = "flag-language-question"> What Languages Would you like to learn?</p>
+    <p class="flag-language-question"> What Languages Would you like to learn?</p>
 
-<div class="container">
-    {{#each languages}}
-    <a class="item" href = "/home/languageLearn/{{this.name}}">
-        <div class="language-information ">
-            <div class="image">
-                <img src="{{this.flag}}" alt="">
+    <div class="container">
+        {{#each languages}}
+        <a class="item" href="/home/languageLearn/{{this.name}}">
+            <div class="language-information ">
+                <div class="image">
+                    <img src="{{this.flag}}" alt="">
+                </div>
+                <div class="name">{{titleCase this.name}}</div>
             </div>
-            <div class="name">{{titleCase this.name}}</div>
-        </div>
-    </a>
-    {{/each}}
-</div>
-<br>
-
-
-<div class="language-selection">
-    <p>Language(s) you have selected to learn:</p>
-    <ul>
-        {{#each languageLearn}}
-        <li>{{titleCase this}}</li>
+        </a>
         {{/each}}
-    </ul>
-</div>
+    </div>
+    <br>
 
 
-<div  class = "link-btns">
-    <a href=""></a>  {{!--For flexbox so next button is aligned to the end--}}
-    <a  class = "link-btn" href="/home/languageFluent">Next</a>
-</div>
+    <div class="language-selection">
+        <p>Language(s) you have selected to learn:</p>
+        <ul>
+            {{#each languageLearn}}
+            <li>{{titleCase this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+
+
+    <div class="link-btns">
+        <a href=""></a>
+        <a class="link-btn" href="/home/languageFluent">Language Fluent</a>
+    </div>
 
 
 </div>

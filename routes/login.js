@@ -17,6 +17,7 @@ router.get("/", async (req, res) => {
     if (!sessionData) {
         let data = {
             username: null,
+            bio:{},
             languageLearn: [],
             languageFluent: [],
             csrfToken: null,
@@ -111,6 +112,7 @@ router.post("/", async (req, res) => {
                 username: null,
                 languageLearn: [],
                 languageFluent: [],
+                bio:{},
                 csrfToken: null,
                 flashData: 0,
             }
@@ -125,15 +127,21 @@ router.post("/", async (req, res) => {
         //we updated it session here as the user has correct credentials,now the attributes will not be null anymore
         sessionData.data.username = userCredentials.username
 
-        if(userCredentials.languageFluent && userCredentials.languageLearn){
+        if(userCredentials.languageFluent && userCredentials.languageLearn && userCredentials.bio){
             sessionData.data.languageFluent = userCredentials.languageFluent
-            sessionData.data.languageLearn = userCredentials.languageLearn
+            sessionData.data.languageLearn = userCredentials.languageLearn,
+            sessionData.data.bio= userCredentials.bio
+
         }
         await business.updateSession(sessionKey, sessionData);
 
         if (userCredentials.username && userCredentials.isVerified) {
             //this whole chunk of code only executes if a username exists/for valid users else the login page gets rendered again
 
+            if(!userCredentials.userBio || Object.keys(userCredentials.userBio).length === 0){
+                res.redirect("/home/bio")
+                return;
+            }
             if (!userCredentials.languageFluent || !userCredentials.languageLearn) {
                 res.redirect("/home/languageLearn")
                 return

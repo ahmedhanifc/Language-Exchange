@@ -76,6 +76,38 @@ router.get("/", sessionValidityChecker, async (req, res) => {
     })
 })
 
+router.get("/bio", sessionValidityChecker, async(req,res)=> {
+    let fMessage = await flash.getFlash(req.sessionData.sessionKey)
+    let flashStyle = 'flash-message-yay'
+    if (fMessage && fMessage.errorCode === 'fail') {
+        flashStyle = 'flash-message-fail'
+    }
+
+    console.log("hello")
+
+    res.render("bio", {
+        layout:"main",
+        flash: fMessage,
+        style: flashStyle,
+    })
+})
+
+router.post("/bio", sessionValidityChecker, async(req,res) => {
+    let {firstName,lastName,nationality, dateOfBirth} = req.body;
+    if(firstName.trim().length===0 || lastName.trim().length===0 || lastName.trim().length===0 || dateOfBirth.trim().length===0){
+        fMessage = { "errorCode": "fail", "content": "Field(s) Cannot be Empty" }
+        flash.setFlash(req.sessionData.sessionKey, fMessage);
+        res.redirect("/home/bio")
+        return;
+    }
+    console.log(req.sessionData.data.username)
+    await business.updateUserBio(req.sessionData.data.username,req.body);
+
+
+    res.redirect("/home/languageLearn")
+    return;
+})
+
 router.get("/languageLearn", sessionValidityChecker, async (req, res) => {
     let fMessage = await flash.getFlash(req.sessionData.sessionKey)
     let flashStyle = 'flash-message-yay'

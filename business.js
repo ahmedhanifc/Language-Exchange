@@ -81,13 +81,14 @@ async function validateCredentials(username, password){
         // directly check the hash of user entered password against hash stored in db
     {
         console.log("isVerified:", userCredentials.isVerified);
-
+        console.log(userCredentials.userBio)
         // first checking to see if userCredentials exist. If we don't do this, app will crash
         return {
             username:userCredentials.username,
             languageFluent:userCredentials.languageFluent,
             languageLearn:userCredentials.languageLearn,
-            isVerified:userCredentials.isVerified
+            isVerified:userCredentials.isVerified,
+            userBio:userCredentials.userBio
         } // no need to return password. We can add more fields as needed
     }
     else if(!userCredentials)
@@ -122,6 +123,11 @@ async function startSession(data) {
  */
 async function updateSession(sessionKey,data){
     return await persistence.updateSession(sessionKey,data)
+}
+
+async function updateUserBio(username,userBio){
+    return await persistence.updateUserBio(username,userBio);
+
 }
 
 /**
@@ -271,5 +277,6 @@ module.exports={
     updateUserAccountLanguageLearn,
     updateUserAccountLanguageFluent,
     deleteSession,
-    generateFormToken
+    generateFormToken,
+    updateUserBio
 }

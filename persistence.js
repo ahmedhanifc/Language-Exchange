@@ -86,6 +86,12 @@ async function createUser(username,email,password,resetKey){
 
 }
 
+async function updateUserBio(username,userBio){
+    await connectDatabase();
+    return await userAccounts.updateOne({username}, {$set: {userBio}})
+
+}
+
 /**
  * Updates the reset key for a user.
  * @async
@@ -230,6 +236,7 @@ module.exports={
     updateSession,
     updateUserAccountLanguageLearn,
     updateUserAccountLanguageFluent,
-    deleteSession
+    deleteSession,
+    updateUserBio
    
 }
