@@ -4,18 +4,6 @@ const business = require("../business")
 const COOKIE_NAME = "session"
 const flash = require("../flash_msgs")
 
-const LANGUAGES_IN_OUR_SYSTEM = [
-    { name: 'urdu', flag: '../static/flags/pakistan.png' },
-    { name: 'punjabi', flag: '../static/flags/punjab.png' },
-    { name: 'english', flag: '../static/flags/united-kingdom.png' },
-    { name: 'arabic', flag: '../static/flags/arabic.png' },
-    { name: 'german', flag: '../static/flags/germany.png' },
-    { name: 'italian', flag: '../static/flags/italy.png' },
-    { name: 'japanese', flag: '../static/flags/japan.png' },
-    { name: 'turkish', flag: '../static/flags/turkey.png' },
-    { name: 'spanish', flag: '../static/flags/spain.png' }
-];
-
 function titleCase(string) {
     formattedString = string.slice(0, 1).toUpperCase() + string.slice(1,);
     return formattedString
@@ -125,7 +113,7 @@ router.get("/languageLearn", sessionValidityChecker, async (req, res) => {
         flash: fMessage,
         style: flashStyle,
         languageLearn: req.sessionData.data.languageLearn,
-        languages: LANGUAGES_IN_OUR_SYSTEM,
+        languages: business.getLangaugesInSystem(),
         helpers: {
             titleCase
         },
@@ -153,7 +141,7 @@ router.get("/languageFluent", sessionValidityChecker, async (req, res) => {
         flash: fMessage,
         style: flashStyle,
         languageFluent: req.sessionData.data.languageFluent,
-        languages: LANGUAGES_IN_OUR_SYSTEM,
+        languages: business.getLangaugesInSystem(),
         helpers: {
             titleCase
         },
@@ -210,5 +198,5 @@ router.get("/languageFluent/:languageFluent", sessionValidityChecker, async (req
 
 
 
-module.exports = router;
+module.exports = router
 

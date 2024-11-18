@@ -1,35 +1,73 @@
-
 <div class="container-profile">
     <div class="top">
-        <div class="left">
-            <div class="friends">
-                <div class="count">22</div>
-                <div class="countText">Friend(s)</div>
-            </div>
-            <div class="languageLearnCount">
-                <div class="count">10</div>
-                <div class="countText">Language(s) Learned</div>
-            </div>
-            <div class="languageFluentCount">
-                <div class="count">5</div>
-                <div class="countText">Language(s) Fluent</div>
-            </div>
-        </div>
+
         <div class="middle">
             <img src="../static/images/black_profile_picture.png" alt="">
         </div>
-        <div class="right">
-            <div class="button addFriendButton">
-                <button>Add Friend</button>
+
+        <div class="left">
+            <div class="leftOne">
+                <div class="info name">{{firstName}} {{lastName}}</div>
+                <div class="info age"></div>
+                <div class="info location">{{toTitleCase nationality}}</div>
             </div>
-            <div class="button messageButton">
-                <button>Message</button>
+            <div class="leftTwo">
+                <div class="friends">
+                    <div class="count">22</div>
+                    <div class="countText">Friend(s)</div>
+                </div>
+                <div class="languageLearnCount">
+                    <div class="count">{{numlanguageLearn}}</div>
+                    <div class="countText">Language(s) Learned</div>
+                </div>
+                <div class="languageFluentCount">
+                    <div class="count">{{numLanguageFluent}}</div>
+                    <div class="countText">Language(s) Fluent</div>
+                </div>
+
             </div>
         </div>
+
+        <div class="empty"></div>
     </div>
-    <div class="middle">
-        <div class="info name">{{name}}</div>
-        <div class="info age"></div>
+    <div class="bottom">
+
+    </div>
+
+</div>
+
+
+<div class="container-profile languageContainer">
+    <div class="languageLearn">
+        <h1>Language(s) Learn</h1>
+        <div class="languageItemsContainer">
+            {{#each languageLearn}}
+            <a class="languageLearnItem">
+                <div class="language-information">
+                    <div class="image">
+                        <img src="{{this.flag}}" alt="">
+                    </div>
+                    <div class="name">{{toTitleCase this.name}}</div>
+                </div>
+            </a>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="languageFluent">
+        <h1>Language(s) Fluent</h1>
+        <div class="languageItemsContainer">
+            {{#each languageFluent}}
+            <a class="languageFluentItem">
+                <div class="language-information">
+                    <div class="image">
+                        <img src="{{this.flag}}" alt="">
+                    </div>
+                    <div class="name">{{toTitleCase this.name}}</div>
+                </div>
+            </a>
+            {{/each}}
+        </div>
     </div>
 
 </div>

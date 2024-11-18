@@ -1,17 +1,31 @@
 .container-profile{
-    width: 90%;
-    margin: 0 auto;
-}   
+    width: 70%;
+    margin: 30px auto;
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.15);
+}
+
+
+.empty{
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    background-color: #a47148;
+}
 
 .container-profile .top{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
     gap:20px;
-    justify-items: center;
+    justify-items: start;
 }
 
 .left, .right{
     padding-top:30px;
+}
+
+.middle,.left{
+    padding:40px 20px;
 }
 
 .container-profile button{
@@ -24,20 +38,20 @@
     color: white;
 }
 
-.container-profile .left{
+.left{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap:10px;
-    font-size: 1.2rem;
+    justify-content: center;
+}
+
+.left .leftTwo {
+    display: flex;
+    flex-wrap: wrap;
+    /* grid-template-columns: 1fr 1fr 1fr; */
+}
+
+.left .leftTwo > *{
+    flex: 1;
     text-align: center;
-    justify-items: center;
-}
-.container-profile .left .count {
-    font-weight: 700;
-}
-.container-profile .left .countText {
-    font-weight: 400;
-    width: fit-content;
 }
 
 .container-profile .right{
@@ -47,16 +61,61 @@
     font-size: 1.2rem;
 }
 
-
 .container-profile .middle img{
     width: 100%;
     vertical-align: middle;
-    width: 150px;
-    height: 150px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
-    position: relative;
-    bottom:20px;
 }
 
+.info{
+    text-align: center;
+}
+.info.name{
+    text-align: center;
+    font-size: 1.8rem;
+}
 
+.container-profile.languageContainer{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap:20px;
+    background: none;
+}
+
+.container-profile      .languageFluent,
+.container-profile .languageLearn{
+    background: white;
+    padding: 30px;
+
+}
+
+.languageItemsContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap:5px;
+}
+
+.languageFluent h1,
+.languageLearn h1{
+    font-size: 2rem;
+
+}
+
+.container-profile      .languageFluent *,
+.container-profile .languageLearn *{
+    flex: 1;
+}
+
+.container-profile.languageContainer.heading{
+    text-align: center;
+    padding:20px 0
+}
+
+.languageItemsContainer .language-information .image,
+.languageItemsContainer .language-information .image{
+    width: 70px;
+}
 /* add mobile styles */
+

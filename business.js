@@ -128,6 +128,24 @@ async function updateuserInfo(username, userInfo) {
 
 }
 
+function getLangaugesInSystem() {
+
+
+    const LANGUAGES_IN_OUR_SYSTEM = [
+        { name: 'urdu', flag: '../static/flags/pakistan.png' },
+        { name: 'punjabi', flag: '../static/flags/punjab.png' },
+        { name: 'english', flag: '../static/flags/united-kingdom.png' },
+        { name: 'arabic', flag: '../static/flags/arabic.png' },
+        { name: 'german', flag: '../static/flags/germany.png' },
+        { name: 'italian', flag: '../static/flags/italy.png' },
+        { name: 'japanese', flag: '../static/flags/japan.png' },
+        { name: 'turkish', flag: '../static/flags/turkey.png' },
+        { name: 'spanish', flag: '../static/flags/spain.png' }
+    ];
+
+    return LANGUAGES_IN_OUR_SYSTEM;
+}
+
 /**
  * Generates a CSRF token for a session.
  * @param {string} sessionKey - The session key of the session.
@@ -250,7 +268,7 @@ function validateUsername(username) {
     return null
 }
 
-function getTodaysDate(){
+function getTodaysDate() {
 
 }
 
@@ -281,5 +299,6 @@ module.exports = {
     updateUserAccountLanguageFluent,
     deleteSession,
     generateFormToken,
-    updateuserInfo
+    updateuserInfo,
+    getLangaugesInSystem
 }
