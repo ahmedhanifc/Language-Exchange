@@ -3564,6 +3564,10 @@ html:not([dir=rtl]) .form-check-inline .form-check-input ~ .invalid-feedback {
   --cui-gradient: none;
 }
 
+.container-home{
+  padding:40px;
+}
+
 .btn-outline-danger {
   --cui-btn-color: #e55353;
   --cui-btn-border-color: #e55353;
@@ -7905,7 +7909,6 @@ html:not([dir=rtl]) .header-brand {
 }
 
 .header{
-  padding:25px;
   font-size: 1.3rem;
 }
 

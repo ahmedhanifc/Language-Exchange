@@ -34,7 +34,9 @@ async function sessionValidityChecker(req, res, next) {
 router.get("/", async(req,res) => {
 
 
-    res.send("Profile Page")
+    res.render("profile", {
+        layout:"main"
+    })
 })
 
 
