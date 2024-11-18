@@ -76,32 +76,38 @@ router.get("/", sessionValidityChecker, async (req, res) => {
     })
 })
 
-router.get("/bio", sessionValidityChecker, async(req,res)=> {
+router.get("/info", sessionValidityChecker, async(req,res)=> {
     let fMessage = await flash.getFlash(req.sessionData.sessionKey)
     let flashStyle = 'flash-message-yay'
     if (fMessage && fMessage.errorCode === 'fail') {
         flashStyle = 'flash-message-fail'
     }
 
-    console.log("hello")
-
-    res.render("bio", {
+    res.render("info", {
         layout:"main",
         flash: fMessage,
         style: flashStyle,
     })
 })
 
-router.post("/bio", sessionValidityChecker, async(req,res) => {
+router.post("/info", sessionValidityChecker, async(req,res) => {
     let {firstName,lastName,nationality, dateOfBirth} = req.body;
     if(firstName.trim().length===0 || lastName.trim().length===0 || lastName.trim().length===0 || dateOfBirth.trim().length===0){
         fMessage = { "errorCode": "fail", "content": "Field(s) Cannot be Empty" }
         flash.setFlash(req.sessionData.sessionKey, fMessage);
-        res.redirect("/home/bio")
+        res.redirect("/home/info")
         return;
     }
+    let [year,month,day] = dateOfBirth.split("-")
+    if(year < "1920" || year > "2020"){
+        fMessage = { "errorCode": "fail", "content": "Illegal Date" }
+        flash.setFlash(req.sessionData.sessionKey, fMessage);
+        res.redirect("/home/info")
+        return;
+    }
+
     console.log(req.sessionData.data.username)
-    await business.updateUserBio(req.sessionData.data.username,req.body);
+    await business.updateuserInfo(req.sessionData.data.username,req.body);
 
 
     res.redirect("/home/languageLearn")
@@ -164,14 +170,14 @@ router.get("/languageLearn/:languageLearn", sessionValidityChecker, async (req, 
 
     else if (req.sessionData.data.languageLearn.includes(languageLearn)) {
         req.sessionData.data.languageLearn.pop(languageLearn)
-        await business.updateSession(req.sessionData.sessionKey, req.sessionData)
+        await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageLearn(req.sessionData.data.username, req.sessionData.data.languageLearn);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Removed" }
 
     }
     else if (!req.sessionData.data.languageFluent.includes(languageLearn) && !req.sessionData.data.languageLearn.includes(languageLearn)) {
         req.sessionData.data.languageLearn.push(languageLearn)
-        await business.updateSession(req.sessionData.sessionKey, req.sessionData)
+        await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageLearn(req.sessionData.data.username, req.sessionData.data.languageLearn);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Added. Click Again if you wish to remove the language" }
     }
@@ -188,13 +194,13 @@ router.get("/languageFluent/:languageFluent", sessionValidityChecker, async (req
     }
     else if (req.sessionData.data.languageFluent.includes(languageFluent)) {
         req.sessionData.data.languageFluent.pop(languageFluent)
-        await business.updateSession(req.sessionData.sessionKey, req.sessionData)
+        await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageFluent(req.sessionData.data.username, req.sessionData.data.languageFluent);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Removed" }
     }
     else if (!req.sessionData.data.languageFluent.includes(languageFluent) && !req.sessionData.data.languageLearn.includes(languageFluent)) {
         req.sessionData.data.languageFluent.push(languageFluent)
-        await business.updateSession(req.sessionData.sessionKey, req.sessionData)
+        await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageFluent(req.sessionData.data.username, req.sessionData.data.languageFluent);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Added" }
     }

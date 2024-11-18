@@ -86,9 +86,9 @@ async function createUser(username,email,password,resetKey){
 
 }
 
-async function updateUserBio(username,userBio){
+async function updateuserInfo(username,userInfo){
     await connectDatabase();
-    return await userAccounts.updateOne({username}, {$set: {userBio}})
+    return await userAccounts.updateOne({username}, {$set: {userInfo}})
 
 }
 
@@ -160,16 +160,13 @@ async function saveSession(sessionData) {
  * @param {Object} data - The data to update in the session.
  * @returns {Promise<Object>} The result of the update operation.
  */
-async function updateSession(sessionKey, data){
+async function updateSessionData(sessionKey, data){
     await connectDatabase()
+    let test = await userSessions.findOne({sessionKey});
+    // test.data = data
+    // console.log(test.data)
     let sessionData = await userSessions.updateOne({sessionKey}, {
-        $set:{
-            "data.username": data.data.username,
-            "data.languageLearn":data.data.languageLearn,
-            "data.languageFluent":data.data.languageFluent,
-            "data.csrfToken":data.data.csrfToken,
-            "data.flashData":data.data.flashData
-        }
+        $set:{data:data.data}
     })
 
     return sessionData
@@ -233,10 +230,10 @@ module.exports={
     updateUserVerification,
     getSessionData,
     saveSession,
-    updateSession,
+    updateSessionData,
     updateUserAccountLanguageLearn,
     updateUserAccountLanguageFluent,
     deleteSession,
-    updateUserBio
+    updateuserInfo
    
 }

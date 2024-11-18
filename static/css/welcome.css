@@ -81,17 +81,17 @@ a{
     font-size: 1.3rem;
     font-weight: 600;
 }
-.bio-form-container{
+.info-form-container{
     width: 70%;
     margin:0 auto;
 }
-.bio-form-container form {
+.info-form-container form {
     display: grid;
     gap:20px;
 
 }
 
-.bio-form-container form div{
+.info-form-container form div{
     display: grid;
     grid-template-columns: 1fr 1fr;
 }

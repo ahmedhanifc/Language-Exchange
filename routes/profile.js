@@ -31,11 +31,12 @@ async function sessionValidityChecker(req, res, next) {
     }
 }
 
-router.get("/", async(req,res) => {
-
-
+router.get("/", sessionValidityChecker,async(req,res) => {
+    console.log(req.sessionData.data);
     res.render("profile", {
-        layout:"main"
+        layout:"main",
+        name:req.sessionData.data.userInfo.firstName + " "+req.sessionData.data.userInfo.lastName,
+
     })
 })
 

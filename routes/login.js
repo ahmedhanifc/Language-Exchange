@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
     if (!sessionData) {
         let data = {
             username: null,
-            bio:{},
+            userInfo:{},
             languageLearn: [],
             languageFluent: [],
             csrfToken: null,
@@ -112,7 +112,7 @@ router.post("/", async (req, res) => {
                 username: null,
                 languageLearn: [],
                 languageFluent: [],
-                bio:{},
+                info:{},
                 csrfToken: null,
                 flashData: 0,
             }
@@ -127,19 +127,20 @@ router.post("/", async (req, res) => {
         //we updated it session here as the user has correct credentials,now the attributes will not be null anymore
         sessionData.data.username = userCredentials.username
 
-        if(userCredentials.languageFluent && userCredentials.languageLearn && userCredentials.bio){
+        if(userCredentials.languageFluent && userCredentials.languageLearn){
             sessionData.data.languageFluent = userCredentials.languageFluent
-            sessionData.data.languageLearn = userCredentials.languageLearn,
-            sessionData.data.bio= userCredentials.bio
-
+            sessionData.data.languageLearn = userCredentials.languageLearn
         }
-        await business.updateSession(sessionKey, sessionData);
+        if(userCredentials.userInfo){
+            sessionData.data.userInfo = userCredentials.userInfo
+        }
+        await business.updateSessionData(sessionKey, sessionData);
 
         if (userCredentials.username && userCredentials.isVerified) {
             //this whole chunk of code only executes if a username exists/for valid users else the login page gets rendered again
 
-            if(!userCredentials.userBio || Object.keys(userCredentials.userBio).length === 0){
-                res.redirect("/home/bio")
+            if(!userCredentials.userInfo || Object.keys(userCredentials.userInfo).length === 0){
+                res.redirect("/home/info")
                 return;
             }
             if (!userCredentials.languageFluent || !userCredentials.languageLearn) {
@@ -275,7 +276,7 @@ router.post("/sign-up", async (req, res) => {
 
         await business.createUser(validRegisterName, validRegisterEmail, formatPassword, null)
         sessionData.data.username = validRegisterName
-        await business.updateSession(sessionData.sessionKey,sessionData)
+        await business.updateSessionData(sessionData.sessionKey,sessionData)
         //here if registration succeessful we send an email with the verification link  and display flash
             let verificationToken=crypto.randomUUID()
             //the path parameter makes the cookie accesible through allpaths in the same domain
