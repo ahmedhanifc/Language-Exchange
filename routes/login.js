@@ -220,7 +220,7 @@ router.post("/sign-up", async (req, res) => {
         res.redirect("/sign-up")
         return;  
     }
-    if (usernamesername || !email || !password || !repeatedPassword) {
+    if (!username || !email || !password || !repeatedPassword) {
         
         let message = { "errorCode": "fail", "content": "Field(s) are empty" }
         await flash.setFlash(sessionKey, message)
