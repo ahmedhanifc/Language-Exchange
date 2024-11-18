@@ -12,6 +12,7 @@ let app = express()
 //All the Routers of Our Application
 const loginRouter = require("./routes/login.js")
 const homeRouter = require("./routes/home.js")
+const profileRouter = require("./routes/profile.js")
 
 
 
@@ -26,6 +27,7 @@ app.use(cookieParser());
 
 app.use("/", loginRouter);
 app.use("/home", homeRouter) //the home.js Router will take all routers that begin from /home
+app.use("/profile", profileRouter) //the profile.js Router will take all routers that begin from /profile
 
 
 app.listen(8000, () => {
