@@ -45,8 +45,8 @@ router.get("/", sessionValidityChecker,async(req,res) => {
         name = "Bilingual", description = "Learn Two Langauges",target = 2,completedImageName = "3.svg",incompletedImageName = "4.svg"
     )
 
-    console.log(BadgeManagement.getBadges()["Bilingual"]["target"]) // accessing badge properties
-    BadgeManagement.getBadges()["Bilingual"].requirementsMet(target = languageLearn.length);
+    BadgeManagement.getBadges()["Bilingual"].updateFeature(languageLearn.length);
+    console.log(BadgeManagement.getBadges()["Bilingual"]) // accessing badge properties
 
 
 

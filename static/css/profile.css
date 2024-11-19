@@ -155,3 +155,7 @@
 .badge-info{
     margin-bottom: 10px;
 }
+
+.badge-progress{
+    font-size: 2rem;
+}

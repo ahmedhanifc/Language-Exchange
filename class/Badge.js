@@ -1,6 +1,7 @@
 class Badge{
     activePath = ""
     completed = false;
+    feature = 0;
     constructor(name, description,target,completedImageName,incompletedImageName){
         this.name = name
         this.description = description
@@ -11,8 +12,14 @@ class Badge{
         //requirementsMet attribute
     }
 
-    requirementsMet(feature){
-        if(feature >= this.target){
+    updateFeature(feature){
+        this.feature = feature
+
+        this.requirementsMet()
+    }
+
+    requirementsMet(){
+        if(this.feature >= this.target){
             this.activePath = this.completedImageName;
             this.completed = true;
             return true
