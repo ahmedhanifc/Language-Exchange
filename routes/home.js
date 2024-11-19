@@ -101,14 +101,16 @@ router.post("/info", sessionValidityChecker,fileUpload(), async(req,res) => {
     let userFile=req.files.userFile
     let fileName=req.sessionData.data.username
     console.log(fileName,req.files.mimetype)
-    await userFile.mv(`${__dirname}/user_files/${Date.now()}_${fileName}`)
+    let filePath=`${__dirname}/user_files/${Date.now()}_${fileName}`
+    await userFile.mv(`${filePath}`)
     console.log('check taht a new directory should be made')
 
+    console.log(req.sessionData.data.imageLink)
 
-    console.log(req.sessionData.data.username)
-    await business.updateuserInfo(req.sessionData.data.username,req.body);
-
-
+    req.sessionData.userInfo=[firstName,lastName,nationality, dateOfBirth,filePath]
+  //  await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
+    await business.updateuserInfo(req.sessionData.data.username,[firstName,lastName,nationality, dateOfBirth,filePath]);
+    //this function updates the useraccount db with the user info
     res.redirect("/home/languageLearn")
     return;
 })

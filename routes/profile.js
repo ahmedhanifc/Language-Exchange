@@ -48,10 +48,12 @@ router.get("/", sessionValidityChecker,async(req,res) => {
     BadgeManagement.getBadges()["Bilingual"].updateFeature(languageLearn.length);
     console.log(BadgeManagement.getBadges()["Bilingual"]) // accessing badge properties
 
+    let image=filePath
 
 
     res.render("profile", {
         layout:"main",
+        image:image,
         firstName:req.sessionData.data.userInfo.firstName,
         lastName: req.sessionData.data.userInfo.lastName,
         userName:req.sessionData.data.username,
