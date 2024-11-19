@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const business = require("../business")
+const fileUpload = require('express-fileupload');
 const COOKIE_NAME = "session"
 const flash = require("../flash_msgs")
 
@@ -64,6 +65,7 @@ router.get("/", sessionValidityChecker, async (req, res) => {
     })
 })
 
+
 router.get("/info", sessionValidityChecker, async(req,res)=> {
     let fMessage = await flash.getFlash(req.sessionData.sessionKey)
     let flashStyle = 'flash-message-yay'
@@ -78,7 +80,7 @@ router.get("/info", sessionValidityChecker, async(req,res)=> {
     })
 })
 
-router.post("/info", sessionValidityChecker, async(req,res) => {
+router.post("/info", sessionValidityChecker,fileUpload(), async(req,res) => {
     let {firstName,lastName,nationality, dateOfBirth} = req.body;
     if(firstName.trim().length===0 || lastName.trim().length===0 || lastName.trim().length===0 || dateOfBirth.trim().length===0){
         fMessage = { "errorCode": "fail", "content": "Field(s) Cannot be Empty" }
@@ -93,6 +95,15 @@ router.post("/info", sessionValidityChecker, async(req,res) => {
         res.redirect("/home/info")
         return;
     }
+
+    //here retrieve uploaded file and move to directory
+    console.log(req.files)
+    let userFile=req.files.userFile
+    let fileName=req.sessionData.data.username
+    console.log(fileName,req.files.mimetype)
+    await userFile.mv(`${__dirname}/user_files/${Date.now()}_${fileName}`)
+    console.log('check taht a new directory should be made')
+
 
     console.log(req.sessionData.data.username)
     await business.updateuserInfo(req.sessionData.data.username,req.body);

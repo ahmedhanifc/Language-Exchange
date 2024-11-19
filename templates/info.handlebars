@@ -8,7 +8,7 @@
 
     <div class="info-form-container">
 
-        <form action="/home/info" method="post">
+        <form action="/home/info" method="post" enctype='multipart/form-data'>
             <div class="info-form-item">
                 <label for="" id="firstName">First Name:</label>
                 <input type="text" name="firstName" id="firstName">
@@ -219,6 +219,12 @@
             <div class="info-form-item">
                 <label for="dateOfBirth">Date of Birth:</label>
                 <input type="date" id="dateOfBirth" name="dateOfBirth">
+            </div>
+              <div class="info-form-item">
+                <label for="Your Picture" id="file">Upload your profile picture: </label>
+                <input type="file" name="userFile" id="file" accept="image/*">
+                <!--  over here if i change the name here to the username of the person then the file will get saved as that,i think?
+                this wont work because i need to call tthe name by a static value not a dynamic one so {{username}} wont work  -->
             </div>
 
     </div>
