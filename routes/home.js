@@ -107,7 +107,7 @@ router.post("/info", sessionValidityChecker,fileUpload(), async(req,res) => {
         return;
     }
     if(userFile.mimetype!=='image/png' && userFile.mimetype!=='image/jpeg' ){
-        fMessage = { "errorCode": "fail", "content": "File needs to be .png" }
+        fMessage = { "errorCode": "fail", "content": "File needs to be .png,.jpg or .jpeg" }
         flash.setFlash(req.sessionData.sessionKey, fMessage);
         res.redirect("/home/info")
         return;
