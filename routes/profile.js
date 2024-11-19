@@ -53,7 +53,7 @@ router.get("/", sessionValidityChecker,async(req,res) => {
 
     res.render("profile", {
         layout:"main",
-        // image:image,
+        userFile:req.sessionData.data.userInfo.fileLink,
         firstName:req.sessionData.data.userInfo.firstName,
         lastName: req.sessionData.data.userInfo.lastName,
         userName:req.sessionData.data.username,

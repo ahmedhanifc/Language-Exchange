@@ -65,7 +65,7 @@ router.get("/", sessionValidityChecker, async (req, res) => {
     })
 })
 
-
+//BUSINESS RULE: USERS MMUST UPLOAD PROFILE PICTURES,THERE WILL BE NO DEFAULT FOR THEM.we want personlized profiles and visible ones.
 router.get("/info", sessionValidityChecker, async(req,res)=> {
     let fMessage = await flash.getFlash(req.sessionData.sessionKey)
     let flashStyle = 'flash-message-yay'
@@ -99,17 +99,45 @@ router.post("/info", sessionValidityChecker,fileUpload(), async(req,res) => {
     //here retrieve uploaded file and move to directory
     console.log(req.files)
     let userFile=req.files.userFile
-    let fileName=req.sessionData.data.username
-    console.log(fileName,req.files.mimetype)
-    let filePath=`${__dirname}/user_files/${Date.now()}_${fileName}`
-    await userFile.mv(`${filePath}`)
-    console.log('check taht a new directory should be made')
+    //checks for file uploaded
+    if(!req.files){
+        fMessage = { "errorCode": "fail", "content": "You must uploade a profile picture" }
+        flash.setFlash(req.sessionData.sessionKey, fMessage);
+        res.redirect("/home/info")
+        return;
+    }
+    if(userFile.mimetype!=='image/png' && userFile.mimetype!=='image/jpeg' ){
+        fMessage = { "errorCode": "fail", "content": "File needs to be .png" }
+        flash.setFlash(req.sessionData.sessionKey, fMessage);
+        res.redirect("/home/info")
+        return;
+    }
+    
 
-    console.log(req.sessionData.data.imageLink)
+    //if file is correct then it saves
+ let fileName=req.sessionData.data.username
+ let timestamp = Date.now();
+let relativeFilePath = `/user_files/${timestamp}_${fileName}`; // Relative path for browser access so that we can render this easily when we retrieve
+let absoluteFilePath = `C:/Users/hafsa/OneDrive/Documents/GitHub/Language-Exchange/static/user_files/${timestamp}_${fileName}`; // Absolute path for saving
+// Move the file to the server directory
+await userFile.mv(absoluteFilePath);
+console.log("File uploaded and moved to directory:", absoluteFilePath);
+     //to save file path that can be called later from useraccounts to display profile picture
+     let infoData={
+        firstName: firstName,
+        lastName:lastName,
+        nationality:nationality,
+        dateOfBirth:dateOfBirth,
+        fileLink: relativeFilePath,
+    }
+    //saving infoData object as itself within sessionData.data.userInfo
+    req.sessionData.data.userInfo=infoData
 
-    req.sessionData.userInfo=[firstName,lastName,nationality, dateOfBirth,filePath]
-  //  await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
-    await business.updateuserInfo(req.sessionData.data.username,[firstName,lastName,nationality, dateOfBirth,filePath]);
+
+        console.log(infoData)
+   // req.sessionData.userInfo=[firstName,lastName,nationality, dateOfBirth,filePath]
+    await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
+    await business.updateuserInfo(req.sessionData.data.username,infoData);
     //this function updates the useraccount db with the user info
     res.redirect("/home/languageLearn")
     return;
