@@ -138,7 +138,7 @@ router.get("/languageFluent", sessionValidityChecker, async (req, res) => {
     let fMessage;
     if (req.sessionData.data.languageLearn.length === 0) {
         fMessage = { "errorCode": "fail", "content": "You did not select a language that you want to learn. Please select a language" }
-        flash.setFlash(req.sessionData.sessionKey, fMessage);
+        await flash.setFlash(req.sessionData.sessionKey, fMessage);
         res.redirect("/home/languageLearn")
         return;
     }
@@ -182,7 +182,7 @@ router.get("/languageLearn/:languageLearn", sessionValidityChecker, async (req, 
         await business.updateUserAccountLanguageLearn(req.sessionData.data.username, req.sessionData.data.languageLearn);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Added. Click Again if you wish to remove the language" }
     }
-    flash.setFlash(req.sessionData.sessionKey, fMessage)
+    await flash.setFlash(req.sessionData.sessionKey, fMessage)
     res.redirect("/home/languageLearn")
 })
 
@@ -205,7 +205,7 @@ router.get("/languageFluent/:languageFluent", sessionValidityChecker, async (req
         await business.updateUserAccountLanguageFluent(req.sessionData.data.username, req.sessionData.data.languageFluent);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Added" }
     }
-    flash.setFlash(req.sessionData.sessionKey, fMessage)
+    await flash.setFlash(req.sessionData.sessionKey, fMessage)
     res.redirect("/home/languageFluent")
 })
 
