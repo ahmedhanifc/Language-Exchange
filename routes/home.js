@@ -135,8 +135,16 @@ console.log("File uploaded and moved to directory:", absoluteFilePath);
     //saving infoData object as itself within sessionData.data.userInfo
     req.sessionData.data.userInfo=infoData
 
+    let contactData={
+        username:req.sessionData.data.username,
+        friends:[],
+        blockedUsers:[]
+    }
+
 
         console.log(infoData)
+    //here i initialize the user contacts till they add friends because we are initializing everything else here too
+    await business.createUserContacts(contactData)
    // req.sessionData.userInfo=[firstName,lastName,nationality, dateOfBirth,filePath]
     await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
     await business.updateuserInfo(req.sessionData.data.username,infoData);
