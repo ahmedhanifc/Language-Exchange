@@ -33,27 +33,35 @@ async function sessionValidityChecker(req, res, next) {
     }
 }
 
+function toTitleCase(word){
+    return word.substring(0,1).toUpperCase() + word.substring(1,)
+}
+
 router.get("/", sessionValidityChecker,async(req,res) => {
 
 let userTargetLanguage=req.sessionData.data.languageLearn
-let excludedUsername=req.sessionData.data.username
-let data=await business.getPossibleContacts(userTargetLanguage,excludedUsername)
-
+let data=await business.displayingContacts(userTargetLanguage,req.sessionData.data.username)
+//can also retreive from db the list of blocked ppl.
+let friends=await business.displayingFriends(userTargetLanguage,req.sessionData.data.username)
 //will send titlecase helper function too
 res.render("contacts", {
     layout:"main",
     contacts:data,
+    friends:friends,
     userName:req.sessionData.data.username,
-
-
-
+    helpers:{
+        toTitleCase
+    }
+})
 
 })
 
-
+//fetch requests here
+router.get('/api/addFriend/:username/:friendAccount',async(req,res)=>{
+    let username,friendAccount=req.params
+    await business.addFriend(username,friendAccount)
+    console.log('refresh page, one more person should be in the friends heading')
 })
-
-
 
 
 

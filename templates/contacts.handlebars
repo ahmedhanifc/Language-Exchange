@@ -1,10 +1,19 @@
-<h2>Welcome {{username}}</h2>
 <style>
     width:100%
 </style>
 
+<script>
+//this js is to implement the addfriend,remove friend and block friend functionalities
+
+async function addFriend(username,friendAccount){
+    await fetch(`/api/addFriend/${username}/${friendAccount}`)
+    console.log('refresh page and new person should appear.')
+}
+</script>
+
+
+<h2>Welcome {{userName}}</h2>
 <div class="container-contacts">
-    <h1>Badges</h1>
     <div class="possible-contacts-container">
         {{#each contacts}}
         <div class="possible-contacts">
@@ -12,12 +21,35 @@
                 <img src="../static{{this.userInfo.fileLink}}" alt="">
             </div>
             <div class="user-info">
-                <p class="user-name">{{this.name}}</p>
-                <p class="language-fluent">{{this.description}}</p>
-                <p class="user-nationality">{{this.userInfo.nationality}} / {{this.target}}</span></p>
+                <p class="user-name">{{this.username}}</p>
+                <p class="language-fluent">{{this.languageFluent}}</p>
+                <p class="user-nationality">{{toTitleCase this.userInfo.nationality}} </p>
+                <button onclick="addFriend('{{userName}},{{this.username}}')" class="btn btn-primary px-4" value="Add">Add Friend</button>
+                <button class="btn btn-primary px-4" value="Block">Block Contact</button>
             </div>
         <div class="empty"></div>
 
         </div>
         {{/each}}
+
+        //here i put the div for the freinds contacts
+
+        <div class="friend-contacts-container">
+        {{#each friends}}
+        <div class="friend-contacts">
+            <div class="user-profilePhoto">
+                <img src="../static{{this.userInfo.fileLink}}" alt="">
+            </div>
+            <div class="user-info">
+                <p class="user-name">{{this.username}}</p>
+                <p class="language-fluent">{{this.languageFluent}}</p>
+                <p class="user-nationality">{{toTitleCase this.userInfo.nationality}} </p>
+                <button onclick="addFriend('{{username}},{{this.username}}')" class="btn btn-primary px-4" value="Add">Add Friend</button>
+                <button class="btn btn-primary px-4" value="Block">Block Contact</button>
+            </div>
+        <div class="empty"></div>
+
+        </div>
+        {{/each}}
+
     </div>
