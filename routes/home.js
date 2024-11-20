@@ -5,6 +5,8 @@ const fileUpload = require('express-fileupload');
 const COOKIE_NAME = "session"
 const flash = require("../flash_msgs")
 
+
+
 function titleCase(string) {
     formattedString = string.slice(0, 1).toUpperCase() + string.slice(1,);
     return formattedString
@@ -118,7 +120,7 @@ router.post("/info", sessionValidityChecker,fileUpload(), async(req,res) => {
  let fileName=req.sessionData.data.username
  let timestamp = Date.now();
 let relativeFilePath = `/user_files/${timestamp}_${fileName}`; // Relative path for browser access so that we can render this easily when we retrieve
-let absoluteFilePath = `C:/Users/hafsa/OneDrive/Documents/GitHub/Language-Exchange/static/user_files/${timestamp}_${fileName}`; // Absolute path for saving
+let absoluteFilePath = `${__dirname.slice(0,-6)}static/user_files/${timestamp}_${fileName}`;
 // Move the file to the server directory
 await userFile.mv(absoluteFilePath);
 console.log("File uploaded and moved to directory:", absoluteFilePath);
