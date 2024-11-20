@@ -1,0 +1,23 @@
+<h2>Welcome {{username}}</h2>
+<style>
+    width:100%
+</style>
+
+<div class="container-contacts">
+    <h1>Badges</h1>
+    <div class="possible-contacts-container">
+        {{#each contacts}}
+        <div class="possible-contacts">
+            <div class="user-profilePhoto">
+                <img src="../static{{this.userInfo.fileLink}}" alt="">
+            </div>
+            <div class="user-info">
+                <p class="user-name">{{this.name}}</p>
+                <p class="language-fluent">{{this.description}}</p>
+                <p class="user-nationality">{{this.userInfo.nationality}} / {{this.target}}</span></p>
+            </div>
+        <div class="empty"></div>
+
+        </div>
+        {{/each}}
+    </div>

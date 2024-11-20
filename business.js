@@ -277,6 +277,9 @@ async function deleteSession(sessionKey) {
     return await persistence.deleteSession(sessionKey);
 }
 
+async function getPossibleContacts(userTargetLanguage,excludedUsername) {
+    return await persistence.getPossibleContacts(userTargetLanguage,excludedUsername)
+}
 
 
 
@@ -301,5 +304,6 @@ module.exports = {
     deleteSession,
     generateFormToken,
     updateuserInfo,
-    getLangaugesInSystem
+    getLangaugesInSystem,
+    getPossibleContacts
 }

@@ -220,6 +220,15 @@ async function deleteSession(sessionKey){
     return await userSessions.deleteOne({sessionKey})
 }
 
+async function getPossibleContacts(userTargetLanguage,excludedUsername){
+    await connectDatabase()
+    return await userAccounts.find({
+        languageFluent: { $in: userTargetLanguage }, // Check if any value from the input array exists
+        username: { $ne: excludedUsername } // Exclude documents with the specified username
+    }).toArray()
+
+}
+
 
 module.exports={
     createUser,
@@ -234,6 +243,7 @@ module.exports={
     updateUserAccountLanguageLearn,
     updateUserAccountLanguageFluent,
     deleteSession,
-    updateuserInfo
+    updateuserInfo,
+    getPossibleContacts
    
 }
