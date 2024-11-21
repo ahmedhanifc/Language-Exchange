@@ -274,57 +274,62 @@ async function deleteSession(sessionKey) {
 async function displayingContacts(userTargetLanguage,username) {
     let allContacts= await persistence.getPossibleContacts(userTargetLanguage,username)
     let blockedContacts=await persistence.getBlockedContacts(username)
-    let friends=await persistence.getFriends(username)
+    let data=await persistence.getFriends(username)
    
-    if(!allContacts){
+    if(allContacts.length===0){
         return null
     }
-    if(friends){
+//Object.keys(x) can be used to get the keys of an object as a list,if list.length is zero then it means object is empty
+    if(Object.keys(blockedContacts) .length!==0 && data.friends.length!==0 ){
         return allContacts.filter(
             contact => 
-              !friends.includes(contact.username))
+              !blockedContacts.includes(contact.username) && !friends.includes(contact.username))
             //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
             }
-    
-    if(friends && blockedContacts){
-    return allContacts.filter(
-        contact => 
-          !blockedContacts.includes(contact.username) && !friends.includes(contact.username))
-        //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
-        }
 
+    if(data.friends.length!==0){
+        return allContacts.filter(
+            contact => 
+              !data.friends.includes(contact.username))
+            //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
+            }
         return allContacts
     }
 
 
 async function blockContact(username,blockedAccount) {
-    let friends=await persistence.getFriends(username)
-    let updatedFriends = friends.filter(friend => friend !== blockedAccounts);
-    await persistence.updateUserFriends(username,updatedFriends)
+    let data=await persistence.getFriends(username)
+    if(data.friends.length!==0){
+        let updatedFriends = data.friends.filter(friend => friend !== blockedAccounts);
+        await persistence.updateUserFriends(username,updatedFriends)
+    }
     await persistence.updateBlockedContacts(username,blockedAccount)
     
 }
 
 async function displayingFriends(userTargetLanguage,username) {
     let allContacts= await persistence.getPossibleContacts(userTargetLanguage,username)
-    let friends=await persistence.getFriends(username)
-    if(!friends){
+    let data=await persistence.getFriends(username)
+    if(data.friends.length===0){
         return null
     }
     //the filter function dircetly just filters and we have to pass in a normal function to this as this will be used just once so i am using an anonymous function
-    return allContacts.filter(contact => friends.includes(contact.username));
+    return allContacts.filter(contact => data.friends.includes(contact.username));
 
 }
 
 async function addFriend(username,friendAccount) {
-    let friends=await persistence.getFriends(username)
-    friends.push(friendAccount)
-    await persistence.updateUserFriends(username,friends)    
+    let data=await persistence.getFriends(username)
+    data.friends.push(friendAccount)
+    await persistence.updateUserFriends(username,data)    
 }
 
 async function removeFriend(username,unfriendAccount) {
-    let friends=await persistence.getFriends(username)
-    friends.filter(friend => friend !== unfriendAccount)
+    let data=await persistence.getFriends(username)
+    if(data.friends.length!==0){
+        return null
+    }
+    friends.filter(data => data.friends !== unfriendAccount)
     await persistence.updateUserFriends(username,friends)    
 }
 

@@ -53,7 +53,6 @@ let friends=await business.displayingFriends(userTargetLanguage,req.sessionData.
 if(!friends){
     fMessage = { "errorCode": "fail", "content": "You are friendless." }
     await flash.setFlash(req.sessionData.sessionKey,fMessage)
-   
 }
 //will send titlecase helper function too
 

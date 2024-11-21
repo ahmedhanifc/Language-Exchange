@@ -15,7 +15,7 @@ async function getFlash(sessionKey) {
     }
     let message=sessionData.data.flashData
     //stores the error code on the basis of which we will display the message
-    delete sessionData.data.flashData
+     sessionData.data.flashData=''
     //necessary so that a flash msg doesnt sppear everytime we refresh
     await business.updateSessionData(sessionKey,sessionData)
     //deleted the flashdata from the stored session

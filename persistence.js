@@ -235,15 +235,14 @@ async function getPossibleContacts(userTargetLanguage,excludedUsername){
 
 }
 
-async function updateUserFriends(username, contact){
+async function updateUserFriends(username, data){
     await connectDatabase()
-    return await userContacts.updateOne({username:username}, {$set:{UserFriends:contact}})
+    return await userContacts.updateOne({'username':username}, {$set:{'friends':data.friends}})
 }
 
 async function getFriends(username){
     await connectDatabase()
-    return await userContacts.findOne({username:username}, {
-        projection: { UserFriends: 1} })
+    return await userContacts.findOne({username:username})
 }
 
 async function updateBlockedContacts(username, blockedContact){
@@ -254,12 +253,12 @@ async function updateBlockedContacts(username, blockedContact){
 async function getBlockedContacts(username){
     await connectDatabase()
     return await userContacts.findOne({username:username}, {
-        projection: { blockedContact: 1} })
+        projection: { blockedContact: 1,_id:0} })
 }
 
 async function createUserContacts(data){
     await connectDatabase()
-    return await userContacts.insertOne({data:data})
+    return await userContacts.insertOne(data)
 }
 
 
