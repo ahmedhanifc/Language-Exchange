@@ -3,6 +3,7 @@ const router = express.Router();
 const business = require("../business")
 const COOKIE_NAME = "session"
 const flash = require("../flash_msgs")
+const persistence = require("../persistence");
 
 const BadgeManagement = require("../class/BadgeManagement")
 
@@ -16,10 +17,10 @@ async function sessionValidityChecker(req, res, next) {
             res.redirect("/")
             return
         }
-        
-        if(!sessionData.data.username){
+
+        if (!sessionData.data.username) {
             fMessage = { "errorCode": "fail", "content": "You are not Authorized to access this page. Please Login" }
-            await flash.setFlash(sessionData.sessionKey,fMessage)
+            await flash.setFlash(sessionData.sessionKey, fMessage)
             res.redirect("/")
             return
         }
@@ -32,11 +33,46 @@ async function sessionValidityChecker(req, res, next) {
     }
 }
 
+function isLoggedInUser(a, b) {
+    return a === b ? true : false;
+}
 
-router.get("/", async(req,res) => {
+router.get("/", async (req, res) => {
+    let loggedInUser = "nigesh";
+    let visitedUser = "admin"
+    let messages = [
+        {
+            user: loggedInUser,
+            message: "Hello",
+            timestamp: new Date()
+        },
+        {
+            user: visitedUser,
+            message: "i am doing amazingly",
+            timestamp: new Date()
+        },
+        {
+            user: loggedInUser,
+            message: "i am doing amazingly. Well thats nice",
+            timestamp: new Date()
+        },
+    ]
 
-    
-    res.send("This is messaging")
+    let users = [loggedInUser, visitedUser];
+
+    let messageData = await persistence.getMessages(users);
+
+
+    res.render("messages", {
+        layout: "main",
+        messages: messages,
+        visitedUser: visitedUser,
+        loggedInUser: loggedInUser,
+        helpers: {
+            isLoggedInUser
+        }
+
+    })
 })
 
 

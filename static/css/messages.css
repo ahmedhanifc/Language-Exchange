@@ -1,0 +1,87 @@
+.visitedUserInformation,.messages-display,
+.sendMessageDisplay{
+    width: 80%;
+    margin: 15px auto;
+    padding:10px 0;
+    padding:25px;
+    border-radius: 1.2rem;
+}
+.visitedUserInformation,
+.sendMessageDisplay{
+    display: flex;
+    gap:10px;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.15);
+}
+
+.visitedUserProfilePicture{
+    width: 60px;
+}
+
+.displayProfilePicture{
+    width: 30px;
+    flex-shrink: 0;
+}
+
+.displayProfilePicture img{
+    width: 100%;
+    border:2px solid black;
+    border-radius: 2rem;}
+
+.visitedUserProfilePicture img{
+    width: 100%;
+    border:2px solid black;
+    border-radius: 2rem;
+}
+
+
+.visitedUserUsername{
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+.message-flex-item{
+    display: flex;
+    gap:20px;
+    align-items: center;
+}
+
+.displayMessage{
+    border-radius: 1.5rem;
+    text-align: left;
+    padding:15px 15px;
+    flex-basis: 1;
+}
+.displayMessage.loggedInUser{
+    background-color: white;
+
+}
+
+.displayMessageTimeStamp{
+    margin: 10px;
+}
+
+.displayMessage.visitingUser{
+    background-color:#415ff3;
+    color:white;
+}
+
+.message-item.loggedInUser{
+    display: grid;
+    justify-items: end;
+}
+
+.sendMessageDisplay input{
+    border: none;
+    width: 100%;
+}
+
+.sendMessageDisplay input:focus{
+    outline: none;
+}
+
+.sendMessageDisplay a:hover{
+    color: black;
+    border-bottom: 1px solid black;
+}
