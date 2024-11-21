@@ -41,11 +41,31 @@ router.get("/", sessionValidityChecker,async(req,res) => {
 
 let userTargetLanguage=req.sessionData.data.languageLearn
 let data=await business.displayingContacts(userTargetLanguage,req.sessionData.data.username)
+if(data.length===0){
+        fMessage = { "errorCode": "fail", "content": "There are no users fluent in your target language." }
+        await flash.setFlash(sessionData.sessionKey,fMessage)
+        res.redirect("/")
+        return
+}
 //can also retreive from db the list of blocked ppl.
 let friends=await business.displayingFriends(userTargetLanguage,req.sessionData.data.username)
+if(friends.length===0){
+    fMessage = { "errorCode": "fail", "content": "You are friendless." }
+    await flash.setFlash(sessionData.sessionKey,fMessage)
+    res.redirect("/")
+    return
+}
 //will send titlecase helper function too
+
+let fMessage = await flash.getFlash(req.sessionData.sessionKey)
+let flashStyle = 'flash-message-yay'
+if (fMessage && fMessage.errorCode === 'fail') {
+    flashStyle = 'flash-message-fail'
+}
 res.render("contacts", {
     layout:"main",
+    flash: fMessage,
+    style: flashStyle,
     contacts:data,
     friends:friends,
     userName:req.sessionData.data.username,
