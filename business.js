@@ -280,12 +280,19 @@ async function displayingContacts(userTargetLanguage,username) {
         return null
     }
 //Object.keys(x) can be used to get the keys of an object as a list,if list.length is zero then it means object is empty
-    if(Object.keys(blockedContacts) .length!==0 && data.friends.length!==0 ){
+    if(blockedContacts.blockedUsers.length!==0 && data.friends.length!==0 ){
         return allContacts.filter(
             contact => 
-              !blockedContacts.includes(contact.username) && !friends.includes(contact.username))
+              !blockedContacts.blockedUsers.includes(contact.username) && !data.friends.includes(contact.username))
             //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
             }
+
+    if(blockedContacts.blockedUsers .length!==0 ){
+                return allContacts.filter(
+                    contact => 
+                      !blockedContacts.blockedUsers.includes(contact.username) )
+                    //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
+                    }
 
     if(data.friends.length!==0){
         return allContacts.filter(
@@ -300,10 +307,11 @@ async function displayingContacts(userTargetLanguage,username) {
 async function blockContact(username,blockedAccount) {
     let data=await persistence.getFriends(username)
     if(data.friends.length!==0){
-        let updatedFriends = data.friends.filter(friend => friend !== blockedAccounts);
-        await persistence.updateUserFriends(username,updatedFriends)
+        data.friends = data.friends.filter(friend => friend !== blockedAccount);
+        await persistence.updateUserFriends(username,data)
     }
-    await persistence.updateBlockedContacts(username,blockedAccount)
+    data.blockedUsers.push(blockedAccount)
+    await persistence.updateBlockedContacts(username,data)
     
 }
 
@@ -314,8 +322,8 @@ async function displayingFriends(userTargetLanguage,username) {
         return null
     }
     //the filter function dircetly just filters and we have to pass in a normal function to this as this will be used just once so i am using an anonymous function
-    return allContacts.filter(contact => data.friends.includes(contact.username));
-
+  let friends= await persistence.getFriendsAsObjects(data.friends)
+  return friends
 }
 
 async function addFriend(username,friendAccount) {
@@ -326,11 +334,17 @@ async function addFriend(username,friendAccount) {
 
 async function removeFriend(username,unfriendAccount) {
     let data=await persistence.getFriends(username)
-    if(data.friends.length!==0){
+    if(!data){
         return null
     }
-    friends.filter(data => data.friends !== unfriendAccount)
-    await persistence.updateUserFriends(username,friends)    
+    if(data.friends.length===0){
+        return null
+    }
+    //filter returns a new array does not modify the original one
+    data.friends = data.friends.filter(friend => friend !== unfriendAccount);
+                             //each element in the array is referred to as a friend
+    console.log(data)
+    await persistence.updateUserFriends(username,data)    
 }
 
 async function createUserContacts(contactData) {

@@ -245,15 +245,19 @@ async function getFriends(username){
     return await userContacts.findOne({username:username})
 }
 
-async function updateBlockedContacts(username, blockedContact){
+async function getFriendsAsObjects(friendList){
     await connectDatabase()
-    return await userContacts.updateOne({username:username}, {$set:{blockedContact:blockedContact}})
+    return await userAccounts.find({ username: { $in: friendList } }).toArray()
+}
+
+async function updateBlockedContacts(username, data){
+    await connectDatabase()
+    return await userContacts.updateOne({username:username}, {$set:{'blockedUsers':data.blockedUsers}})
 }
 
 async function getBlockedContacts(username){
     await connectDatabase()
-    return await userContacts.findOne({username:username}, {
-        projection: { blockedContact: 1,_id:0} })
+    return await userContacts.findOne({username:username})
 }
 
 async function createUserContacts(data){
@@ -318,6 +322,7 @@ createUserContacts,
     updateUserFriends,
     updateBlockedContacts,
     getBlockedContacts,
-    getFriends
+    getFriends,
+    getFriendsAsObjects
    
 }
