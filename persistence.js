@@ -4,12 +4,13 @@ const mongodb = require('mongodb')
 const database = "Language-Exchange";
 
  //These are the four collections we have in our database. We can access them via indexing as needed, reducing variable names
-const collections = ["UserAccounts","UserSessions","UserContacts","UserBlocked"]
+const collections = ["UserAccounts","UserSessions","UserContacts","UserBlocked","userMessages"]
 
 let userAccounts = undefined; //This variable will contain the data defined in the collection userAccountCollectionName
 let userSessions = undefined; //This variable will contain the data defined in the collection userSessionCollectionName
 let userContacts = undefined;
 let userBlocked = undefined;
+let userMessages = undefined;
 
 
 /**
@@ -36,6 +37,11 @@ async function connectDatabase() {
         client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
         await client.connect()
         userBlocked = client.db(database).collection(collections[3])
+    }
+    if(!userMessages){
+        client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
+        await client.connect()
+        userMessages = client.db(database).collection(collections[4])
     }
 }
 
@@ -258,7 +264,13 @@ async function createUserContacts(data){
 
 
 
+async function getMessages(){
+    await connectDatabase();
+    return await userMessages.find({}).toArray();
+}
+
 module.exports={
+    getMessages,
     createUser,
     findUser,
     findUserReset,
