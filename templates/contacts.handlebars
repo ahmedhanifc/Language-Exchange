@@ -6,7 +6,7 @@
 //this js is to implement the addfriend,remove friend and block friend functionalities
 
 async function addFriend(username,friendAccount){
-    await fetch(`/api/addFriend/${username}/${friendAccount}`)
+    await fetch(`/contacts/api/addFriend/${username}/${friendAccount}`)
     console.log('refresh page and new person should appear.')
 }
 </script>

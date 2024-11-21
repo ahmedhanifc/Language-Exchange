@@ -15,7 +15,6 @@ const homeRouter = require("./routes/home.js")
 const profileRouter = require("./routes/profile.js")
 const contactRouter=require("./routes/contacts.js")
 
-const testRouter = require("./routes/test.js");
 
 
 
@@ -34,7 +33,6 @@ app.use("/profile", profileRouter) //the profile.js Router will take all routers
 app.use("/contacts", contactRouter) //the profile.js Router will take all routers that begin from /profile
 
 
-app.use("/test", testRouter);
 
 
 app.listen(8000, () => {
