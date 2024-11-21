@@ -1,86 +1,85 @@
-<div class="container-contacts">
-    <div class="possible-contacts-container">
-
-
-
-        <div class="friend-contacts-container">
-        
-        {{#if friends}}
-                <h3>These are your friends</h3>
-        {{#each friends}}
-        <div class="friend-contacts">
-            <div class="user-profilePhoto">
-                <img src="../static{{this.userInfo.fileLink}}" alt="">
-            </div>
-            <div class="user-info">
-                <p class="user-name">{{this.username}}</p>
-                <p class="language-fluent">{{this.languageFluent}}</p>
-                <p class="user-nationality">{{toTitleCase this.userInfo.nationality}} </p>
-                <button onclick="removeFriend('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4" value="RemoveFriend">Remove Friend</button>
-                <button onclick="viewProfile('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4" value="viewFriend">See Friend Profile</button>
-                <button onclick="blockContact('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4" value="BlockFriend">Block</button>
-            </div>
-        <div class="empty"></div>
-
+<div class="container-friends">
+    {{#if friends}}
+    <h1 class = "middle">These are your friends</h1>
+    {{#each friends}}
+    <div class="container-friends-item">
+        <div class="user-profilePhoto">
+            <img src="../static{{this.userInfo.fileLink}}" alt="">
         </div>
-        {{/each}}
+        <div class="user-info">
+            <p class="user-name">{{toTitleCase this.username}}</p>
+            <p class="user-nationality">{{toTitleCase this.userInfo.nationality}} </p>
+            <p class="language-fluent">Fluent languages: {{this.languageFluent}}</p>
+            <div class="user-actions">
+                <button onclick="removeFriend('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4"
+                    value="RemoveFriend">Remove Friend</button>
+                <button onclick="viewProfile('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4"
+                    value="viewFriend">See Friend Profile</button>
+                <button onclick="blockContact('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4"
+                    value="BlockFriend">Block</button>
+            </div>
+        </div>
 
-        {{else}}
-        <h2>You have no friends.</h2>
-    
+    </div>
+    {{/each}}
+    {{else}}
+    <h1 class = "middle">You have no friends</h1>
     {{/if}}
+</div>
+{{#if contacts}}
+    <h1 class = "middle">Possible Contacts</h1>
+
+{{#each contacts}}
+
+<div class="container-friends-item">
+    <div class="user-profilePhoto">
+        <img src="../static{{this.userInfo.fileLink}}" alt="">
+    </div>
+    <div class="user-info">
+        <p class="user-name">{{toTitleCase this.username}}</p>
+        <p class="user-nationality">{{toTitleCase this.userInfo.nationality}} </p>
+        <p class="language-fluent">Fluent languages: {{this.languageFluent}}</p>
+        <div class="user-actions">
+            <button onclick="addFriend('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4"
+                value="Add">Add
+                Friend</button>
+            <button onclick="blockContact('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4"
+                value="BlockFriend">Block</button>
+        </div>
     </div>
 
-            {{#if contacts}}
-                       
-         <h3>These are your possible contacts</h3>
+</div>
+{{/each}}
+{{else}}
+<h1 class = "middle">No more possible contacts</h1>
+{{/if}}
 
-        {{#each contacts}}
-        <div class="possible-contacts">
-            <div class="user-profilePhoto">
-                <img src="../static{{this.userInfo.fileLink}}" alt="">
-            </div>
-            <div class="user-info">
-                <p class="user-name">{{this.username}}</p>
-                <p class="language-fluent">{{this.languageFluent}}</p>
-                <p class="user-nationality">{{toTitleCase this.userInfo.nationality}} </p>
-                <button onclick="addFriend('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4" value="Add">Add Friend</button>
-                <button onclick="blockContact('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4" value="Block">Block</button>
-            </div>
-        <div class="empty"></div>
+<script>
+    //this js is to implement the addfriend,remove friend and block friend functionalities
 
-        </div>
-        {{/each}}
-        {{else}}
-            <h2>No more possible contacts</h2>
-        {{/if}}
+    async function addFriend(username, friendAccount) {
+        await fetch(`/contacts/api/addFriend/${username}/${friendAccount}`)
+        console.log('refresh page and new person should appear.')
+        window.location.reload(true); // Refresh the entire page
 
-    <script>
-//this js is to implement the addfriend,remove friend and block friend functionalities
+    }
 
-async function addFriend(username,friendAccount){
-    await fetch(`/contacts/api/addFriend/${username}/${friendAccount}`)
-    console.log('refresh page and new person should appear.')
-    window.location.reload(true); // Refresh the entire page
+    async function removeFriend(username, targetAccount) {
+        await fetch(`/contacts/api/removeFriend/${username}/${targetAccount}`)
+        console.log('refresh page and new person should appear.')
+        window.location.reload(true); // Refresh the entire page
 
-}
+    }
 
-async function removeFriend(username,targetAccount){
-    await fetch(`/contacts/api/removeFriend/${username}/${targetAccount}`)
-    console.log('refresh page and new person should appear.')
-    window.location.reload(true); // Refresh the entire page
+    async function blockContact(username, targetAccount) {
+        await fetch(`/contacts/api/blockContact/${username}/${targetAccount}`)
+        console.log('refresh page ,acc should be blocked')
+        window.location.reload(true); // Refresh the entire page
+    }
 
-}
-
-async function blockContact(username,targetAccount){
-    await fetch(`/contacts/api/blockContact/${username}/${targetAccount}`)
-    console.log('refresh page ,acc should be blocked')
-    window.location.reload(true); // Refresh the entire page
-}
-
-async function viewProfile(username,friendAccount){
-    //put api call here that renders the profile for the friend from the pov of user,it can be simple just render the same screen for profile.
-}
+    async function viewProfile(username, friendAccount) {
+        //put api call here that renders the profile for the friend from the pov of user,it can be simple just render the same screen for profile.
+    }
 
 
 

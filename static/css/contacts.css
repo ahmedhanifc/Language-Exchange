@@ -1,7 +1,56 @@
-.possible-contacts-container{
+
+
+.container-friends-item{
     background-color: white;
-    width: 80%;
+    width: 60%;
     margin: 15px auto;
-    padding:25px;
     border-radius: 1.2rem;
+
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+
+.container-friends h1,{
+    text-align: center;
+    padding:20px 0;
+}
+
+.user-actions{
+    background-color: white;
+    width: 100%;
+    padding:20px 0 40px 0;
+    border-radius: 1.2rem;
+    display: flex;
+    gap:20px;
+}
+
+.user-info{
+    padding:30px;
+    align-self: center;
+}
+
+.user-profilePhoto{
+    width:300px;
+    height: 300px;
+    margin:25px;
+    border:6px solid black;
+    border-radius: 50%;
+}
+
+.user-profilePhoto img{
+    width: 100%;
+    height: 100%;
+}
+
+.user-name{
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.user-nationality{
+    font-size: 2rem;
+}
+
+.middle{
+    text-align: center;
 }
