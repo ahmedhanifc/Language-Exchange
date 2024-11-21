@@ -46,16 +46,16 @@ router.get("/", sessionValidityChecker,async (req, res) => {
     let loggedInUser = req.sessionData.data.username;
     let visitedUser = "message"
 
+    let messages;
     let visitedUserData = await business.findUser(visitedUser);
     let users = [loggedInUser, visitedUserData.username];
     let messagesData = await business.getMessages(users);
     if(!messagesData || !messagesData.users){
         await business.createMessage(users)
-    }
-    let messages = messagesData.messages;
-
-    if(!messages){
         messages = []
+    }
+    else{
+        messages = messagesData.messages;
     }
     
     res.render("messages", {
