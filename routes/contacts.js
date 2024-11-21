@@ -43,17 +43,13 @@ let fMessage
 let userTargetLanguage=req.sessionData.data.languageLearn
 let data=await business.displayingContacts(userTargetLanguage,req.sessionData.data.username)
 console.log(data)
-if(!data){
-        fMessage = { "errorCode": "fail", "content": "There are no users fluent in your target language." }
-        await flash.setFlash(req.sessionData.sessionKey,fMessage)
-       
+
+if(data.length===0){
+    data=null
 }
 //can also retreive from db the list of blocked ppl.
 let friends=await business.displayingFriends(userTargetLanguage,req.sessionData.data.username)
-if(!friends){
-    fMessage = { "errorCode": "fail", "content": "You are friendless." }
-    await flash.setFlash(req.sessionData.sessionKey,fMessage)
-}
+
 //will send titlecase helper function too
 
  fMessage = await flash.getFlash(req.sessionData.sessionKey)
@@ -80,11 +76,22 @@ router.get('/api/addFriend/:username/:friendAccount',async(req,res)=>{
     const {username,friendAccount}=req.params
     await business.addFriend(username,friendAccount)
     console.log('refresh page, one more person should be in the friends heading')
-    res.send('ok')
+    
 })
 
+router.get('/api/removeFriend/:username/:targetAccount',async(req,res)=>{
+    const {username,targetAccount}=req.params
+    await business.removeFriend(username,targetAccount)
+    console.log('check db person should not be friends anymore')
+   
+})
 
-
+router.get('/api/blockContact/:username/:targetAccount',async(req,res)=>{
+    const {username,targetAccount}=req.params
+    await business.blockContact(username,targetAccount)
+    console.log('check db person should not be visible anymore anymore')
+    
+})
 
 
 module.exports = router;
