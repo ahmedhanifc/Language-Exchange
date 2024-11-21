@@ -264,11 +264,6 @@ async function createUserContacts(data){
 
 
 
-async function getMessages(){
-    await connectDatabase();
-    return await userMessages.find({}).toArray();
-}
-
 module.exports={
     getMessages,
     createUser,

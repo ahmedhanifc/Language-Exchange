@@ -318,6 +318,7 @@ async function displayingFriends(userTargetLanguage,username) {
 
 async function addFriend(username,friendAccount) {
     let friends=await persistence.getFriends(username)
+
     friends.push(friendAccount)
     await persistence.updateUserFriends(username,friends)    
 }
