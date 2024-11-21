@@ -45,6 +45,7 @@
                 <p class="language-fluent">{{this.languageFluent}}</p>
                 <p class="user-nationality">{{toTitleCase this.userInfo.nationality}} </p>
                 <button onclick="removeFriend('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4" value="RemoveFriend">Remove Friend</button>
+                <button onclick="viewProfile('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4" value="viewFriend">See Friend Profile</button>
                 <button onclick="blockContact('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4" value="BlockFriend">Block</button>
             </div>
         <div class="empty"></div>
@@ -80,4 +81,11 @@ async function blockContact(username,targetAccount){
     console.log('refresh page ,acc should be blocked')
     window.location.reload(true); // Refresh the entire page
 }
+
+async function viewProfile(username,friendAccount){
+    //put api call here that renders the profile for the friend from the pov of user,it can be simple just render the same screen for profile.
+}
+
+
+
 </script>
