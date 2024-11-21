@@ -4,7 +4,7 @@ const mongodb = require('mongodb')
 const database = "Language-Exchange";
 
  //These are the four collections we have in our database. We can access them via indexing as needed, reducing variable names
-const collections = ["UserAccounts","UserSessions","UserContacts","UserBlocked","userMessages"]
+const collections = ["UserAccounts","UserSessions","UserContacts","UserBlocked","UserMessages"]
 
 let userAccounts = undefined; //This variable will contain the data defined in the collection userAccountCollectionName
 let userSessions = undefined; //This variable will contain the data defined in the collection userSessionCollectionName
@@ -265,12 +265,78 @@ async function createUserContacts(data){
     return await userContacts.insertOne(data)
 }
 
-
-
-async function getMessages(){
+async function insertMessages(users,messages){
     await connectDatabase();
-    return await userMessages.find({}).toArray();
+    await userMessages.insertOne({users:users, messages:messages})
 }
+
+async function getMessages(users){
+    await connectDatabase();
+    let possibleUserCombinationOne = [users[0], users[1]];
+    let possibleUserCombinationTwo = [users[1],users[0]]
+
+    let messages =  await userMessages.findOne({users:possibleUserCombinationOne}) || await userMessages.findOne({users:possibleUserCombinationTwo});
+    
+
+    return messages;
+}
+const users = ["admin","nigesh"];
+const messages = [
+    "Thanks, appreciate it:nigesh",
+    "Let me check and get back:admin",
+    "Let me know if you need anything:nigesh",
+    "Thank you for your patience:nigesh",
+    "Looking forward to it:admin",
+    "I'll take care of it:admin",
+    "Can you confirm:nigesh",
+    "Please check your email:admin",
+    "Take care:admin",
+    "What about you:nigesh",
+    "See you soon:nigesh",
+    "Hello, how are you:admin",
+    "I'll update you shortly:nigesh",
+    "Good morning:admin",
+    "It's okay:admin",
+    "I'll send it over:admin",
+    "What time works for you:nigesh",
+    "Sounds good to me:admin",
+    "I hope you're doing well:nigesh",
+    "The meeting went well:admin",
+    "Any updates:nigesh",
+    "No problem at all:admin",
+    "Can we reschedule:nigesh",
+    "I appreciate it:nigesh",
+    "Let's plan for the weekend:admin",
+    "How was your day:nigesh",
+    "I'll let you know:admin",
+    "Are we good to go:admin",
+    "Goodbye for now:nigesh",
+    "See you soon:admin",
+    "Talk to you later:nigesh",
+    "Let's meet tomorrow:admin",
+    "I'll call you back:admin",
+    "Let me know if you need anything:nigesh",
+    "Looking forward to it:admin",
+    "Thanks for your help:nigesh",
+    "I'll take care of it:admin",
+    "I am fine, thanks:admin",
+    "Can you send me the details:nigesh",
+    "What are your thoughts:nigesh",
+    "It was great talking to you:admin",
+    "Good evening:nigesh",
+    "Don't worry:admin",
+    "Take care:nigesh",
+    "No worries:admin",
+    "Let's discuss this further:admin",
+    "It was nice meeting you:admin",
+    "Could you explain that again:nigesh",
+    "I'm on it:admin",
+    "I am looking into it:nigesh"
+];
+
+// insertMessages(users,messages);
+
+
 
 module.exports={
     getMessages,

@@ -1,0 +1,34 @@
+<div class="visitedUserInformation">
+    <div class="visitedUserProfilePicture">
+        <img src="../static/user_files/1732053890106_nigesh" alt="">
+    </div>
+    <div class="visitedUserUsername">{{visitedUser}}</div>
+</div>
+
+<div class="messages-display">
+    {{#each messages}}
+    {{#if (isLoggedInUser this.user ../loggedInUser)}}
+    <div class="message-item loggedInUser">
+        <div class="message-flex-item">
+            <div class="displayMessage loggedInUser">{{this.message}}</div>
+        </div>
+        <div class="displayMessageTimeStamp">{{this.timestamp}}</div>
+    </div>
+    {{else}}
+    <div class="message-item visitingUser">
+        <div class="message-flex-item">
+            <div class="displayProfilePicture">
+                <img src="../static/user_files/1732053890106_nigesh" alt="">
+            </div>
+            <div class="displayMessage visitingUser">{{this.message}}</div>
+        </div>
+        <div class="displayMessageTimeStamp">{{this.timestamp}}</div>
+    </div>
+    {{/if}}
+    {{/each}}
+</div>
+
+<div class="sendMessageDisplay">
+    <input type="text" id = "sendMessage" placeholder="Enter Message Here">
+    <a href="">Send</a>
+</div>
