@@ -32,9 +32,11 @@ async function addFriend(username,friendAccount){
         </div>
         {{/each}}
 
-        //here i put the div for the freinds contacts
 
         <div class="friend-contacts-container">
+        
+        {{#if friends}}
+
         {{#each friends}}
         <div class="friend-contacts">
             <div class="user-profilePhoto">
@@ -52,4 +54,8 @@ async function addFriend(username,friendAccount){
         </div>
         {{/each}}
 
+        {{else}}
+        <h2>You have no friends.</h2>
+    
+    {{/if}}
     </div>
