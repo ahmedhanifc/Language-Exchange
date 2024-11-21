@@ -38,26 +38,26 @@ function toTitleCase(word){
 }
 
 router.get("/", sessionValidityChecker,async(req,res) => {
+let fMessage
 
 let userTargetLanguage=req.sessionData.data.languageLearn
 let data=await business.displayingContacts(userTargetLanguage,req.sessionData.data.username)
-if(data.length===0){
+console.log(data)
+if(!data){
         fMessage = { "errorCode": "fail", "content": "There are no users fluent in your target language." }
-        await flash.setFlash(sessionData.sessionKey,fMessage)
-        res.redirect("/")
-        return
+        await flash.setFlash(req.sessionData.sessionKey,fMessage)
+       
 }
 //can also retreive from db the list of blocked ppl.
 let friends=await business.displayingFriends(userTargetLanguage,req.sessionData.data.username)
-if(friends.length===0){
+if(!friends){
     fMessage = { "errorCode": "fail", "content": "You are friendless." }
-    await flash.setFlash(sessionData.sessionKey,fMessage)
-    res.redirect("/")
-    return
+    await flash.setFlash(req.sessionData.sessionKey,fMessage)
+   
 }
 //will send titlecase helper function too
 
-let fMessage = await flash.getFlash(req.sessionData.sessionKey)
+ fMessage = await flash.getFlash(req.sessionData.sessionKey)
 let flashStyle = 'flash-message-yay'
 if (fMessage && fMessage.errorCode === 'fail') {
     flashStyle = 'flash-message-fail'
@@ -78,9 +78,10 @@ res.render("contacts", {
 
 //fetch requests here
 router.get('/api/addFriend/:username/:friendAccount',async(req,res)=>{
-    let username,friendAccount=req.params
+    const {username,friendAccount}=req.params
     await business.addFriend(username,friendAccount)
     console.log('refresh page, one more person should be in the friends heading')
+    res.send('ok')
 })
 
 

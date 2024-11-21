@@ -292,6 +292,8 @@ async function displayingContacts(userTargetLanguage,username) {
           !blockedContacts.includes(contact.username) && !friends.includes(contact.username))
         //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
         }
+
+        return allContacts
     }
 
 
@@ -306,7 +308,7 @@ async function blockContact(username,blockedAccount) {
 async function displayingFriends(userTargetLanguage,username) {
     let allContacts= await persistence.getPossibleContacts(userTargetLanguage,username)
     let friends=await persistence.getFriends(username)
-    if(friends){
+    if(!friends){
         return null
     }
     //the filter function dircetly just filters and we have to pass in a normal function to this as this will be used just once so i am using an anonymous function

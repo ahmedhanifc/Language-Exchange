@@ -24,7 +24,7 @@ async function addFriend(username,friendAccount){
                 <p class="user-name">{{this.username}}</p>
                 <p class="language-fluent">{{this.languageFluent}}</p>
                 <p class="user-nationality">{{toTitleCase this.userInfo.nationality}} </p>
-                <button onclick="addFriend('{{userName}},{{this.username}}')" class="btn btn-primary px-4" value="Add">Add Friend</button>
+                <button onclick="addFriend('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4" value="Add">Add Friend</button>
                 <button class="btn btn-primary px-4" value="Block">Block Contact</button>
             </div>
         <div class="empty"></div>
