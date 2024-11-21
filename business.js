@@ -275,12 +275,25 @@ async function displayingContacts(userTargetLanguage,username) {
     let allContacts= await persistence.getPossibleContacts(userTargetLanguage,username)
     let blockedContacts=await persistence.getBlockedContacts(username)
     let friends=await persistence.getFriends(username)
-
+   
+    if(!allContacts){
+        return null
+    }
+    if(friends){
+        return allContacts.filter(
+            contact => 
+              !friends.includes(contact.username))
+            //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
+            }
+    
+    if(friends && blockedContacts){
     return allContacts.filter(
         contact => 
           !blockedContacts.includes(contact.username) && !friends.includes(contact.username))
         //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
-}
+        }
+    }
+
 
 async function blockContact(username,blockedAccount) {
     let friends=await persistence.getFriends(username)
@@ -293,6 +306,9 @@ async function blockContact(username,blockedAccount) {
 async function displayingFriends(userTargetLanguage,username) {
     let allContacts= await persistence.getPossibleContacts(userTargetLanguage,username)
     let friends=await persistence.getFriends(username)
+    if(friends){
+        return null
+    }
     //the filter function dircetly just filters and we have to pass in a normal function to this as this will be used just once so i am using an anonymous function
     return allContacts.filter(contact => friends.includes(contact.username));
 
@@ -300,13 +316,13 @@ async function displayingFriends(userTargetLanguage,username) {
 
 async function addFriend(username,friendAccount) {
     let friends=await persistence.getFriends(username)
-    friends.append(friendAccount)
+    friends.push(friendAccount)
     await persistence.updateUserFriends(username,friends)    
 }
 
 async function removeFriend(username,unfriendAccount) {
     let friends=await persistence.getFriends(username)
-    friends.pop(unfriendAccount)
+    friends.filter(friend => friend !== unfriendAccount)
     await persistence.updateUserFriends(username,friends)    
 }
 
