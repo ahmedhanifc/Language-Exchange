@@ -46,7 +46,6 @@ router.get("/", sessionValidityChecker,async(req,res) => {
     )
 
     BadgeManagement.getBadges()["Bilingual"].updateFeature(languageLearn.length);
-    console.log(BadgeManagement.getBadges()["Bilingual"]) // accessing badge properties
 
     // let image=filePath
 

@@ -169,8 +169,6 @@ async function saveSession(sessionData) {
 async function updateSessionData(sessionKey, data){
     await connectDatabase()
     let test = await userSessions.findOne({sessionKey});
-    // test.data = data
-    // console.log(test.data)
     let sessionData = await userSessions.updateOne({sessionKey}, {
         $set:{data:data.data}
     })
