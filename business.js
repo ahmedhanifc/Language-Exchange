@@ -337,10 +337,30 @@ async function createUserContacts(contactData) {
     return await persistence.createUserContacts(contactData)   
 }
 
+async function findUser(username,email){
+    return await persistence.findUser(username,email)
+}
+
+async function getMessages(users) {
+    let messages = await persistence.getMessages(users);
+    return messages
+}
+
+async function updateMessage(users,message){
+    return await persistence.updateMessage(users,message)
+}
+
+async function createMessage(users){
+    return await persistence.createMessage(users)
+}
 
 
 
 module.exports = {
+    createMessage,
+    updateMessage,
+    getMessages,
+    findUser,
     createUser,
     updateUserReset,
     updateUserVerification,

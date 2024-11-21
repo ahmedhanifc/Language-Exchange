@@ -1,10 +1,17 @@
-.visitedUserInformation,.messages-display,
-.sendMessageDisplay{
+.visitedUserInformation,.messages-display
+{
     width: 80%;
     margin: 15px auto;
-    padding:10px 0;
     padding:25px;
     border-radius: 1.2rem;
+}
+
+.sendMessageDisplay{
+    width: 50%;
+    margin: 15px auto;
+    padding:15px;
+    border-radius: 1.2rem;
+
 }
 .visitedUserInformation,
 .sendMessageDisplay{
@@ -34,8 +41,9 @@
     border:2px solid black;
     border-radius: 2rem;
 }
-
-
+.messages-display{
+    min-height: 40vh;
+}
 .visitedUserUsername{
     font-size: 1.4rem;
     font-weight: 700;
@@ -72,16 +80,31 @@
     justify-items: end;
 }
 
-.sendMessageDisplay input{
+.sendMessageDisplay form{
     border: none;
     width: 100%;
+}
+
+.sendMessageDisplay form div input{
+    width: 100%;
+    border: none;
 }
 
 .sendMessageDisplay input:focus{
     outline: none;
 }
 
-.sendMessageDisplay a:hover{
-    color: black;
-    border-bottom: 1px solid black;
+.sendMessageDisplay form div{
+    display: flex;
+    gap:15px;
 }
+
+.sendMessageDisplay form div button{
+    background: transparent;
+    border: none;
+}
+
+a:hover{
+    color:black;
+}
+

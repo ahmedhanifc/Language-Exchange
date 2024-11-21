@@ -1,8 +1,8 @@
 <div class="visitedUserInformation">
     <div class="visitedUserProfilePicture">
-        <img src="../static/user_files/1732053890106_nigesh" alt="">
+        <img src="../static{{visitedUserData.userInfo.fileLink}}" alt="">
     </div>
-    <div class="visitedUserUsername">{{visitedUser}}</div>
+    <div class="visitedUserUsername">{{visitedUserData.username}}</div>
 </div>
 
 <div class="messages-display">
@@ -29,6 +29,21 @@
 </div>
 
 <div class="sendMessageDisplay">
-    <input type="text" id = "sendMessage" placeholder="Enter Message Here">
-    <a href="">Send</a>
+    <form action="/message/processMessage" method="post">
+        <div>
+            <input type="text" id="sendMessage" name="message" placeholder="Enter Message Here">
+            <button type="submit">
+                <svg class="icon">
+                    <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-send"></use>
+                </svg>
+            </button>
+            <a href="/message">
+                <svg class="icon">
+                    <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-search"></use>
+                </svg>
+            </a>
+        </div>
+        <input type="hidden" name="loggedInUser" value = {{loggedInUser}}>
+        <input type="hidden" name="visitedUser" value = {{visitedUserData.username}}>
+    </form>
 </div>

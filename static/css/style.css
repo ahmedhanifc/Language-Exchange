@@ -255,9 +255,6 @@ a {
   color: var(--cui-link-color);
   text-decoration: underline;
 }
-a:hover {
-  color: var(--cui-link-hover-color);
-}
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
   color: inherit;
