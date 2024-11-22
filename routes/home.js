@@ -99,7 +99,6 @@ router.post("/info", sessionValidityChecker,fileUpload(), async(req,res) => {
     }
 
     //here retrieve uploaded file and move to directory
-    console.log(req.files)
     let userFile=req.files.userFile
     //checks for file uploaded
     if(!req.files){

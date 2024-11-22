@@ -1,6 +1,7 @@
 //this file will be populated as project progresses
 const persistence = require("./persistence.js")
 const crypto = require("crypto")
+const BadgeManagement = require("./class/BadgeManagement.js")
 
 
 /**
@@ -396,6 +397,21 @@ async function getUserStatistics(user,badgeName){
     return await persistence.getUserStatistics(user,badgeName)
 }
 
+async function manageUserBadges(username){
+    BadgeManagement.createBadge(
+        name = "Bilingual", description = "Learn Two Langauges",target = 2,completedImageName = "trophy.png",incompletedImageName = "trophy_blackAndWhite.png"
+    )
+    BadgeManagement.createBadge("100 Messages Sent","Total messages sent reaches 100",100,"adventure.png","adventure_blackAndWhite.png");
+    BadgeManagement.createBadge("First Conversation","Message sent and a reply received",1,"grapeSoda.png","grapeSoda_blackAndWhite.png");
+
+    let userStatistics = await getUserStatistics(username)
+    BadgeManagement.getBadges()["Bilingual"].updateFeature(userStatistics["languageLearn"]);
+    BadgeManagement.getBadges()["100 Messages Sent"].updateFeature(userStatistics["messagesSent"])
+
+    let firstConversationCondition = (userStatistics["messagesSent"] >= 1 && userStatistics["messagesReceived"] >=1);
+    BadgeManagement.getBadges()["First Conversation"].conditionMet(firstConversationCondition)
+}
+
 module.exports = {
     decrementUserStatistics,
     getUserStatistics,
@@ -432,5 +448,6 @@ module.exports = {
     addFriend,
     removeFriend,
     createUserContacts,
-    displayingFriends
+    displayingFriends,
+    manageUserBadges
 }

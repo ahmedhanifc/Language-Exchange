@@ -26,7 +26,7 @@ class Badge{
         return false;
     }
 
-    requirementsMet(condition){
+    conditionMet(condition){
         if(condition){
             this.completed = true;
             this.activePath = this.completedImageName;

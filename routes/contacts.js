@@ -42,7 +42,6 @@ let fMessage
 
 let userTargetLanguage=req.sessionData.data.languageLearn
 let data=await business.displayingContacts(userTargetLanguage,req.sessionData.data.username)
-console.log(data)
 
 if(!data || data.length===0){
     data=null

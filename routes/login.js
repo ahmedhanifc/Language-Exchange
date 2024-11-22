@@ -248,7 +248,6 @@ router.post("/sign-up", async (req, res) => {
     /*this double assignment works as array or object,also the format password returns a hashed password if it is valid and
     that is what is stored in the db*/
 
-    console.log(formatEmail, 'space', formatPassword)
     if (formatEmail === -1 && formatPassword === -1) {
         let message = { "errorCode": "fail", "content": "Your email and password entries both are not of a valid form!" }
         await flash.setFlash(sessionKey, message)

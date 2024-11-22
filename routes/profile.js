@@ -43,22 +43,13 @@ function toTitleCase(word){
     return word.substring(0,1).toUpperCase() + word.substring(1,)
 }
 
+
 router.get("/", sessionValidityChecker,async(req,res) => {
     const languageLearn = business.getLangaugesInSystem().filter(language => req.sessionData.data.languageLearn.includes(language.name))
     const languageFluent =  business.getLangaugesInSystem().filter(language => req.sessionData.data.languageFluent.includes(language.name))
     const username = req.sessionData.data.username
-    BadgeManagement.createBadge(
-        name = "Bilingual", description = "Learn Two Langauges",target = 2,completedImageName = "trophy.png",incompletedImageName = "trophy_blackAndWhite.png"
-    )
-    BadgeManagement.createBadge("100 Messages Sent","Total messages sent reaches 100",100,"adventure.png","adventure_blackAndWhite.png");
-    BadgeManagement.createBadge("First Conversation","Message sent and a reply received",1,"grapeSoda.png","grapeSoda_blackAndWhite.png");
 
-    let userStatistics = await business.getUserStatistics(username)
-    BadgeManagement.getBadges()["Bilingual"].updateFeature(userStatistics["languageLearn"]);
-
-    let firstConversationCondition = (userStatistics["messagesSent"] >= 1 && userStatistics["messagesReceived"] >=1);
-    BadgeManagement.getBadges()["First Conversation"].requirementsMet(firstConversationCondition)
-
+    await business.manageUserBadges(username);
 
     res.render("profile", {
         layout:"main",
@@ -75,11 +66,54 @@ router.get("/", sessionValidityChecker,async(req,res) => {
             toTitleCase,
         },
         badges: BadgeManagement.getBadges()
-
-
-
     })
 })
+
+router.get("/visitedUser", sessionValidityChecker,async(req,res) => {
+    let visitedUser = req.sessionData.data.visitedUser;
+    let visitedUserData = await business.findUser(visitedUser);
+
+    const languageLearn = business.getLangaugesInSystem().filter(language => visitedUserData.languageLearn.includes(language.name))
+    const languageFluent =  business.getLangaugesInSystem().filter(language => visitedUserData.languageFluent.includes(language.name))
+
+    await business.manageUserBadges(visitedUser);
+
+    const allBadges = BadgeManagement.getBadges()
+    const completedBadges = {}
+    for(badgeName of Object.keys(allBadges)){
+        if(allBadges[badgeName].completed){
+            completedBadges[badgeName] = allBadges[badgeName]
+        }
+    }
+
+    console.log(completedBadges)
+
+
+    res.render("profile", {
+        layout:"main",
+        userFile:visitedUserData.userInfo.fileLink,
+        firstName:visitedUserData.userInfo.firstName,
+        lastName: visitedUserData.userInfo.lastName,
+        userName:visitedUserData.username,
+        nationality: visitedUserData.userInfo.nationality,
+        numlanguageLearn: visitedUserData.languageLearn.length,
+        numLanguageFluent:visitedUserData.languageFluent.length,
+        languageLearn,
+        languageFluent,
+        helpers:{
+            toTitleCase,
+        },
+        badges: completedBadges
+    })
+})
+
+router.post("/api/user", sessionValidityChecker,async(req,res)=> {
+    console.log("request received")
+    const {visitedUser} = req.body;
+    await business.setVisitedUser(req.sessionData.sessionKey,visitedUser);
+    return res.sendStatus(200);
+})
+
 
 
 module.exports = router;
