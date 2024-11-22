@@ -40,15 +40,17 @@ function toTitleCase(word){
 router.get("/", sessionValidityChecker,async(req,res) => {
     const languageLearn = business.getLangaugesInSystem().filter(language => req.sessionData.data.languageLearn.includes(language.name))
     const languageFluent =  business.getLangaugesInSystem().filter(language => req.sessionData.data.languageFluent.includes(language.name))
-
+    const username = req.sessionData.data.username
     BadgeManagement.createBadge(
         name = "Bilingual", description = "Learn Two Langauges",target = 2,completedImageName = "3.svg",incompletedImageName = "4.svg"
     )
+    BadgeManagement.createBadge("100 Messages Sent","Total messages sent reaches 100",100,"adventure.png","adventure_blackAndWhite.png");
+    BadgeManagement.createBadge("First Conversation","Message sent and a reply received",[1,1],"grapeSoda.png","grapeSoda_blackAndWhite.png");
 
     BadgeManagement.getBadges()["Bilingual"].updateFeature(languageLearn.length);
 
-    // let image=filePath
-
+    let badgeData = await business.getBadgeCount(username)
+    BadgeManagement.getBadges()["100 Messages Sent"].updateFeature(badgeData["100 Messages Sent"])
 
     res.render("profile", {
         layout:"main",

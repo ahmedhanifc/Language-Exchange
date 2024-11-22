@@ -4,13 +4,14 @@ const mongodb = require('mongodb')
 const database = "Language-Exchange";
 
 //These are the four collections we have in our database. We can access them via indexing as needed, reducing variable names
-const collections = ["UserAccounts", "UserSessions", "UserContacts", "UserBlocked", "UserMessages"]
+const collections = ["UserAccounts", "UserSessions", "UserContacts", "UserBlocked", "UserMessages", "UserBadges"]
 
 let userAccounts = undefined; //This variable will contain the data defined in the collection userAccountCollectionName
 let userSessions = undefined; //This variable will contain the data defined in the collection userSessionCollectionName
 let userContacts = undefined;
 let userBlocked = undefined;
 let userMessages = undefined;
+let userBadges = undefined;
 
 
 /**
@@ -42,6 +43,11 @@ async function connectDatabase() {
         client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
         await client.connect()
         userMessages = client.db(database).collection(collections[4])
+    }
+    if (!userBadges) {
+        client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
+        await client.connect()
+        userBadges = client.db(database).collection(collections[5])
     }
 }
 
@@ -317,10 +323,24 @@ async function createMessage(users) {
     return await userMessages.insertOne({ users: users });
 }
 
+async function incrementBadgeCount(username,badgeName){
+    await connectDatabase()
+    await userBadges.updateOne(
+        {username:username},
+        {$inc:{[badgeName]:1}},
+        { upsert: true }
+    )
+}
 
+async function getBadgeCount(username,badgeName){
+    await connectDatabase()
+    return await userBadges.findOne({username:username}, {badgeName:badgeName});
+}
 
 
 module.exports = {
+    getBadgeCount,
+    incrementBadgeCount,
     createMessage,
     updateMessage,
     getMessages,

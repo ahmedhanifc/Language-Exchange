@@ -384,7 +384,17 @@ async function getVisitedUser(sessionKey){
     return visitedUser
 }
 
+async function incrementBadgeCount(user, badgeName){
+    return await persistence.incrementBadgeCount(user, badgeName)
+}
+
+async function getBadgeCount(user,badgeName){
+    return await persistence.getBadgeCount(user,badgeName)
+}
+
 module.exports = {
+    getBadgeCount,
+    incrementBadgeCount,
     getVisitedUser,
     setVisitedUser,
     createMessage,

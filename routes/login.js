@@ -3,7 +3,8 @@ const router = express.Router();
 const business = require("../business")
 const COOKIE_NAME = "session"
 const flash = require("../flash_msgs")
-const crypto = require("crypto")
+const crypto = require("crypto");
+const BadgeManagement = require('../class/BadgeManagement');
 
 
 //the verified attr added to db,will be used to verify user signup,will be additional check in login only
