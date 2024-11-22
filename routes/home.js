@@ -53,18 +53,13 @@ router.get("/", sessionValidityChecker, async (req, res) => {
         res.redirect("/home/languageFluent")
         return;
     }
-    let demographicData = await business.getNationalities()
-    let languageLearnersData = await business.getLanguageLearn();
-    let languageFluentData = await business.getLanguageFluent();
+
     let completedBadges = await business.getCompletedBadges(req.sessionData.data.username);
     res.render("home", {
         username: req.sessionData.data.username,
         languageLearn: req.sessionData.data.languageLearn,
         languageFluent: req.sessionData.data.languageFluent,
         flashData: req.sessionData.data.flashData,
-        demographicData:demographicData,
-        languageLearnersData,
-        languageFluentData,
         helpers: {
             toTitleCase
         },
