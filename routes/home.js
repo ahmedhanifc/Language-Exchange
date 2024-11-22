@@ -181,6 +181,7 @@ router.get("/languageLearn", sessionValidityChecker, async (req, res) => {
         style: flashStyle,
         languageLearn: req.sessionData.data.languageLearn,
         languages: business.getLangaugesInSystem(),
+        userProfileImage:req.sessionData.data.userInfo.fileLink,
         helpers: {
             toTitleCase
         },
@@ -209,6 +210,7 @@ router.get("/languageFluent", sessionValidityChecker, async (req, res) => {
         style: flashStyle,
         languageFluent: req.sessionData.data.languageFluent,
         languages: business.getLangaugesInSystem(),
+        userProfileImage:req.sessionData.data.userInfo.fileLink,
         helpers: {
             toTitleCase
         },

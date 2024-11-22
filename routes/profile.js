@@ -66,6 +66,7 @@ router.get("/", sessionValidityChecker,async(req,res) => {
         numLanguageFluent:req.sessionData.data.languageFluent.length,
         languageLearn,
         languageFluent,
+        userProfileImage:req.sessionData.data.userInfo.fileLink,
         helpers:{
             toTitleCase,
         },
@@ -99,7 +100,9 @@ router.get("/visitedUser", sessionValidityChecker,async(req,res) => {
         helpers:{
             toTitleCase,
         },
-        badges: completedBadges
+        badges: completedBadges,
+        userProfileImage:req.sessionData.data.userInfo.fileLink,
+
     })
 })
 

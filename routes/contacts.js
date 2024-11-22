@@ -60,6 +60,7 @@ res.render("contacts", {
     contacts:data,
     friends:friends,
     userName:req.sessionData.data.username,
+    userProfileImage:req.sessionData.data.userInfo.fileLink,
     helpers:{
         toTitleCase
     }

@@ -68,6 +68,7 @@ router.get("/", sessionValidityChecker,async (req, res) => {
         flash: fMessage,
         style: flashStyle,
         csrf:csrf,
+        userProfileImage:req.sessionData.data.userInfo.fileLink,
         helpers: {
             isLoggedInUser
         }
