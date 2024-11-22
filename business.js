@@ -595,12 +595,26 @@ async function manageUserBadges(username){
     BadgeManagement.getBadges()["First Conversation"].conditionMet(firstConversationCondition)
 }
 
+async function getNationalities(){
+    return await persistence.getNationalities();
+}
+
+async function getCompletedBadges(username){
+    await manageUserBadges(username);
+    
+    const allBadges = BadgeManagement.getBadges()
+    const completedBadges = {}
+    for(badgeName of Object.keys(allBadges)){
+        if(allBadges[badgeName].completed){
+            completedBadges[badgeName] = allBadges[badgeName]
+        }
+    }
+    return completedBadges
+}
+
 
 module.exports = {
     getCompletedBadges,
-    getLanguageFluent,
-    getLanguageLearn,
-    getNationalities,
     decrementUserStatistics,
     getUserStatistics,
     incrementUserStatistics,

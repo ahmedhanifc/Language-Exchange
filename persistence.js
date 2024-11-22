@@ -464,9 +464,6 @@ async function getUserStatistics(username, badgeName) {
 }
 
 module.exports = {
-    getLanguageFluent,
-    getLanguageLearn,
-    getNationalities,
     decrementUserStatistics,
     getUserStatistics,
     incrementUserStatistics,
