@@ -17,7 +17,6 @@
     background-color: red;
     font: size 45px;
   }
-
 </style>
 
 {{#if flash}}
@@ -36,10 +35,11 @@
   <link rel="stylesheet" href="../static/css/profile.css">
   <link rel="stylesheet" href="../../static/css/messages.css">
   <link rel="stylesheet" href="../../static/css/contacts.css">
+  <link rel="stylesheet" href="../../static/css/home.css">
 
   <title>bye bye birdie</title>
 
- 
+
   <!-- Vendors styles-->
   <link rel="stylesheet" href="../../static/vendors/simplebar/css/simplebar.css">
   <link rel="stylesheet" href="../../static/css/vendors/simplebar.css">
@@ -55,12 +55,8 @@
     <header class="header header-sticky mb-4">
       <div class="container-fluid">
         <div class="logo-container main">
-          <img src="../../static/logo/bye_bye_birdie.png" alt="" >
+          <img src="../../static/logo/bye_bye_birdie.png" alt="">
         </div>
-        <a class="header-brand d-md-none" href="#">
-          <svg width="118" height="46" alt="CoreUI Logo">
-            <use xlink:href="../../static/assets/brand/coreui.svg#full"></use>
-          </svg></a>
         <!-- Navbar that remains visible on all screen sizes -->
         <ul class="header-nav d-flex flex-wrap">
           <li class="nav-item"><a class="nav-link" href="/home">Home</a></li>
@@ -69,8 +65,13 @@
         </ul>
 
         <!-- Notification and other icons -->
-        <ul class="header-nav ms-auto d-flex">
+        <ul class="header-nav ms-auto d-flex align-items-center justify-content-center">
           <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+          <li>
+            <div class="logo-container main">
+              <img src="../../static{{userProfileImage}}" alt="">
+            </div>
+          </li>
         </ul>
         {{!-- <ul class="header-nav ms-3">
           <li class="nav-item dropdown"><a class="nav-link py-0" data-coreui-toggle="dropdown" href="#" role="button"
@@ -124,7 +125,7 @@
       </div>
     </header>
     <div class="body px-3">
-        {{{body}}}
+      {{{body}}}
     </div>
     <footer class="footer">
       <div>Hafsa, Ahmed</a> © 2024 UDST</div>
@@ -134,7 +135,7 @@
   <!-- CoreUI and necessary plugins-->
   <script src="../../static/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
   <script src="../../static/vendors/simplebar/js/simplebar.min.js"></script>
-  
+
 
 </body>
 

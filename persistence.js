@@ -382,16 +382,16 @@ async function updateMessage(users, message) {
     await connectDatabase();
     let possibleUserCombinationOne = [users[0], users[1]];
     let possibleUserCombinationTwo = [users[1], users[0]]
-    let tryRetrivalFirst = await userMessages.findOne({users:possibleUserCombinationOne})
-    if(!tryRetrivalFirst){
-        let tryRetrivalSecond = await userMessages.findOne({users:possibleUserCombinationTwo})
-        if(!tryRetrivalSecond){
+    let tryRetrivalFirst = await userMessages.findOne({ users: possibleUserCombinationOne })
+    if (!tryRetrivalFirst) {
+        let tryRetrivalSecond = await userMessages.findOne({ users: possibleUserCombinationTwo })
+        if (!tryRetrivalSecond) {
             return false;
         }
-        await userMessages.updateOne({users:possibleUserCombinationTwo},{$push : {messages:message}});
+        await userMessages.updateOne({ users: possibleUserCombinationTwo }, { $push: { messages: message } });
         return true
     }
-    await userMessages.updateOne({users:possibleUserCombinationOne},{$push : {messages:message}});
+    await userMessages.updateOne({ users: possibleUserCombinationOne }, { $push: { messages: message } });
     return true;
 
 }
@@ -420,11 +420,11 @@ async function createMessage(users) {
  * @returns {Promise<void>} A promise that resolves when the operation is complete.
  * @throws {Error} If there is an issue with the database connection or update operation.
  */
-async function incrementUserStatistics(username,badgeName){
+async function incrementUserStatistics(username, badgeName) {
     await connectDatabase()
     await userBadges.updateOne(
-        {username:username},
-        {$inc:{[badgeName]:1}},
+        { username: username },
+        { $inc: { [badgeName]: 1 } },
         { upsert: true }
     )
 }
@@ -439,11 +439,11 @@ async function incrementUserStatistics(username,badgeName){
  * @returns {Promise<void>} A promise that resolves when the operation is complete.
  * @throws {Error} If there is an issue with the database connection or update operation.
  */
-async function decrementUserStatistics(username,badgeName){
+async function decrementUserStatistics(username, badgeName) {
     await connectDatabase()
     await userBadges.updateOne(
-        {username:username},
-        {$inc:{[badgeName]:-1}},
+        { username: username },
+        { $inc: { [badgeName]: -1 } },
         { upsert: true }
     )
 }
@@ -458,13 +458,82 @@ async function decrementUserStatistics(username,badgeName){
  * @returns {Promise<Object|null>} A promise that resolves to the badge statistics or null if not found.
  * @throws {Error} If there is an issue with the database connection or query execution.
  */
-async function getUserStatistics(username,badgeName){
+async function getUserStatistics(username, badgeName) {
     await connectDatabase()
-    return await userBadges.findOne({username:username}, {badgeName:badgeName});
+    return await userBadges.findOne({ username: username }, { badgeName: badgeName });
 }
 
+async function getNationalities() {
+    await connectDatabase();
+    let userAccountsData = await userAccounts.find();
+    let userAccountsDataResult = await userAccountsData.toArray();
+    let nationalities = {}
+    for (const data of userAccountsDataResult) {
+        if (!data.userInfo) {
+            continue;
+        }
+        if (!(data.userInfo.nationality in nationalities)) {
+            nationalities[data.userInfo.nationality] = 1
+        }
+        else {
+            nationalities[data.userInfo.nationality] += 1
+
+        }
+    }
+    return nationalities;
+}
+
+async function getLanguageLearn() {
+    await connectDatabase();
+    let userAccountsData = await userAccounts.find();
+    let userAccountsDataResult = await userAccountsData.toArray();
+    let languages = {}
+    for (const data of userAccountsDataResult) {
+        if (!data.languageLearn) {
+            continue;
+        }
+        for (const d of data.languageLearn) {
+            if (!(d in languages)) {
+                languages[d] = 1
+            }
+
+            else {
+                languages[d] += 1
+
+            }
+        }
+    }
+    return languages
+}
+async function getLanguageFluent() {
+    await connectDatabase();
+    let userAccountsData = await userAccounts.find();
+    let userAccountsDataResult = await userAccountsData.toArray();
+    let languages = {}
+
+    for (const data of userAccountsDataResult) {
+        if (!data.languageFluent) {
+            continue;
+        }
+        for (const d of data.languageFluent) {
+            if (!(d in languages)) {
+                languages[d] = 1
+            }
+
+            else {
+                languages[d] += 1
+
+            }
+        }
+    }
+
+    return languages
+}
 
 module.exports = {
+    getLanguageFluent,
+    getLanguageLearn,
+    getNationalities,
     decrementUserStatistics,
     getUserStatistics,
     incrementUserStatistics,

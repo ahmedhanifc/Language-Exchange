@@ -3556,12 +3556,7 @@ html:not([dir=rtl]) .form-check-inline .form-check-input ~ .invalid-feedback {
   --cui-gradient: none;
 }
 
-.container-home{
-  padding:40px;
-  background-color: white;
-  width: 80%;
-  margin:0 auto;
-}
+
 
 .btn-outline-danger {
   --cui-btn-color: #e55353;

@@ -130,6 +130,7 @@
 
 .badge-img{
     width: 80%;
+    padding-bottom: 50px;
 }
 
 .badge-img img{
@@ -138,6 +139,8 @@
 
 .badges-container{
     padding:20px 0 0 20px;
+    display: grid;
+    gap:40px;
 }
 
 .badges-item{

@@ -82,19 +82,7 @@ router.get("/visitedUser", sessionValidityChecker,async(req,res) => {
     const languageLearn = business.getLangaugesInSystem().filter(language => visitedUserData.languageLearn.includes(language.name))
     const languageFluent =  business.getLangaugesInSystem().filter(language => visitedUserData.languageFluent.includes(language.name))
 
-    await business.manageUserBadges(visitedUser);
-
-    const allBadges = BadgeManagement.getBadges()
-    const completedBadges = {}
-    for(badgeName of Object.keys(allBadges)){
-        if(allBadges[badgeName].completed){
-            completedBadges[badgeName] = allBadges[badgeName]
-        }
-    }
-
-    console.log(completedBadges)
-
-
+    const completedBadges = await business.getCompletedBadges(visitedUser);
     res.render("profile", {
         layout:"main",
         userFile:visitedUserData.userInfo.fileLink,

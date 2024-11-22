@@ -12,7 +12,7 @@
                 <div class="image">
                     <img src="{{this.flag}}" alt="">
                 </div>
-                <div class="name">{{titleCase this.name}}</div>
+                <div class="name">{{toTitleCase this.name}}</div>
             </div>
         </a>
         {{/each}}
@@ -22,7 +22,7 @@
         <p>Language(s) you are fluent in:</p>
         <ul>
             {{#each languageFluent}}
-            <li>{{titleCase this}}</li>
+            <li>{{toTitleCase this}}</li>
             {{/each}}
         </ul>
     </div>

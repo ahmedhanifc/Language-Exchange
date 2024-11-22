@@ -4,12 +4,10 @@ const business = require("../business")
 const fileUpload = require('express-fileupload');
 const COOKIE_NAME = "session"
 const flash = require("../flash_msgs")
+const BadgeManagement = require("../class/BadgeManagement")
 
-
-
-function titleCase(string) {
-    formattedString = string.slice(0, 1).toUpperCase() + string.slice(1,);
-    return formattedString
+function toTitleCase(word){
+    return word.substring(0,1).toUpperCase() + word.substring(1,)
 }
 
 
@@ -55,15 +53,25 @@ router.get("/", sessionValidityChecker, async (req, res) => {
         res.redirect("/home/languageFluent")
         return;
     }
+    let demographicData = await business.getNationalities()
+    let languageLearnersData = await business.getLanguageLearn();
+    let languageFluentData = await business.getLanguageFluent();
+    let completedBadges = await business.getCompletedBadges(req.sessionData.data.username);
     res.render("home", {
         username: req.sessionData.data.username,
         languageLearn: req.sessionData.data.languageLearn,
         languageFluent: req.sessionData.data.languageFluent,
         flashData: req.sessionData.data.flashData,
+        demographicData:demographicData,
+        languageLearnersData,
+        languageFluentData,
         helpers: {
-            titleCase
+            toTitleCase
         },
-        layout:"main"
+        layout:"main",
+        userProfileImage:req.sessionData.data.userInfo.fileLink,
+        badges:completedBadges,
+        
     })
 })
 
@@ -179,7 +187,7 @@ router.get("/languageLearn", sessionValidityChecker, async (req, res) => {
         languageLearn: req.sessionData.data.languageLearn,
         languages: business.getLangaugesInSystem(),
         helpers: {
-            titleCase
+            toTitleCase
         },
         layout:"main"
     })
@@ -207,7 +215,7 @@ router.get("/languageFluent", sessionValidityChecker, async (req, res) => {
         languageFluent: req.sessionData.data.languageFluent,
         languages: business.getLangaugesInSystem(),
         helpers: {
-            titleCase
+            toTitleCase
         },
         layout:"main"
     })
@@ -265,6 +273,9 @@ router.get("/languageFluent/:languageFluent", sessionValidityChecker, async (req
     await flash.setFlash(req.sessionData.sessionKey, fMessage)
     res.redirect("/home/languageFluent")
 })
+
+
+
 
 
 

@@ -78,7 +78,7 @@ router.post("/processMessage", sessionValidityChecker,async (req,res) => {
     let fMessage
 
     let {message, visitedUser, loggedInUser, csrf} = req.body;
-    if(csrf !== sessionData.data.csrfToken){
+    if(csrf !== req.sessionData.data.csrfToken){
         fmessage = { "errorCode": "fail", "content": "I don't think you're allowed to do that big man" }
         await flash.setFlash(sessionKey, message)
         res.redirect("/")
