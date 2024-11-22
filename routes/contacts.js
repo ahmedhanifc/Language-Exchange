@@ -39,7 +39,6 @@ function toTitleCase(word){
 
 router.get("/", sessionValidityChecker,async(req,res) => {
 let fMessage
-
 let userTargetLanguage=req.sessionData.data.languageLearn
 let data=await business.displayingContacts(userTargetLanguage,req.sessionData.data.username)
 
@@ -48,8 +47,6 @@ if(!data || data.length===0){
 }
 //can also retreive from db the list of blocked ppl.
 let friends=await business.displayingFriends(userTargetLanguage,req.sessionData.data.username)
-
-//will send titlecase helper function too
 
  fMessage = await flash.getFlash(req.sessionData.sessionKey)
 let flashStyle = 'flash-message-yay'
@@ -70,25 +67,44 @@ res.render("contacts", {
 
 })
 
-//fetch requests here
+//BUSINESS RULE:When userA adds userB as friend,in userB's contacts list-userAgets added as well
 router.get('/api/addFriend/:username/:friendAccount',async(req,res)=>{
     const {username,friendAccount}=req.params
+    try{
     await business.addFriend(username,friendAccount)
+    await business.addFriend(friendAccount,username)
     console.log('refresh page, one more person should be in the friends heading')
-    
+    res.sendStatus(200)
+
+    }
+    catch(error){
+        res.sendStatus(404)
+    }
 })
 
 router.get('/api/removeFriend/:username/:targetAccount',async(req,res)=>{
     const {username,targetAccount}=req.params
+    try{
     await business.removeFriend(username,targetAccount)
     console.log('check db person should not be friends anymore')
+    res.sendStatus(200)
+    }
+    catch(error){
+        res.sendStatus(404)
+    }
    
 })
 
 router.get('/api/blockContact/:username/:targetAccount',async(req,res)=>{
     const {username,targetAccount}=req.params
+    try{
     await business.blockContact(username,targetAccount)
     console.log('check db person should not be visible anymore anymore')
+    res.sendStatus(200)
+    } 
+    catch(error){
+        res.sendStatus(404)
+    }
     
 })
 

@@ -160,6 +160,14 @@ async function generateFormToken(sessionKey) {
     return token
 }
 
+
+
+async function cancelToken(sessionKey) {
+    let sessionData = await persistence.getSessionData(sessionKey)
+    sessionData.data.csrfToken = null
+    await persistence.updateSessionData(sessionKey,sessionData)
+}
+
 /**
  * Updates the language a user wants to learn in their account.
  * @param {string} username - The user's username.
@@ -280,7 +288,6 @@ async function displayingContacts(userTargetLanguage,username) {
     if(allContacts.length===0){
         return null
     }
-//Object.keys(x) can be used to get the keys of an object as a list,if list.length is zero then it means object is empty
     if(blockedContacts.blockedUsers.length!==0 && data.friends.length!==0 ){
         return allContacts.filter(
             contact => 
@@ -449,5 +456,7 @@ module.exports = {
     removeFriend,
     createUserContacts,
     displayingFriends,
-    manageUserBadges
+    manageUserBadges,
+    cancelToken,
+    generateFormToken
 }

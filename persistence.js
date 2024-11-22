@@ -288,6 +288,8 @@ async function getMessages(users) {
     return messages;
 }
 
+
+
 // async function updateMessage(users, message){
 //     await connectDatabase();
 //     let possibleUserCombinationOne = [users[0], users[1]];

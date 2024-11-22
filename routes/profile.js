@@ -50,6 +50,8 @@ router.get("/", sessionValidityChecker,async(req,res) => {
     const username = req.sessionData.data.username
 
     await business.manageUserBadges(username);
+    let friends=await business.displayingFriends(languageLearn,username)
+    let numFriends=friends.length
 
     res.render("profile", {
         layout:"main",
@@ -58,6 +60,7 @@ router.get("/", sessionValidityChecker,async(req,res) => {
         lastName: req.sessionData.data.userInfo.lastName,
         userName:req.sessionData.data.username,
         nationality: req.sessionData.data.userInfo.nationality,
+        numFriends:numFriends,
         numlanguageLearn: req.sessionData.data.languageLearn.length,
         numLanguageFluent:req.sessionData.data.languageFluent.length,
         languageLearn,
@@ -72,6 +75,8 @@ router.get("/", sessionValidityChecker,async(req,res) => {
 router.get("/visitedUser", sessionValidityChecker,async(req,res) => {
     let visitedUser = req.sessionData.data.visitedUser;
     let visitedUserData = await business.findUser(visitedUser);
+    let visitedUserFriends=await business.displayingFriends(visitedUserData.languageLearn,visitedUser)
+    let numFriends=visitedUserFriends.length
 
     const languageLearn = business.getLangaugesInSystem().filter(language => visitedUserData.languageLearn.includes(language.name))
     const languageFluent =  business.getLangaugesInSystem().filter(language => visitedUserData.languageFluent.includes(language.name))
@@ -96,6 +101,7 @@ router.get("/visitedUser", sessionValidityChecker,async(req,res) => {
         lastName: visitedUserData.userInfo.lastName,
         userName:visitedUserData.username,
         nationality: visitedUserData.userInfo.nationality,
+        numFriends:numFriends,
         numlanguageLearn: visitedUserData.languageLearn.length,
         numLanguageFluent:visitedUserData.languageFluent.length,
         languageLearn,

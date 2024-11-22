@@ -84,22 +84,35 @@
 
     //this js is to implement the addfriend,remove friend and block friend functionalities
     async function addFriend(username, friendAccount) {
-        await fetch(`/contacts/api/addFriend/${username}/${friendAccount}`)
+        const response=await fetch(`/contacts/api/addFriend/${username}/${friendAccount}`)
+        if(response.status===200){
         console.log('refresh page and new person should appear.')
-        window.location.reload(true); // Refresh the entire page
+        window.location.reload()
+        }else{
+            console.log('request failed.')
+        }
+
     }
 
     async function removeFriend(username, targetAccount) {
-        await fetch(`/contacts/api/removeFriend/${username}/${targetAccount}`)
+        const response=await fetch(`/contacts/api/removeFriend/${username}/${targetAccount}`)
+        if(response.status === 200){
         console.log('refresh page and new person should appear.')
-        window.location.reload(true); // Refresh the entire page
+        window.location.reload(); // Refresh the entire page
+        }else{
+            console.log('request failed.')
+        }
 
     }
 
     async function blockContact(username, targetAccount) {
-        await fetch(`/contacts/api/blockContact/${username}/${targetAccount}`)
+        const response=await fetch(`/contacts/api/blockContact/${username}/${targetAccount}`)
+        if(response.status === 200){
         console.log('refresh page ,acc should be blocked')
-        window.location.reload(true); // Refresh the entire page
+        window.location.reload(); // Refresh the entire page
+        }else{
+            console.log('request failed.')
+        }
     }
 
     async function viewProfile(visitedUser) {

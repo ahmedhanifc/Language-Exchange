@@ -75,15 +75,20 @@ router.get("/info", sessionValidityChecker, async(req,res)=> {
         flashStyle = 'flash-message-fail'
     }
 
+    let csrf = await business.generateFormToken(req.sessionData.sessionKey)
+
+
     res.render("info", {
         layout:"main",
         flash: fMessage,
         style: flashStyle,
+        csrf:csrf
     })
+    return
 })
 
 router.post("/info", sessionValidityChecker,fileUpload(), async(req,res) => {
-    let {firstName,lastName,nationality, dateOfBirth} = req.body;
+    let {firstName,lastName,nationality, dateOfBirth,csrf} = req.body;
     if(firstName.trim().length===0 || lastName.trim().length===0 || lastName.trim().length===0 || dateOfBirth.trim().length===0){
         fMessage = { "errorCode": "fail", "content": "Field(s) Cannot be Empty" }
         flash.setFlash(req.sessionData.sessionKey, fMessage);
@@ -114,6 +119,15 @@ router.post("/info", sessionValidityChecker,fileUpload(), async(req,res) => {
         return;
     }
     
+    if(csrf !== req.sessionData.data.csrfToken){
+        let message = { "errorCode": "fail", "content": "I don't think you're allowed to do that big man" }
+        await flash.setFlash(req.sessionData.sessionKey, message)
+        await business.cancelToken(req.sessionData.sessionKey)
+        res.redirect("/")
+        return;
+    }else{
+        await business.cancelToken(req.sessionData.sessionKey)
+    }
 
     //if file is correct then it saves
  let fileName=req.sessionData.data.username
