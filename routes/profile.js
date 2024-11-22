@@ -55,6 +55,7 @@ router.get("/", sessionValidityChecker,async(req,res) => {
 
     res.render("profile", {
         layout:"main",
+        isLoggedInUser:true,
         userFile:req.sessionData.data.userInfo.fileLink,
         firstName:req.sessionData.data.userInfo.firstName,
         lastName: req.sessionData.data.userInfo.lastName,
@@ -97,6 +98,7 @@ router.get("/visitedUser", sessionValidityChecker,async(req,res) => {
     res.render("profile", {
         layout:"main",
         userFile:visitedUserData.userInfo.fileLink,
+        isLoggedInUser:false,
         firstName:visitedUserData.userInfo.firstName,
         lastName: visitedUserData.userInfo.lastName,
         userName:visitedUserData.username,

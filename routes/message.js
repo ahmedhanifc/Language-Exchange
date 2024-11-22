@@ -57,6 +57,8 @@ router.get("/", sessionValidityChecker,async (req, res) => {
     else{
         messages = messagesData.messages;
     }
+
+    let csrf = await business.generateFormToken(req.sessionData.sessionKey)
     
     res.render("messages", {
         layout: "main",
@@ -65,6 +67,7 @@ router.get("/", sessionValidityChecker,async (req, res) => {
         loggedInUser: loggedInUser,
         flash: fMessage,
         style: flashStyle,
+        csrf:csrf,
         helpers: {
             isLoggedInUser
         }
@@ -74,7 +77,14 @@ router.get("/", sessionValidityChecker,async (req, res) => {
 router.post("/processMessage", sessionValidityChecker,async (req,res) => {
     let fMessage
 
-    let {message, visitedUser, loggedInUser} = req.body;
+    let {message, visitedUser, loggedInUser, csrf} = req.body;
+    if(csrf !== sessionData.data.csrfToken){
+        fmessage = { "errorCode": "fail", "content": "I don't think you're allowed to do that big man" }
+        await flash.setFlash(sessionKey, message)
+        res.redirect("/")
+        return;
+    }
+
     if(message.trim().length === 0){
         fMessage = { "errorCode": "fail", "content": "Empty Message, Are you trying to send a ghost?" }
         await flash.setFlash(req.sessionData.sessionKey,fMessage)

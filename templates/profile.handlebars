@@ -7,7 +7,16 @@
 
         <div class="left">
             <div class="leftOne">
-                <div class="info name">{{firstName}} {{lastName}}</div>
+                <div class="name-container">
+                    <div class="info name">{{firstName}} {{lastName}}</div>
+                    {{#if isLoggedInUser}}
+                    <a href="/home/info">
+                        <svg class="icon" style = "width:30px; height:30px;" >
+                            <use xlink:href="/static/vendors/@coreui/icons/svg/free.svg#cil-pen"></use>
+                        </svg></span>
+                    </a>
+                    {{/if}}
+                </div>
                 <div class="info age"></div>
                 <div class="info location">{{toTitleCase nationality}}</div>
             </div>
@@ -24,7 +33,6 @@
                     <div class="count">{{numLanguageFluent}}</div>
                     <div class="countText">Language(s) Fluent</div>
                 </div>
-
             </div>
         </div>
 
@@ -85,7 +93,7 @@
                 <p class="badge-description">{{this.description}}</p>
                 <p class="badge-progress">Progress: <span>{{this.feature}} / {{this.target}}</span></p>
             </div>
-        <div class="empty"></div>
+            <div class="empty"></div>
 
         </div>
         {{/each}}
