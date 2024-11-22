@@ -98,6 +98,17 @@ async function createUser(username, email, password, resetKey) {
 
 }
 
+/**
+ * Updates the user information for a given username in the database.
+ *
+ * @async
+ * @function updateuserInfo
+ * @param {string} username - The username of the user whose information is to be updated.
+ * @param {Object} userInfo - An object containing the new user information to update.
+ * @returns {Promise<Object>} A promise that resolves to the result of the update operation.
+ *                             This typically includes information about the matched and modified documents.
+ * @throws {Error} If there is an issue with the database connection or the update operation.
+ */
 async function updateuserInfo(username, userInfo) {
     await connectDatabase();
     return await userAccounts.updateOne({ username }, { $set: { userInfo } })
@@ -233,6 +244,16 @@ async function deleteSession(sessionKey) {
     return await userSessions.deleteOne({ sessionKey })
 }
 
+/**
+ * Retrieves possible contacts for a user based on target language and excluding a specific username.
+ *
+ * @async
+ * @function getPossibleContacts
+ * @param {Array<string>} userTargetLanguage - Array of target languages the user is interested in.
+ * @param {string} excludedUsername - The username to exclude from the results.
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of possible contact objects.
+ * @throws {Error} If there is an issue with the database connection or query execution.
+ */
 async function getPossibleContacts(userTargetLanguage, excludedUsername) {
     await connectDatabase()
     return await userAccounts.find({
@@ -242,41 +263,101 @@ async function getPossibleContacts(userTargetLanguage, excludedUsername) {
 
 }
 
+/**
+ * Updates the friends list for a given user.
+ *
+ * @async
+ * @function updateUserFriends
+ * @param {string} username - The username of the user whose friends list is to be updated.
+ * @param {Object} data - An object containing the updated friends list.
+ * @returns {Promise<Object>} A promise that resolves to the result of the update operation.
+ * @throws {Error} If there is an issue with the database connection or update operation.
+ */
 async function updateUserFriends(username, data) {
     await connectDatabase()
     return await userContacts.updateOne({ 'username': username }, { $set: { 'friends': data.friends } })
 }
 
+/**
+ * Retrieves the friends list for a given username.
+ *
+ * @async
+ * @function getFriends
+ * @param {string} username - The username of the user.
+ * @returns {Promise<Object|null>} A promise that resolves to the user's contact object or null if not found.
+ * @throws {Error} If there is an issue with the database connection or query execution.
+ */
 async function getFriends(username) {
     await connectDatabase()
     return await userContacts.findOne({ username: username })
 }
 
+/**
+ * Retrieves detailed friend objects for a list of usernames.
+ *
+ * @async
+ * @function getFriendsAsObjects
+ * @param {Array<string>} friendList - List of usernames.
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of user objects.
+ * @throws {Error} If there is an issue with the database connection or query execution.
+ */
 async function getFriendsAsObjects(friendList) {
     await connectDatabase()
     return await userAccounts.find({ username: { $in: friendList } }).toArray()
 }
 
+/**
+ * Updates the blocked contacts for a given username.
+ *
+ * @async
+ * @function updateBlockedContacts
+ * @param {string} username - The username of the user.
+ * @param {Object} data - An object containing the updated blocked contacts.
+ * @returns {Promise<Object>} A promise that resolves to the result of the update operation.
+ * @throws {Error} If there is an issue with the database connection or update operation.
+ */
 async function updateBlockedContacts(username, data) {
     await connectDatabase()
     return await userContacts.updateOne({ username: username }, { $set: { 'blockedUsers': data.blockedUsers } })
 }
 
+/**
+ * Retrieves the blocked contacts for a given username.
+ *
+ * @async
+ * @function getBlockedContacts
+ * @param {string} username - The username of the user.
+ * @returns {Promise<Object|null>} A promise that resolves to the user's blocked contacts or null if not found.
+ * @throws {Error} If there is an issue with the database connection or query execution.
+ */
 async function getBlockedContacts(username) {
     await connectDatabase()
     return await userContacts.findOne({ username: username })
 }
 
+/**
+ * Creates a new user contacts record.
+ *
+ * @async
+ * @function createUserContacts
+ * @param {Object} data - The contact data to be inserted.
+ * @returns {Promise<Object>} A promise that resolves to the result of the insertion.
+ * @throws {Error} If there is an issue with the database connection or insertion.
+ */
 async function createUserContacts(data) {
     await connectDatabase()
     return await userContacts.insertOne(data)
 }
 
-async function insertMessages(users, messages) {
-    await connectDatabase();
-    await userMessages.insertOne({ users: users, messages: messages })
-}
-
+/**
+ * Retrieves messages exchanged between two users.
+ *
+ * @async
+ * @function getMessages
+ * @param {Array<string>} users - An array of two usernames.
+ * @returns {Promise<Object|null>} A promise that resolves to the messages or null if no messages are found.
+ * @throws {Error} If there is an issue with the database connection or query execution.
+ */
 async function getMessages(users) {
     await connectDatabase();
     let possibleUserCombinationOne = [users[0], users[1]];
@@ -284,24 +365,19 @@ async function getMessages(users) {
 
     let messages = await userMessages.findOne({ users: possibleUserCombinationOne }) || await userMessages.findOne({ users: possibleUserCombinationTwo });
 
-
     return messages;
 }
 
-
-
-// async function updateMessage(users, message){
-//     await connectDatabase();
-//     let possibleUserCombinationOne = [users[0], users[1]];
-//     let possibleUserCombinationTwo = [users[1],users[0]]
-//     let user = await userMessages.findOne({users:possibleUserCombinationOne}) || await userMessages.findOne({users:possibleUserCombinationTwo});
-//     return await userMessages.updateOne({users:possibleUserCombinationOne},
-//         {$push : {messages: message}}
-//     ) || await userMessages.updateOne({users:possibleUserCombinationTwo},
-//         {$push : {messages: message}}
-//     );
-// }
-
+/**
+ * Updates the message history between two users.
+ *
+ * @async
+ * @function updateMessage
+ * @param {Array<string>} users - An array of two usernames.
+ * @param {Object} message - The message object to add.
+ * @returns {Promise<boolean>} A promise that resolves to `true` if the update was successful, or `false` otherwise.
+ * @throws {Error} If there is an issue with the database connection or update operation.
+ */
 async function updateMessage(users, message) {
     await connectDatabase();
     let possibleUserCombinationOne = [users[0], users[1]];
@@ -320,11 +396,30 @@ async function updateMessage(users, message) {
 
 }
 
+/**
+ * Creates a new message history between users.
+ *
+ * @async
+ * @function createMessage
+ * @param {Array<string>} users - An array of two usernames.
+ * @returns {Promise<Object>} A promise that resolves to the result of the insertion.
+ * @throws {Error} If there is an issue with the database connection or insertion.
+ */
 async function createMessage(users) {
     await connectDatabase();
     return await userMessages.insertOne({ users: users });
 }
 
+/**
+ * Increments a user's statistics for a specific badge.
+ *
+ * @async
+ * @function incrementUserStatistics
+ * @param {string} username - The username of the user.
+ * @param {string} badgeName - The badge to increment.
+ * @returns {Promise<void>} A promise that resolves when the operation is complete.
+ * @throws {Error} If there is an issue with the database connection or update operation.
+ */
 async function incrementUserStatistics(username,badgeName){
     await connectDatabase()
     await userBadges.updateOne(
@@ -334,6 +429,16 @@ async function incrementUserStatistics(username,badgeName){
     )
 }
 
+/**
+ * Decrements a user's statistics for a specific badge.
+ *
+ * @async
+ * @function decrementUserStatistics
+ * @param {string} username - The username of the user.
+ * @param {string} badgeName - The badge to decrement.
+ * @returns {Promise<void>} A promise that resolves when the operation is complete.
+ * @throws {Error} If there is an issue with the database connection or update operation.
+ */
 async function decrementUserStatistics(username,badgeName){
     await connectDatabase()
     await userBadges.updateOne(
@@ -343,6 +448,16 @@ async function decrementUserStatistics(username,badgeName){
     )
 }
 
+/**
+ * Retrieves a user's statistics for a specific badge.
+ *
+ * @async
+ * @function getUserStatistics
+ * @param {string} username - The username of the user.
+ * @param {string} badgeName - The badge to retrieve statistics for.
+ * @returns {Promise<Object|null>} A promise that resolves to the badge statistics or null if not found.
+ * @throws {Error} If there is an issue with the database connection or query execution.
+ */
 async function getUserStatistics(username,badgeName){
     await connectDatabase()
     return await userBadges.findOne({username:username}, {badgeName:badgeName});
