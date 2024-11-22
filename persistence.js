@@ -306,6 +306,11 @@ async function getFriendsAsObjects(friendList) {
     return await userAccounts.find({ username: { $in: friendList } }).toArray()
 }
 
+async function getBlockedUsersAsObjects(blocklist) {
+    await connectDatabase()
+    return await userAccounts.find({ username: { $in: blocklist } }).toArray()
+}
+
 /**
  * Updates the blocked contacts for a given username.
  *
@@ -489,6 +494,7 @@ module.exports = {
     updateBlockedContacts,
     getBlockedContacts,
     getFriends,
-    getFriendsAsObjects
+    getFriendsAsObjects,
+    getBlockedUsersAsObjects
 
 }

@@ -315,6 +315,15 @@ async function deleteSession(sessionKey) {
     return await persistence.deleteSession(sessionKey);
 }
 
+async function displayingBlockedContacts(username){
+    let data= await persistence.getBlockedContacts(username)
+    if(data.blockedUsers.length!==0){
+        let blockedUsers=await persistence.getBlockedUsersAsObjects(data.blockedUsers)
+        return blockedUsers
+    }
+   return null
+}
+
 /**
  * Displays possible contacts for a user based on target languages and exclusions.
  *
@@ -374,6 +383,15 @@ async function blockContact(username,blockedAccount) {
     data.blockedUsers.push(blockedAccount)
     await persistence.updateBlockedContacts(username,data)
     
+}
+
+async function unblockContact(username,blockedAccount) {
+    let data=await persistence.getBlockedContacts(username)
+    if(data.blockedUsers.length!==0){
+        data.blockedUsers = data.blockedUsers.filter(blocked => blocked !== blockedAccount);
+        await persistence.updateBlockedContacts(username,data)
+    }
+   return null
 }
 
 /**
@@ -613,6 +631,7 @@ async function getCompletedBadges(username){
 }
 
 
+
 module.exports = {
     getCompletedBadges,
     decrementUserStatistics,
@@ -653,5 +672,7 @@ module.exports = {
     displayingFriends,
     manageUserBadges,
     cancelToken,
-    generateFormToken
+    generateFormToken,
+    displayingBlockedContacts,
+    unblockContact
 }

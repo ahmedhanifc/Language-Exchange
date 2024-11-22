@@ -74,7 +74,7 @@ router.get("/", sessionValidityChecker,async(req,res) => {
     })
 })
 
-router.get("/visitedUser", sessionValidityChecker,async(req,res) => {
+/*router.get("/visitedUser", sessionValidityChecker,async(req,res) => {
     let visitedUser = req.sessionData.data.visitedUser;
     let visitedUserData = await business.findUser(visitedUser);
     let visitedUserFriends=await business.displayingFriends(visitedUserData.languageLearn,visitedUser)
@@ -112,7 +112,7 @@ router.post("/api/user", sessionValidityChecker,async(req,res)=> {
     await business.setVisitedUser(req.sessionData.sessionKey,visitedUser);
     return res.sendStatus(200);
 })
-
+*/
 
 
 module.exports = router;

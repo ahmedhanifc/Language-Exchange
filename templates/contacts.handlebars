@@ -55,6 +55,32 @@
 <h1 class="middle">No more possible contacts</h1>
 {{/if}}
 
+
+ {{#if blockedContacts}}
+    <h1 class="middle">These are your blocked contacts in case you change your mind (let it go as elsa would say)</h1>
+    {{#each blockedContacts}}
+    <div class="container-friends-item">
+        <div class="user-profilePhoto">
+            <img src="../static{{this.userInfo.fileLink}}" alt="">
+        </div>
+        <div class="user-info">
+            <p class="user-name">{{toTitleCase this.username}}</p>
+            <p class="user-nationality">{{toTitleCase this.userInfo.nationality}} </p>
+            <p class="language-fluent">Fluent languages: {{this.languageFluent}}</p>
+            <div class="user-actions">
+                <button onclick="unblockUser('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4"
+                    value="unblockUser">Unblock Contact</button>
+                
+            </div>
+        </div>
+
+    </div>
+    {{/each}}
+    {{else}}
+    <h1 class="middle">You have no blocked contacts! </h1>
+    {{/if}}
+
+
 <script>
 
     async function makeRequest(url, method, data) {
@@ -114,6 +140,18 @@
             console.log('request failed.')
         }
     }
+
+    async function unblockUser(username, targetAccount) {
+        const response=await fetch(`/contacts/api/unblockContact/${username}/${targetAccount}`)
+        if(response.status === 200){
+        console.log('refresh page ,acc should be in possible unblocked')
+        window.location.reload(); // Refresh the entire page
+        }else{
+            console.log('request failed.')
+        }
+    }
+
+
 
     async function viewProfile(visitedUser) {
         //put api call here that renders the profile for the friend from the pov of user,it can be simple just render the same screen for profile.

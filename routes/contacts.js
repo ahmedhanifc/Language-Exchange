@@ -47,6 +47,7 @@ if(!data || data.length===0){
 }
 //can also retreive from db the list of blocked ppl.
 let friends=await business.displayingFriends(userTargetLanguage,req.sessionData.data.username)
+let blockedData=await business.displayingBlockedContacts(req.sessionData.data.username)
 
  fMessage = await flash.getFlash(req.sessionData.sessionKey)
 let flashStyle = 'flash-message-yay'
@@ -59,6 +60,7 @@ res.render("contacts", {
     style: flashStyle,
     contacts:data,
     friends:friends,
+    blockedContacts:blockedData,
     userName:req.sessionData.data.username,
     userProfileImage:req.sessionData.data.userInfo.fileLink,
     helpers:{
@@ -109,5 +111,17 @@ router.get('/api/blockContact/:username/:targetAccount',async(req,res)=>{
     
 })
 
+router.get('/api/unblockContact/:username/:targetAccount',async(req,res)=>{
+    const {username,targetAccount}=req.params
+    try{
+    await business.unblockContact(username,targetAccount)
+    console.log('check db person should not be blocked anymore ')
+    res.sendStatus(200)
+    } 
+    catch(error){
+        res.sendStatus(404)
+    }
+    
+})
 
 module.exports = router;
