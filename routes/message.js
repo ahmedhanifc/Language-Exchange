@@ -44,7 +44,7 @@ router.get("/", sessionValidityChecker,async (req, res) => {
     }
 
     let loggedInUser = req.sessionData.data.username;
-    let visitedUser = "message"
+    let visitedUser = req.sessionData.data.visitedUser;
 
     let messages;
     let visitedUserData = await business.findUser(visitedUser);
@@ -94,27 +94,10 @@ router.post("/processMessage", sessionValidityChecker,async (req,res) => {
     return
 })
 
+router.post("/api/user", sessionValidityChecker,async(req,res)=> {
+    const {visitedUser} = req.body;
+    await business.setVisitedUser(req.sessionData.sessionKey,visitedUser);
+    return res.sendStatus(200);
+})
 
 module.exports = router;
-
-
-/*
-
-    // let messages = [
-    //     {
-    //         user: loggedInUser,
-    //         message: "Hello",
-    //         timestamp: new Date()
-    //     },
-    //     {
-    //         user: visitedUser,
-    //         message: "i am doing amazingly",
-    //         timestamp: new Date()
-    //     },
-    //     {
-    //         user: loggedInUser,
-    //         message: "i am doing amazingly. Well thats nice",
-    //         timestamp: new Date()
-    //     },
-    // ]
-*/

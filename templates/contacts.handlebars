@@ -1,6 +1,6 @@
 <div class="container-friends">
     {{#if friends}}
-    <h1 class = "middle">These are your friends</h1>
+    <h1 class="middle">These are your friends</h1>
     {{#each friends}}
     <div class="container-friends-item">
         <div class="user-profilePhoto">
@@ -17,17 +17,18 @@
                     value="viewFriend">See Friend Profile</button>
                 <button onclick="blockContact('{{../userName}}','{{this.username}}')" class="btn btn-primary px-4"
                     value="BlockFriend">Block</button>
+                <button class="btn btn-primary px-4" onclick="sendMessage('{{this.username}}')">Send Message</button>
             </div>
         </div>
 
     </div>
     {{/each}}
     {{else}}
-    <h1 class = "middle">You have no friends</h1>
+    <h1 class="middle">You have no friends</h1>
     {{/if}}
 </div>
 {{#if contacts}}
-    <h1 class = "middle">Possible Contacts</h1>
+<h1 class="middle">Possible Contacts</h1>
 
 {{#each contacts}}
 
@@ -51,17 +52,41 @@
 </div>
 {{/each}}
 {{else}}
-<h1 class = "middle">No more possible contacts</h1>
+<h1 class="middle">No more possible contacts</h1>
 {{/if}}
 
 <script>
-    //this js is to implement the addfriend,remove friend and block friend functionalities
 
+    async function makeRequest(url, method, data) {
+        const header = new Headers();
+        header.append("Content-Type", "application/json");
+
+        const request = new Request(url, {
+            method: method,
+            body: JSON.stringify(data),
+            headers: header
+        })
+        const response = await fetch(request)
+        return await response;
+    }
+
+    async function sendMessage(visitedUser){
+        const url = "/message/api/user";
+
+        try{
+            await makeRequest(url,"POST",{visitedUser:visitedUser});
+            window.location.href = "/message"
+        }
+        catch(error){
+            console.log("URL not found")
+        }
+    }
+
+    //this js is to implement the addfriend,remove friend and block friend functionalities
     async function addFriend(username, friendAccount) {
         await fetch(`/contacts/api/addFriend/${username}/${friendAccount}`)
         console.log('refresh page and new person should appear.')
         window.location.reload(true); // Refresh the entire page
-
     }
 
     async function removeFriend(username, targetAccount) {

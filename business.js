@@ -368,9 +368,25 @@ async function createMessage(users){
     return await persistence.createMessage(users)
 }
 
-
+async function setVisitedUser(sessionKey, visitedUser){
+    let sessionData=await persistence.getSessionData(sessionKey)
+    sessionData.data.visitedUser=visitedUser
+    return await persistence.updateSessionData(sessionKey,sessionData)
+}
+async function getVisitedUser(sessionKey){
+    let sessionData=await persistence.getSessionData(sessionKey)
+    if(!sessionData){
+        return null
+    }
+    let visitedUser=sessionData.data.visitedUser
+    delete sessionData.data.visitedUser
+    await persistence.updateSessionData(sessionKey,sessionData)
+    return visitedUser
+}
 
 module.exports = {
+    getVisitedUser,
+    setVisitedUser,
     createMessage,
     updateMessage,
     getMessages,

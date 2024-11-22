@@ -11,7 +11,6 @@ const crypto = require("crypto")
 
 // "/" path will render the home page.
 router.get("/", async (req, res) => {
-    
     let sessionKey = req.cookies[COOKIE_NAME];
     let sessionData = await business.getSessionData(sessionKey)
     if (!sessionData) {

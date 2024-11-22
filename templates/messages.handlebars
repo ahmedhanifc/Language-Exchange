@@ -7,7 +7,7 @@
 
 <div class="messages-display">
     {{#each messages}}
-    {{#if (isLoggedInUser this.user ../loggedInUser)}}
+    {{#if (isLoggedInUser this.sender ../loggedInUser)}}
     <div class="message-item loggedInUser">
         <div class="message-flex-item">
             <div class="displayMessage loggedInUser">{{this.message}}</div>
@@ -18,7 +18,7 @@
     <div class="message-item visitingUser">
         <div class="message-flex-item">
             <div class="displayProfilePicture">
-                <img src="../static/user_files/1732053890106_nigesh" alt="">
+                <img src="../static{{../visitedUserData.userInfo.fileLink}}" alt="">
             </div>
             <div class="displayMessage visitingUser">{{this.message}}</div>
         </div>

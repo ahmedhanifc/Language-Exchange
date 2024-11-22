@@ -3,8 +3,8 @@ const mongodb = require('mongodb')
 
 const database = "Language-Exchange";
 
- //These are the four collections we have in our database. We can access them via indexing as needed, reducing variable names
-const collections = ["UserAccounts","UserSessions","UserContacts","UserBlocked","UserMessages"]
+//These are the four collections we have in our database. We can access them via indexing as needed, reducing variable names
+const collections = ["UserAccounts", "UserSessions", "UserContacts", "UserBlocked", "UserMessages"]
 
 let userAccounts = undefined; //This variable will contain the data defined in the collection userAccountCollectionName
 let userSessions = undefined; //This variable will contain the data defined in the collection userSessionCollectionName
@@ -23,22 +23,22 @@ async function connectDatabase() {
         await client.connect()
         userAccounts = client.db(database).collection(collections[0]) // loads userAccounts collection data into the variable userAccounts
     }
-    if(!userSessions) {
+    if (!userSessions) {
         client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
         await client.connect()
         userSessions = client.db(database).collection(collections[1]) // loads userSessions collection data into the variable userAccounts
     }
-    if(!userContacts) {
+    if (!userContacts) {
         client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
         await client.connect()
-        userContacts = client.db(database).collection(collections[2]) 
+        userContacts = client.db(database).collection(collections[2])
     }
-    if(!userBlocked) {
+    if (!userBlocked) {
         client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
         await client.connect()
         userBlocked = client.db(database).collection(collections[3])
     }
-    if(!userMessages){
+    if (!userMessages) {
         client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
         await client.connect()
         userMessages = client.db(database).collection(collections[4])
@@ -52,15 +52,15 @@ async function connectDatabase() {
  * @param {string} email - The email of the user.
  * @returns {Promise<Object|null>} The user document if found, otherwise null.
  */
-async function findUser(username,email){
+async function findUser(username, email) {
     await connectDatabase()
-    return await userAccounts.findOne(({ 
+    return await userAccounts.findOne(({
         $or: [
-          { username},
-          { email},
+            { username },
+            { email },
         ]
-      }))
-      //will reutrn a document that matches either and this function can be reused
+    }))
+    //will reutrn a document that matches either and this function can be reused
 }
 
 /**
@@ -69,10 +69,10 @@ async function findUser(username,email){
  * @param {string} resetKey - The reset key associated with the user.
  * @returns {Promise<Object|null>} The user document if found, otherwise null.
  */
-async function findUserReset(resetKey){
+async function findUserReset(resetKey) {
     await connectDatabase()
-    return await userAccounts.findOne({resetKey})
-      //will reutrn a document that matches either and this function can be reused
+    return await userAccounts.findOne({ resetKey })
+    //will reutrn a document that matches either and this function can be reused
 }
 
 
@@ -85,16 +85,16 @@ async function findUserReset(resetKey){
  * @param {string|null} resetKey - The reset key for the user, initially null.
  * @returns {Promise<Object>} The result of the insertion operation.
  */
-async function createUser(username,email,password,resetKey){
+async function createUser(username, email, password, resetKey) {
     await connectDatabase()
-    return await userAccounts.insertOne({username, email, password,resetKey})
+    return await userAccounts.insertOne({ username, email, password, resetKey })
     //resetKey is always set to null after a password has been reset
 
 }
 
-async function updateuserInfo(username,userInfo){
+async function updateuserInfo(username, userInfo) {
     await connectDatabase();
-    return await userAccounts.updateOne({username}, {$set: {userInfo}})
+    return await userAccounts.updateOne({ username }, { $set: { userInfo } })
 
 }
 
@@ -105,12 +105,13 @@ async function updateuserInfo(username,userInfo){
  * @param {string|null} resetKey - The new reset key for the user.
  * @returns {Promise<Object>} The result of the update operation.
  */
-async function updateUserReset(email,resetKey){
+async function updateUserReset(email, resetKey) {
     await connectDatabase()
-    return await userAccounts.updateOne({email},{ $set:{
-        "resetKey": resetKey,
-    }
-})
+    return await userAccounts.updateOne({ email }, {
+        $set: {
+            "resetKey": resetKey,
+        }
+    })
     //resetKey is always set to null after a password has been reset
 }
 
@@ -122,12 +123,13 @@ async function updateUserReset(email,resetKey){
  * @param {string} newPassword - The new password to set.
  * @returns {Promise<Object>} The result of the update operation.
  */
-async function updatePassword(resetKey,newPassword){
+async function updatePassword(resetKey, newPassword) {
     await connectDatabase()
-    return await userAccounts.updateOne({resetKey},{ $set:{
-        "password": newPassword,
-    }
-})
+    return await userAccounts.updateOne({ resetKey }, {
+        $set: {
+            "password": newPassword,
+        }
+    })
     //resetKey is always set to null after a password has been reset
 }
 
@@ -139,12 +141,13 @@ async function updatePassword(resetKey,newPassword){
  * @param {boolean} verificationStatus - The verification status to set (true/false).
  * @returns {Promise<Object>} The result of the update operation.
  */
-async function updateUserVerification(email,verificationStatus){
+async function updateUserVerification(email, verificationStatus) {
     await connectDatabase()
-    return await userAccounts.updateOne({email},{ $set:{
-        "isVerified": verificationStatus,
-    }
-})
+    return await userAccounts.updateOne({ email }, {
+        $set: {
+            "isVerified": verificationStatus,
+        }
+    })
     //resetKey is always set to null after a password has been reset
 }
 
@@ -166,11 +169,11 @@ async function saveSession(sessionData) {
  * @param {Object} data - The data to update in the session.
  * @returns {Promise<Object>} The result of the update operation.
  */
-async function updateSessionData(sessionKey, data){
+async function updateSessionData(sessionKey, data) {
     await connectDatabase()
-    let test = await userSessions.findOne({sessionKey});
-    let sessionData = await userSessions.updateOne({sessionKey}, {
-        $set:{data:data.data}
+    let test = await userSessions.findOne({ sessionKey });
+    let sessionData = await userSessions.updateOne({ sessionKey }, {
+        $set: { data: data.data }
     })
 
     return sessionData
@@ -183,9 +186,9 @@ async function updateSessionData(sessionKey, data){
  * @param {string} languageLearn - The new language the user is learning.
  * @returns {Promise<Object>} The result of the update operation.
  */
-async function updateUserAccountLanguageLearn(username, languageLearn){
+async function updateUserAccountLanguageLearn(username, languageLearn) {
     await connectDatabase()
-    return await userAccounts.updateOne({username:username}, {$set:{languageLearn:languageLearn}})
+    return await userAccounts.updateOne({ username: username }, { $set: { languageLearn: languageLearn } })
 }
 
 /**
@@ -195,9 +198,9 @@ async function updateUserAccountLanguageLearn(username, languageLearn){
  * @param {string} languageFluent - The new language the user is fluent in.
  * @returns {Promise<Object>} The result of the update operation.
  */
-async function updateUserAccountLanguageFluent(username, languageFluent){
+async function updateUserAccountLanguageFluent(username, languageFluent) {
     await connectDatabase()
-    return await userAccounts.updateOne({username:username}, {$set:{languageFluent:languageFluent}})
+    return await userAccounts.updateOne({ username: username }, { $set: { languageFluent: languageFluent } })
 }
 
 
@@ -209,7 +212,7 @@ async function updateUserAccountLanguageFluent(username, languageFluent){
  */
 async function getSessionData(sessionKey) {
     await connectDatabase()
-    return await userSessions.findOne({sessionKey})
+    return await userSessions.findOne({ sessionKey })
 }
 
 
@@ -219,12 +222,12 @@ async function getSessionData(sessionKey) {
  * @param {string} sessionKey - The session key to identify the session.
  * @returns {Promise<Object>} The result of the deletion operation.
  */
-async function deleteSession(sessionKey){
+async function deleteSession(sessionKey) {
     await connectDatabase()
-    return await userSessions.deleteOne({sessionKey})
+    return await userSessions.deleteOne({ sessionKey })
 }
 
-async function getPossibleContacts(userTargetLanguage,excludedUsername){
+async function getPossibleContacts(userTargetLanguage, excludedUsername) {
     await connectDatabase()
     return await userAccounts.find({
         languageFluent: { $in: userTargetLanguage }, // Check if any value from the input array exists
@@ -233,72 +236,91 @@ async function getPossibleContacts(userTargetLanguage,excludedUsername){
 
 }
 
-async function updateUserFriends(username, data){
+async function updateUserFriends(username, data) {
     await connectDatabase()
-    return await userContacts.updateOne({'username':username}, {$set:{'friends':data.friends}})
+    return await userContacts.updateOne({ 'username': username }, { $set: { 'friends': data.friends } })
 }
 
-async function getFriends(username){
+async function getFriends(username) {
     await connectDatabase()
-    return await userContacts.findOne({username:username})
+    return await userContacts.findOne({ username: username })
 }
 
-async function getFriendsAsObjects(friendList){
+async function getFriendsAsObjects(friendList) {
     await connectDatabase()
     return await userAccounts.find({ username: { $in: friendList } }).toArray()
 }
 
-async function updateBlockedContacts(username, data){
+async function updateBlockedContacts(username, data) {
     await connectDatabase()
-    return await userContacts.updateOne({username:username}, {$set:{'blockedUsers':data.blockedUsers}})
+    return await userContacts.updateOne({ username: username }, { $set: { 'blockedUsers': data.blockedUsers } })
 }
 
-async function getBlockedContacts(username){
+async function getBlockedContacts(username) {
     await connectDatabase()
-    return await userContacts.findOne({username:username})
+    return await userContacts.findOne({ username: username })
 }
 
-async function createUserContacts(data){
+async function createUserContacts(data) {
     await connectDatabase()
     return await userContacts.insertOne(data)
 }
 
-async function insertMessages(users,messages){
+async function insertMessages(users, messages) {
     await connectDatabase();
-    await userMessages.insertOne({users:users, messages:messages})
+    await userMessages.insertOne({ users: users, messages: messages })
 }
 
-async function getMessages(users){
+async function getMessages(users) {
     await connectDatabase();
     let possibleUserCombinationOne = [users[0], users[1]];
-    let possibleUserCombinationTwo = [users[1],users[0]]
+    let possibleUserCombinationTwo = [users[1], users[0]]
 
-    let messages =  await userMessages.findOne({users:possibleUserCombinationOne}) || await userMessages.findOne({users:possibleUserCombinationTwo});
-    
+    let messages = await userMessages.findOne({ users: possibleUserCombinationOne }) || await userMessages.findOne({ users: possibleUserCombinationTwo });
+
 
     return messages;
 }
 
-async function updateMessage(users, message){
+// async function updateMessage(users, message){
+//     await connectDatabase();
+//     let possibleUserCombinationOne = [users[0], users[1]];
+//     let possibleUserCombinationTwo = [users[1],users[0]]
+//     let user = await userMessages.findOne({users:possibleUserCombinationOne}) || await userMessages.findOne({users:possibleUserCombinationTwo});
+//     return await userMessages.updateOne({users:possibleUserCombinationOne},
+//         {$push : {messages: message}}
+//     ) || await userMessages.updateOne({users:possibleUserCombinationTwo},
+//         {$push : {messages: message}}
+//     );
+// }
+
+async function updateMessage(users, message) {
     await connectDatabase();
     let possibleUserCombinationOne = [users[0], users[1]];
-    let possibleUserCombinationTwo = [users[1],users[0]]
-    return await userMessages.updateOne({users:possibleUserCombinationOne},
-        {$push : {messages: message}}
-    ) || await userMessages.updateOne({users:possibleUserCombinationTwo},
-        {$push : {messages: message}}
-    );
+    let possibleUserCombinationTwo = [users[1], users[0]]
+    let tryRetrivalFirst = await userMessages.findOne({users:possibleUserCombinationOne})
+    if(!tryRetrivalFirst){
+        let tryRetrivalSecond = await userMessages.findOne({users:possibleUserCombinationTwo})
+        if(!tryRetrivalSecond){
+            return false;
+        }
+        await userMessages.updateOne({users:possibleUserCombinationTwo},{$push : {messages:message}});
+        return true
+    }
+    await userMessages.updateOne({users:possibleUserCombinationOne},{$push : {messages:message}});
+    return true;
+
 }
 
-async function createMessage(users){
+async function createMessage(users) {
     await connectDatabase();
-    return await userMessages.insertOne({users:users});
+    return await userMessages.insertOne({ users: users });
 }
 
 
 
 
-module.exports={
+module.exports = {
     createMessage,
     updateMessage,
     getMessages,
@@ -316,11 +338,11 @@ module.exports={
     deleteSession,
     updateuserInfo,
     getPossibleContacts,
-createUserContacts,
+    createUserContacts,
     updateUserFriends,
     updateBlockedContacts,
     getBlockedContacts,
     getFriends,
     getFriendsAsObjects
-   
+
 }

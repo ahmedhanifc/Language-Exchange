@@ -1,5 +1,4 @@
 
-
 .container-friends-item{
     background-color: white;
     width: 60%;
@@ -10,17 +9,13 @@
     grid-template-columns: 1fr 2fr;
 }
 
-.container-friends h1,{
-    text-align: center;
-    padding:20px 0;
-}
-
 .user-actions{
     background-color: white;
     width: 100%;
     padding:20px 0 40px 0;
     border-radius: 1.2rem;
     display: flex;
+    flex-wrap: wrap;
     gap:20px;
 }
 
