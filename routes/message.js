@@ -87,7 +87,8 @@ router.post("/processMessage", sessionValidityChecker,async (req,res) => {
         }
         let users = [loggedInUser,visitedUser];
         await business.updateMessage(users,messageData);
-        await business.incrementBadgeCount(loggedInUser,"100 Messages Sent")
+        await business.incrementUserStatistics(loggedInUser,"messagesSent")
+        await business.incrementUserStatistics(visitedUser,"messagesReceived")
     }
 
     res.redirect("/message")

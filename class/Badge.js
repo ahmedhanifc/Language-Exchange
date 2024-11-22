@@ -14,7 +14,6 @@ class Badge{
 
     updateFeature(feature){
         this.feature = feature
-
         this.requirementsMet()
     }
 
@@ -22,6 +21,16 @@ class Badge{
         if(this.feature >= this.target){
             this.activePath = this.completedImageName;
             this.completed = true;
+            return true
+        }
+        return false;
+    }
+
+    requirementsMet(condition){
+        if(condition){
+            this.completed = true;
+            this.activePath = this.completedImageName;
+            this.feature = 1
             return true
         }
         return false;

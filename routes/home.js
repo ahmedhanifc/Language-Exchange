@@ -213,12 +213,14 @@ router.get("/languageLearn/:languageLearn", sessionValidityChecker, async (req, 
         await business.updateUserAccountLanguageLearn(req.sessionData.data.username, req.sessionData.data.languageLearn);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Removed" }
 
+
     }
     else if (!req.sessionData.data.languageFluent.includes(languageLearn) && !req.sessionData.data.languageLearn.includes(languageLearn)) {
         req.sessionData.data.languageLearn.push(languageLearn)
         await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageLearn(req.sessionData.data.username, req.sessionData.data.languageLearn);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Added. Click Again if you wish to remove the language" }
+
     }
     await flash.setFlash(req.sessionData.sessionKey, fMessage)
     res.redirect("/home/languageLearn")
@@ -236,12 +238,16 @@ router.get("/languageFluent/:languageFluent", sessionValidityChecker, async (req
         await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageFluent(req.sessionData.data.username, req.sessionData.data.languageFluent);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Removed" }
+        await business.decrementUserStatistics(req.sessionData.data.username,"languageLearn")
+
     }
     else if (!req.sessionData.data.languageFluent.includes(languageFluent) && !req.sessionData.data.languageLearn.includes(languageFluent)) {
         req.sessionData.data.languageFluent.push(languageFluent)
         await business.updateSessionData(req.sessionData.sessionKey, req.sessionData)
         await business.updateUserAccountLanguageFluent(req.sessionData.data.username, req.sessionData.data.languageFluent);
         fMessage = { "errorCode": "yay", "content": "Langauge Successfully Added" }
+        await business.incrementUserStatistics(req.sessionData.data.username,"languageLearn")
+
     }
     await flash.setFlash(req.sessionData.sessionKey, fMessage)
     res.redirect("/home/languageFluent")

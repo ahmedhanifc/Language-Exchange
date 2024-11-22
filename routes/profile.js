@@ -6,6 +6,12 @@ const flash = require("../flash_msgs")
 
 const BadgeManagement = require("../class/BadgeManagement")
 
+async function programReferenceData(){
+    //this function is just for reference as to what sort of user statistics we have in our application.
+    const userStatistics = ["languageLearn","messagesSent","messagesReceived"]
+
+}
+
 
 async function sessionValidityChecker(req, res, next) {
     let fMessage
@@ -42,15 +48,17 @@ router.get("/", sessionValidityChecker,async(req,res) => {
     const languageFluent =  business.getLangaugesInSystem().filter(language => req.sessionData.data.languageFluent.includes(language.name))
     const username = req.sessionData.data.username
     BadgeManagement.createBadge(
-        name = "Bilingual", description = "Learn Two Langauges",target = 2,completedImageName = "3.svg",incompletedImageName = "4.svg"
+        name = "Bilingual", description = "Learn Two Langauges",target = 2,completedImageName = "trophy.png",incompletedImageName = "trophy_blackAndWhite.png"
     )
     BadgeManagement.createBadge("100 Messages Sent","Total messages sent reaches 100",100,"adventure.png","adventure_blackAndWhite.png");
-    BadgeManagement.createBadge("First Conversation","Message sent and a reply received",[1,1],"grapeSoda.png","grapeSoda_blackAndWhite.png");
+    BadgeManagement.createBadge("First Conversation","Message sent and a reply received",1,"grapeSoda.png","grapeSoda_blackAndWhite.png");
 
-    BadgeManagement.getBadges()["Bilingual"].updateFeature(languageLearn.length);
+    let userStatistics = await business.getUserStatistics(username)
+    BadgeManagement.getBadges()["Bilingual"].updateFeature(userStatistics["languageLearn"]);
 
-    let badgeData = await business.getBadgeCount(username)
-    BadgeManagement.getBadges()["100 Messages Sent"].updateFeature(badgeData["100 Messages Sent"])
+    let firstConversationCondition = (userStatistics["messagesSent"] >= 1 && userStatistics["messagesReceived"] >=1);
+    BadgeManagement.getBadges()["First Conversation"].requirementsMet(firstConversationCondition)
+
 
     res.render("profile", {
         layout:"main",

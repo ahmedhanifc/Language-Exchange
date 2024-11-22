@@ -384,17 +384,22 @@ async function getVisitedUser(sessionKey){
     return visitedUser
 }
 
-async function incrementBadgeCount(user, badgeName){
-    return await persistence.incrementBadgeCount(user, badgeName)
+async function incrementUserStatistics(user, badgeName){
+    return await persistence.incrementUserStatistics(user, badgeName)
 }
 
-async function getBadgeCount(user,badgeName){
-    return await persistence.getBadgeCount(user,badgeName)
+async function decrementUserStatistics(user, badgeName){
+    return await persistence.decrementUserStatistics(user, badgeName)
+}
+
+async function getUserStatistics(user,badgeName){
+    return await persistence.getUserStatistics(user,badgeName)
 }
 
 module.exports = {
-    getBadgeCount,
-    incrementBadgeCount,
+    decrementUserStatistics,
+    getUserStatistics,
+    incrementUserStatistics,
     getVisitedUser,
     setVisitedUser,
     createMessage,
