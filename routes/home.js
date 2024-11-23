@@ -19,6 +19,7 @@ async function sessionValidityChecker(req, res, next) {
     if (req.cookies[COOKIE_NAME]) {
         let sessionKey = req.cookies[COOKIE_NAME];
         let sessionData = await business.getSessionData(sessionKey)
+
         if (!sessionData) {
             res.redirect("/")
             return
@@ -40,19 +41,7 @@ async function sessionValidityChecker(req, res, next) {
 }
 
 router.get("/", sessionValidityChecker, async (req, res) => {
-    let fMessage;
-    if (req.sessionData.data.languageLearn.length === 0) {
-        fMessage = { "errorCode": "fail", "content": "You did not select a language that you want to learn. Please select a language" }
-        flash.setFlash(req.sessionData.sessionKey, fMessage);
-        res.redirect("/home/languageLearn")
-        return;
-    }
-    if (req.sessionData.data.languageFluent.length === 0) {
-        fMessage = { "errorCode": "fail", "content": "You did not select a language that you are Fluent in. Please select a language" }
-        flash.setFlash(req.sessionData.sessionKey, fMessage);
-        res.redirect("/home/languageFluent")
-        return;
-    }
+
 
     let completedBadges = await business.getCompletedBadges(req.sessionData.data.username);
     res.render("home", {
