@@ -48,3 +48,13 @@
         <input type="hidden" name="csrf" value={{csrf}}>
     </form>
 </div>
+
+
+<script>
+    window.onload = function () {
+    const chatContainer = document.querySelector(".messages-display");
+    if (chatContainer) {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+};
+</script>

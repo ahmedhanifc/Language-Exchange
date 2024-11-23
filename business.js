@@ -155,9 +155,12 @@ function getLangaugesInSystem() {
 async function generateFormToken(sessionKey) {
     let token = crypto.randomUUID()
     let sessionData = await persistence.getSessionData(sessionKey)
-    sessionData.data.csrfToken = token
-    await persistence.updateSessionData(sessionKey, sessionData)
-    return token
+    if(sessionData){
+        sessionData.data.csrfToken = token
+        await persistence.updateSessionData(sessionKey, sessionData)
+        return token
+    }
+    return false;
 }
 
 
