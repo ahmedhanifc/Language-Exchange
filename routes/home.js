@@ -107,14 +107,15 @@ router.post("/info", sessionValidityChecker,fileUpload(), async(req,res) => {
     }
 
     //here retrieve uploaded file and move to directory
-    let userFile=req.files.userFile
     //checks for file uploaded
     if(!req.files){
-        fMessage = { "errorCode": "fail", "content": "You must uploade a profile picture" }
+        fMessage = { "errorCode": "fail", "content": "You must upload a profile picture" }
         flash.setFlash(req.sessionData.sessionKey, fMessage);
         res.redirect("/home/info")
         return;
     }
+    let userFile=req.files.userFile
+
     if(userFile.mimetype!=='image/png' && userFile.mimetype!=='image/jpeg' ){
         fMessage = { "errorCode": "fail", "content": "File needs to be .png,.jpg or .jpeg" }
         flash.setFlash(req.sessionData.sessionKey, fMessage);
