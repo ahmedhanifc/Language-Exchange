@@ -385,6 +385,15 @@ async function blockContact(username,blockedAccount) {
     
 }
 
+/**
+ * Unblocks a contact for a user by removing them from the blocked list.
+ *
+ * @async
+ * @param {string} username - The username of the user performing the unblock.
+ * @param {string} blockedAccount - The username of the account to unblock.
+ * @returns {Promise<null>} Resolves to `null` after unblocking the contact.
+ * @throws {Error} If the database operation fails.
+ */
 async function unblockContact(username,blockedAccount) {
     let data=await persistence.getBlockedContacts(username)
     if(data.blockedUsers.length!==0){
@@ -613,10 +622,18 @@ async function manageUserBadges(username){
     BadgeManagement.getBadges()["First Conversation"].conditionMet(firstConversationCondition)
 }
 
-async function getNationalities(){
+/*async function getNationalities(){
     return await persistence.getNationalities();
-}
+}*/
 
+/**
+ * Retrieves all completed badges for a user.
+ *
+ * @async
+ * @param {string} username - The username of the user.
+ * @returns {Promise<Object>} An object containing the user's completed badges.
+ * @throws {Error} If badge management or retrieval fails.
+ */
 async function getCompletedBadges(username){
     await manageUserBadges(username);
     

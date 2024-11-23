@@ -82,7 +82,16 @@
 
 
 <script>
-
+/**
+ * Sends an HTTP request with the specified method, URL, and data.
+ *
+ * @async
+ * @param {string} url - The endpoint to send the request to.
+ * @param {string} method - The HTTP method (e.g., "GET", "POST").
+ * @param {Object} data - The payload to send with the request.
+ * @returns {Promise<Response>} The fetch response object.
+ * @throws {Error} If the request fails.
+ */
     async function makeRequest(url, method, data) {
         const header = new Headers();
         header.append("Content-Type", "application/json");
@@ -96,6 +105,14 @@
         return await response;
     }
 
+/**
+ * Sends a message to the visited user.
+ *
+ * @async
+ * @param {string} visitedUser - The username of the user being messaged.
+ * @returns {Promise<void>} Redirects to the message page on success.
+ * @throws {Error} If the request fails.
+ */
     async function sendMessage(visitedUser){
         const url = "/message/api/user";
 
@@ -108,7 +125,14 @@
         }
     }
 
-    //this js is to implement the addfriend,remove friend and block friend functionalities
+/**
+ * Sends a request to add a friend for the specified user.
+ *
+ * @async
+ * @param {string} username - The username of the current user.
+ * @param {string} friendAccount - The username of the account to add.
+ * @returns {Promise<void>} Reloads the page on success.
+ */
     async function addFriend(username, friendAccount) {
         const response=await fetch(`/contacts/api/addFriend/${username}/${friendAccount}`)
         if(response.status===200){
@@ -120,6 +144,14 @@
 
     }
 
+/**
+ * Sends a request to remove a friend for the specified user.
+ *
+ * @async
+ * @param {string} username - The username of the current user.
+ * @param {string} targetAccount - The username of the friend to remove.
+ * @returns {Promise<void>} Reloads the page on success.
+ */
     async function removeFriend(username, targetAccount) {
         const response=await fetch(`/contacts/api/removeFriend/${username}/${targetAccount}`)
         if(response.status === 200){
@@ -131,6 +163,14 @@
 
     }
 
+/**
+ * Sends a request to block a contact for the specified user.
+ *
+ * @async
+ * @param {string} username - The username of the current user.
+ * @param {string} targetAccount - The username of the contact to block.
+ * @returns {Promise<void>} Reloads the page on success.
+ */
     async function blockContact(username, targetAccount) {
         const response=await fetch(`/contacts/api/blockContact/${username}/${targetAccount}`)
         if(response.status === 200){
@@ -141,6 +181,14 @@
         }
     }
 
+/**
+ * Sends a request to unblock a contact for the specified user.
+ *
+ * @async
+ * @param {string} username - The username of the current user.
+ * @param {string} targetAccount - The username of the contact to unblock.
+ * @returns {Promise<void>} Reloads the page on success.
+ */
     async function unblockUser(username, targetAccount) {
         const response=await fetch(`/contacts/api/unblockContact/${username}/${targetAccount}`)
         if(response.status === 200){
@@ -151,8 +199,14 @@
         }
     }
 
-
-
+/**
+ * Redirects to the visited user's profile page.
+ *
+ * @async
+ * @param {string} visitedUser - The username of the profile to view.
+ * @returns {Promise<void>} Redirects to the profile page on success.
+ * @throws {Error} If the request fails.
+ */
     async function viewProfile(visitedUser) {
         //put api call here that renders the profile for the friend from the pov of user,it can be simple just render the same screen for profile.
         const url = "/profile/api/user"

@@ -306,6 +306,14 @@ async function getFriendsAsObjects(friendList) {
     return await userAccounts.find({ username: { $in: friendList } }).toArray()
 }
 
+/**
+ * Fetches blocked user accounts from the database.
+ *
+ * @async
+ * @param {string[]} blocklist - Array of usernames to fetch.
+ * @returns {Promise<Object[]>} Array of user objects matching the blocklist.
+ * @throws {Error} If the database connection or query fails.
+ */
 async function getBlockedUsersAsObjects(blocklist) {
     await connectDatabase()
     return await userAccounts.find({ username: { $in: blocklist } }).toArray()
