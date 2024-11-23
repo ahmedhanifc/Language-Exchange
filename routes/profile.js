@@ -30,6 +30,12 @@ async function sessionValidityChecker(req, res, next) {
             res.redirect("/")
             return
         }
+        if(Object.keys(sessionData.data.userInfo).length===0){
+            fMessage = { "errorCode": "fail", "content": "You are not Authorized to access this page. Please Login" }
+            await flash.setFlash(sessionData.sessionKey,fMessage)
+            res.redirect("/")
+            return
+        }
         req.sessionData = sessionData
         next()
     }

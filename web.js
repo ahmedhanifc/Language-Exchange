@@ -27,6 +27,7 @@ app.use(express.urlencoded({ extended: true })); // Use Express's built-in parse
 app.use(express.json()); // Allows parsing of JSON
 app.use(cookieParser());
 
+
 app.use("/", loginRouter);
 app.use("/home", homeRouter) //the home.js Router will take all routers that begin from /home
 app.use("/profile", profileRouter) //the profile.js Router will take all routers that begin from /profile
