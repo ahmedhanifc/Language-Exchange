@@ -165,7 +165,7 @@ async function generateFormToken(sessionKey) {
 async function cancelToken(sessionKey) {
     let sessionData = await persistence.getSessionData(sessionKey)
     sessionData.data.csrfToken = null
-    await persistence.updateSessionData(sessionKey,sessionData)
+    await persistence.updateSessionData(sessionKey, sessionData)
 }
 
 /**
@@ -315,13 +315,13 @@ async function deleteSession(sessionKey) {
     return await persistence.deleteSession(sessionKey);
 }
 
-async function displayingBlockedContacts(username){
-    let data= await persistence.getBlockedContacts(username)
-    if(data.blockedUsers.length!==0){
-        let blockedUsers=await persistence.getBlockedUsersAsObjects(data.blockedUsers)
+async function displayingBlockedContacts(username) {
+    let data = await persistence.getBlockedContacts(username)
+    if (data.blockedUsers.length !== 0) {
+        let blockedUsers = await persistence.getBlockedUsersAsObjects(data.blockedUsers)
         return blockedUsers
     }
-   return null
+    return null
 }
 
 /**
@@ -333,36 +333,44 @@ async function displayingBlockedContacts(username){
  * @param {string} username - The username of the current user.
  * @returns {Promise<Array<Object>|null>} A promise that resolves to an array of contacts or null if no contacts are available.
  */
-async function displayingContacts(userTargetLanguage,username) {
-    let allContacts= await persistence.getPossibleContacts(userTargetLanguage,username)
-    let blockedContacts=await persistence.getBlockedContacts(username)
-    let data=await persistence.getFriends(username)
-   
-    if(allContacts.length===0){
+async function displayingContacts(userTargetLanguage, username) {
+    let allContacts = await persistence.getPossibleContacts(userTargetLanguage, username)
+    let blockedContacts = await persistence.getBlockedContacts(username)
+
+    if (allContacts.length === 0) {
         return null
     }
-    if(blockedContacts.blockedUsers.length!==0 && data.friends.length!==0 ){
-        return allContacts.filter(
-            contact => 
-              !blockedContacts.blockedUsers.includes(contact.username) && !data.friends.includes(contact.username))
-            //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
-            }
-
-    if(blockedContacts.blockedUsers .length!==0 ){
-                return allContacts.filter(
-                    contact => 
-                      !blockedContacts.blockedUsers.includes(contact.username) )
-                    //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
-                    }
-
-    if(data.friends.length!==0){
-        return allContacts.filter(
-            contact => 
-              !data.friends.includes(contact.username))
-            //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
-            }
-        return allContacts
+    for (const c of allContacts) {
+        const contactData = await persistence.getFriends(c.username);
+        if (contactData.blockedUsers.includes(username)) {
+            allContacts = allContacts.filter(contact => contact !== c);
+        }
     }
+
+    let data = await persistence.getFriends(username)
+
+
+    if (blockedContacts.blockedUsers.length !== 0 && data.friends.length !== 0) {
+        return allContacts.filter(contact =>
+            !blockedContacts.blockedUsers.includes(contact.username) && !data.friends.includes(contact.username))
+        //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
+    }
+
+    if (blockedContacts.blockedUsers.length !== 0) {
+        return allContacts.filter(
+            contact =>
+                !blockedContacts.blockedUsers.includes(contact.username))
+        //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
+    }
+
+    if (data.friends.length !== 0) {
+        return allContacts.filter(
+            contact =>
+                !data.friends.includes(contact.username))
+        //herei exclude freinds as well because it doesnt make sense to have friends shows in yourpossible contacts
+    }
+    return allContacts
+}
 
 
 /**
@@ -374,15 +382,20 @@ async function displayingContacts(userTargetLanguage,username) {
  * @param {string} blockedAccount - The username of the contact to block.
  * @returns {Promise<void>} A promise that resolves when the operation is complete.
  */
-async function blockContact(username,blockedAccount) {
-    let data=await persistence.getFriends(username)
-    if(data.friends.length!==0){
+async function blockContact(username, blockedAccount) {
+    let data = await persistence.getFriends(username)
+    let blockedData = await persistence.getFriends(blockedAccount)
+    if (data.friends.length !== 0) {
         data.friends = data.friends.filter(friend => friend !== blockedAccount);
-        await persistence.updateUserFriends(username,data)
+        await persistence.updateUserFriends(username, data)
+    }
+    if (blockedData.friends.length !== 0) {
+        blockedData.friends = blockedData.friends.filter(friend => friend !== username)
+        await persistence.updateUserFriends(blockedAccount, blockedData)
     }
     data.blockedUsers.push(blockedAccount)
-    await persistence.updateBlockedContacts(username,data)
-    
+    await persistence.updateBlockedContacts(username, data)
+
 }
 
 /**
@@ -394,13 +407,13 @@ async function blockContact(username,blockedAccount) {
  * @returns {Promise<null>} Resolves to `null` after unblocking the contact.
  * @throws {Error} If the database operation fails.
  */
-async function unblockContact(username,blockedAccount) {
-    let data=await persistence.getBlockedContacts(username)
-    if(data.blockedUsers.length!==0){
+async function unblockContact(username, blockedAccount) {
+    let data = await persistence.getBlockedContacts(username)
+    if (data.blockedUsers.length !== 0) {
         data.blockedUsers = data.blockedUsers.filter(blocked => blocked !== blockedAccount);
-        await persistence.updateBlockedContacts(username,data)
+        await persistence.updateBlockedContacts(username, data)
     }
-   return null
+    return null
 }
 
 /**
@@ -412,15 +425,15 @@ async function unblockContact(username,blockedAccount) {
  * @param {string} username - The username of the current user.
  * @returns {Promise<Array<Object>|null>} A promise that resolves to an array of friend objects or null if no friends exist.
  */
-async function displayingFriends(userTargetLanguage,username) {
-    let allContacts= await persistence.getPossibleContacts(userTargetLanguage,username)
-    let data=await persistence.getFriends(username)
-    if(data.friends.length===0){
+async function displayingFriends(userTargetLanguage, username) {
+    let allContacts = await persistence.getPossibleContacts(userTargetLanguage, username)
+    let data = await persistence.getFriends(username)
+    if (data.friends.length === 0) {
         return null
     }
     //the filter function dircetly just filters and we have to pass in a normal function to this as this will be used just once so i am using an anonymous function
-  let friends= await persistence.getFriendsAsObjects(data.friends)
-  return friends
+    let friends = await persistence.getFriendsAsObjects(data.friends)
+    return friends
 }
 
 /**
@@ -432,10 +445,10 @@ async function displayingFriends(userTargetLanguage,username) {
  * @param {string} friendAccount - The username of the friend to add.
  * @returns {Promise<void>} A promise that resolves when the friend is added.
  */
-async function addFriend(username,friendAccount) {
-    let data=await persistence.getFriends(username)
+async function addFriend(username, friendAccount) {
+    let data = await persistence.getFriends(username)
     data.friends.push(friendAccount)
-    await persistence.updateUserFriends(username,data)    
+    await persistence.updateUserFriends(username, data)
 }
 
 /**
@@ -447,19 +460,19 @@ async function addFriend(username,friendAccount) {
  * @param {string} unfriendAccount - The username of the friend to remove.
  * @returns {Promise<void>} A promise that resolves when the friend is removed.
  */
-async function removeFriend(username,unfriendAccount) {
-    let data=await persistence.getFriends(username)
-    if(!data){
+async function removeFriend(username, unfriendAccount) {
+    let data = await persistence.getFriends(username)
+    if (!data) {
         return null
     }
-    if(data.friends.length===0){
+    if (data.friends.length === 0) {
         return null
     }
     //filter returns a new array does not modify the original one
     data.friends = data.friends.filter(friend => friend !== unfriendAccount);
-                             //each element in the array is referred to as a friend
+    //each element in the array is referred to as a friend
     console.log(data)
-    await persistence.updateUserFriends(username,data)    
+    await persistence.updateUserFriends(username, data)
 }
 
 /**
@@ -471,7 +484,7 @@ async function removeFriend(username,unfriendAccount) {
  * @returns {Promise<Object>} A promise that resolves to the created contact object.
  */
 async function createUserContacts(contactData) {
-    return await persistence.createUserContacts(contactData)   
+    return await persistence.createUserContacts(contactData)
 }
 
 /**
@@ -483,8 +496,8 @@ async function createUserContacts(contactData) {
  * @param {string} email - The email of the user.
  * @returns {Promise<Object|null>} A promise that resolves to the user object or null if not found.
  */
-async function findUser(username,email){
-    return await persistence.findUser(username,email)
+async function findUser(username, email) {
+    return await persistence.findUser(username, email)
 }
 
 /**
@@ -509,8 +522,8 @@ async function getMessages(users) {
  * @param {Object} message - The message object to add.
  * @returns {Promise<boolean>} A promise that resolves to true if the update is successful, otherwise false.
  */
-async function updateMessage(users,message){
-    return await persistence.updateMessage(users,message)
+async function updateMessage(users, message) {
+    return await persistence.updateMessage(users, message)
 }
 
 /**
@@ -521,7 +534,7 @@ async function updateMessage(users,message){
  * @param {Array<string>} users - An array of usernames representing the two users involved in the conversation.
  * @returns {Promise<Object>} A promise that resolves to the created message object.
  */
-async function createMessage(users){
+async function createMessage(users) {
     return await persistence.createMessage(users)
 }
 
@@ -534,10 +547,10 @@ async function createMessage(users){
  * @param {string} visitedUser - The username of the visited user to set.
  * @returns {Promise<Object>} A promise that resolves to the updated session data object.
  */
-async function setVisitedUser(sessionKey, visitedUser){
-    let sessionData=await persistence.getSessionData(sessionKey)
-    sessionData.data.visitedUser=visitedUser
-    return await persistence.updateSessionData(sessionKey,sessionData)
+async function setVisitedUser(sessionKey, visitedUser) {
+    let sessionData = await persistence.getSessionData(sessionKey)
+    sessionData.data.visitedUser = visitedUser
+    return await persistence.updateSessionData(sessionKey, sessionData)
 }
 
 /**
@@ -549,14 +562,14 @@ async function setVisitedUser(sessionKey, visitedUser){
  * @returns {Promise<string|null>} A promise that resolves to the visited user's username or null if not found.
  */
 
-async function getVisitedUser(sessionKey){
-    let sessionData=await persistence.getSessionData(sessionKey)
-    if(!sessionData){
+async function getVisitedUser(sessionKey) {
+    let sessionData = await persistence.getSessionData(sessionKey)
+    if (!sessionData) {
         return null
     }
-    let visitedUser=sessionData.data.visitedUser
+    let visitedUser = sessionData.data.visitedUser
     delete sessionData.data.visitedUser
-    await persistence.updateSessionData(sessionKey,sessionData)
+    await persistence.updateSessionData(sessionKey, sessionData)
     return visitedUser
 }
 
@@ -569,7 +582,7 @@ async function getVisitedUser(sessionKey){
  * @param {string} badgeName - The name of the badge to increment.
  * @returns {Promise<void>} A promise that resolves when the operation is complete.
  */
-async function incrementUserStatistics(user, badgeName){
+async function incrementUserStatistics(user, badgeName) {
     return await persistence.incrementUserStatistics(user, badgeName)
 }
 
@@ -582,7 +595,7 @@ async function incrementUserStatistics(user, badgeName){
  * @param {string} badgeName - The name of the badge to decrement.
  * @returns {Promise<void>} A promise that resolves when the operation is complete.
  */
-async function decrementUserStatistics(user, badgeName){
+async function decrementUserStatistics(user, badgeName) {
     return await persistence.decrementUserStatistics(user, badgeName)
 }
 
@@ -595,8 +608,8 @@ async function decrementUserStatistics(user, badgeName){
  * @param {string} badgeName - The name of the badge to retrieve statistics for.
  * @returns {Promise<Object|null>} A promise that resolves to the badge statistics object or null if not found.
  */
-async function getUserStatistics(user,badgeName){
-    return await persistence.getUserStatistics(user,badgeName)
+async function getUserStatistics(user, badgeName) {
+    return await persistence.getUserStatistics(user, badgeName)
 }
 
 /**
@@ -607,18 +620,18 @@ async function getUserStatistics(user,badgeName){
  * @param {string} username - The username of the user.
  * @returns {Promise<void>} A promise that resolves when badge management is complete.
  */
-async function manageUserBadges(username){
+async function manageUserBadges(username) {
     BadgeManagement.createBadge(
-        name = "Bilingual", description = "Learn Two Langauges",target = 2,completedImageName = "trophy.png",incompletedImageName = "trophy_blackAndWhite.png"
+        name = "Bilingual", description = "Learn Two Langauges", target = 2, completedImageName = "trophy.png", incompletedImageName = "trophy_blackAndWhite.png"
     )
-    BadgeManagement.createBadge("100 Messages Sent","Total messages sent reaches 100",100,"adventure.png","adventure_blackAndWhite.png");
-    BadgeManagement.createBadge("First Conversation","Message sent and a reply received",1,"grapeSoda.png","grapeSoda_blackAndWhite.png");
+    BadgeManagement.createBadge("100 Messages Sent", "Total messages sent reaches 100", 100, "adventure.png", "adventure_blackAndWhite.png");
+    BadgeManagement.createBadge("First Conversation", "Message sent and a reply received", 1, "grapeSoda.png", "grapeSoda_blackAndWhite.png");
 
     let userStatistics = await getUserStatistics(username)
     BadgeManagement.getBadges()["Bilingual"].updateFeature(userStatistics["languageLearn"]);
     BadgeManagement.getBadges()["100 Messages Sent"].updateFeature(userStatistics["messagesSent"])
 
-    let firstConversationCondition = (userStatistics["messagesSent"] >= 1 && userStatistics["messagesReceived"] >=1);
+    let firstConversationCondition = (userStatistics["messagesSent"] >= 1 && userStatistics["messagesReceived"] >= 1);
     BadgeManagement.getBadges()["First Conversation"].conditionMet(firstConversationCondition)
 }
 
@@ -634,13 +647,13 @@ async function manageUserBadges(username){
  * @returns {Promise<Object>} An object containing the user's completed badges.
  * @throws {Error} If badge management or retrieval fails.
  */
-async function getCompletedBadges(username){
+async function getCompletedBadges(username) {
     await manageUserBadges(username);
-    
+
     const allBadges = BadgeManagement.getBadges()
     const completedBadges = {}
-    for(badgeName of Object.keys(allBadges)){
-        if(allBadges[badgeName].completed){
+    for (badgeName of Object.keys(allBadges)) {
+        if (allBadges[badgeName].completed) {
             completedBadges[badgeName] = allBadges[badgeName]
         }
     }

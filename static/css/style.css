@@ -3421,6 +3421,7 @@ html:not([dir=rtl]) .form-check-inline .form-check-input ~ .invalid-feedback {
 
 .logo-container img{
   width: 100%;
+  border-radius: 50%;
 }
 
 .btn-danger {
