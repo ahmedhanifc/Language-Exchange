@@ -12,6 +12,7 @@ let userContacts = undefined;
 let userBlocked = undefined;
 let userMessages = undefined;
 let userStatistics = undefined;
+let client= undefined;
 
 
 /**
@@ -19,34 +20,14 @@ let userStatistics = undefined;
  * @async
  */
 async function connectDatabase() {
-    if (!userAccounts) {
+    if (!client) {
         client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
         await client.connect()
         userAccounts = client.db(database).collection(collections[0]) // loads userAccounts collection data into the variable userAccounts
-    }
-    if (!userSessions) {
-        client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
-        await client.connect()
         userSessions = client.db(database).collection(collections[1]) // loads userSessions collection data into the variable userAccounts
-    }
-    if (!userContacts) {
-        client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
-        await client.connect()
         userContacts = client.db(database).collection(collections[2])
-    }
-    if (!userBlocked) {
-        client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
-        await client.connect()
         userBlocked = client.db(database).collection(collections[3])
-    }
-    if (!userMessages) {
-        client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
-        await client.connect()
         userMessages = client.db(database).collection(collections[4])
-    }
-    if (!userStatistics) {
-        client = new MongoClient('mongodb+srv://ahmed:12class34@cluster0.jj6rj.mongodb.net/')
-        await client.connect()
         userBadges = client.db(database).collection(collections[5])
     }
 }
