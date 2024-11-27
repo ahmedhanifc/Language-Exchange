@@ -31,7 +31,7 @@ CSRF tokens need to be added whereever there is a text box and <script> tag can 
 ## Overview
 The **Language Exchange Platform** is designed to connect individuals who wish to learn new languages with native speakers around the world. By fostering real-time text-based communication, users can improve their language skills interactively and immerse themselves in cultural exchanges. 
 
-This project is built with **Node.js**, **Express.js**, and **MongoDB** and adheres to the requirements of the INFS3102 project.
+This project is built with **Node.js**, **Express.js**, and **MongoDB**
 
 ## Features
 
