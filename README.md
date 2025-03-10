@@ -83,4 +83,4 @@ This project is built with **Node.js**, **Express.js**, and **MongoDB**
 ## Contact
 For inquiries, please contact:
 1)  Ahmed Hanif - ahmedhanifc@gmail.com OR 60301085@udst.edu.qa
-2) Hafsa Farhan - 60106652@udst.edu.qa
+2) Hafsa Farhan - hafsafarhan127@gmail.com OR 60106652@udst.edu.qa
