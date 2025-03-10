@@ -10,7 +10,7 @@
    - **UI/UX**
    - **Language Learning Management**
    - **Badges**
-   - **Security**
+
 
 # Language-Exchange
 - HafsaFarhan127 is the GitHub account for student id: 60106652 with the email:60106652@udst.edu.qa.
