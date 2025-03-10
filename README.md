@@ -1,3 +1,15 @@
+
+#Collaborator Contributions:
+- Hafsa Farhan developed the following features:                                
+  ##1.**User Registration and Profile Setup**
+  ##2. **Language Learning and Contact Management**
+  ##3.**Security**
+  
+ -Ahmed Hanif developed the following features:
+ ##1.**Messaging**
+ ##2.**Badges**
+ ##3.**Security**
+
 # Language-Exchange
 - HafsaFarhan127 is the GitHub account for student id: 60106652 with the email:60106652@udst.edu.qa.
 The account is linked to the university email id through GitHub Education.
