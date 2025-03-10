@@ -2,7 +2,7 @@
 # Collaborator Contributions:
 - Hafsa Farhan developed the following features:                                
   - **User Registration and Profile Setup**
-  - **Contact Management**
+  - **Contact and Language Learning Management**
   - **Security**
   
 - Ahmed Hanif developed the following features:
